@@ -13,6 +13,10 @@ jobs:
   build:
     name: Lint & build
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+      NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
+      NEXT_PUBLIC_SANITY_API_VERSION: ${{ vars.NEXT_PUBLIC_SANITY_API_VERSION }}
     steps:
       - uses: actions/checkout@v4
 
@@ -27,27 +31,11 @@ jobs:
       - run: pnpm run lint
       - run: pnpm run build
 
-      - name: Package standalone output
-        if: github.event_name == 'push'
-        run: |
-          cp -r public .next/standalone/
-          mkdir -p .next/standalone/.next
-          cp -r .next/static .next/standalone/.next/
-          cat > .next/standalone/.cpanel.yml <<'EOF'
-          ---
-          # Deploy-only branch: contents are the built standalone output,
-          # pushed by .github/workflows/deploy.yml. Nothing here is built
-          # on the server — just restart Passenger to pick up new files.
-          deployment:
-            tasks:
-              - mkdir -p tmp && touch tmp/restart.txt
-          EOF
-
       - uses: actions/upload-artifact@v4
         if: github.event_name == 'push'
         with:
-          name: standalone-build
-          path: .next/standalone
+          name: static-build
+          path: out
           retention-days: 1
           include-hidden-files: true
 
@@ -63,10 +51,10 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: standalone-build
-          path: standalone-build
+          name: static-build
+          path: static-build
 
-      - name: Push standalone build to deploy branch
+      - name: Push static build to deploy branch
         run: |
           set -euo pipefail
           REPO_URL="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
@@ -82,7 +70,7 @@ jobs:
             mkdir -p deploy-repo
             (cd deploy-repo && git init -q && git checkout -q -b "$DEPLOY_BRANCH")
           fi
-          cp -r standalone-build/. deploy-repo/
+          cp -r static-build/. deploy-repo/
           cd deploy-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -90,17 +78,17 @@ jobs:
           git commit -q -m "Deploy ${{ github.sha }}" --allow-empty
           git push -q "$REPO_URL" "HEAD:$DEPLOY_BRANCH"
 
-      - name: Pull + deploy via cPanel UAPI
+      - name: Pull into Krystal via cPanel UAPI
         run: |
           set -euo pipefail
           BASE="https://${{ secrets.KRYSTAL_HOST }}:2083/execute"
           AUTH="Authorization: cpanel ${{ secrets.KRYSTAL_USER }}:${{ secrets.KRYSTAL_API_TOKEN }}"
 
+          # Repository path == document root for static deploys, so a
+          # plain git pull (VersionControl::update) is the entire
+          # deployment — no Passenger/Node app, no deployment/restart
+          # step needed for static files.
           resp=$(curl -sf -H "$AUTH" "$BASE/VersionControl/update?repository_root=${KRYSTAL_REPO_ROOT}&branch=${DEPLOY_BRANCH}")
-          echo "$resp" | jq .
-          echo "$resp" | jq -e '.status == 1' >/dev/null
-
-          resp=$(curl -sf -H "$AUTH" "$BASE/VersionControlDeployment/create?repository_root=${KRYSTAL_REPO_ROOT}")
           echo "$resp" | jq .
           echo "$resp" | jq -e '.status == 1' >/dev/null
 
@@ -116,26 +104,21 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: standalone-build
-          path: standalone-build
+          name: static-build
+          path: static-build
 
-      - name: Push standalone build to deploy branch
+      - name: Push static build to deploy branch
         run: |
           set -euo pipefail
           REPO_URL="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
 
-          # Append a normal commit on top of the deploy branch's existing
-          # history (rather than force-pushing a fresh history each time)
-          # so cPanel's VersionControl::update, which does a fast-forward
-          # git pull, always succeeds instead of hitting "diverging
-          # branches" on the second and later deploys.
           if git clone -q --depth 1 --branch "$DEPLOY_BRANCH" "$REPO_URL" deploy-repo 2>/dev/null; then
             find deploy-repo -mindepth 1 -maxdepth 1 -not -name '.git' -exec rm -rf {} +
           else
             mkdir -p deploy-repo
             (cd deploy-repo && git init -q && git checkout -q -b "$DEPLOY_BRANCH")
           fi
-          cp -r standalone-build/. deploy-repo/
+          cp -r static-build/. deploy-repo/
           cd deploy-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -143,16 +126,12 @@ jobs:
           git commit -q -m "Deploy ${{ github.sha }}" --allow-empty
           git push -q "$REPO_URL" "HEAD:$DEPLOY_BRANCH"
 
-      - name: Pull + deploy via cPanel UAPI
+      - name: Pull into Krystal via cPanel UAPI
         run: |
           set -euo pipefail
           BASE="https://${{ secrets.KRYSTAL_HOST }}:2083/execute"
           AUTH="Authorization: cpanel ${{ secrets.KRYSTAL_USER }}:${{ secrets.KRYSTAL_API_TOKEN }}"
 
           resp=$(curl -sf -H "$AUTH" "$BASE/VersionControl/update?repository_root=${KRYSTAL_REPO_ROOT}&branch=${DEPLOY_BRANCH}")
-          echo "$resp" | jq .
-          echo "$resp" | jq -e '.status == 1' >/dev/null
-
-          resp=$(curl -sf -H "$AUTH" "$BASE/VersionControlDeployment/create?repository_root=${KRYSTAL_REPO_ROOT}")
           echo "$resp" | jq .
           echo "$resp" | jq -e '.status == 1' >/dev/null

@@ -1,11 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Krystal deploys the traced standalone output rather than building
-  // on the server (see docs/deploy-krystal.md) — its Next.js compiler
-  // (Turbopack and webpack/SWC alike) OOMs under the account's memory
-  // limits.
-  output: "standalone",
+  // Content is fetched from Sanity at build time and Krystal serves
+  // the output as plain static files — no Node.js process on the
+  // server at all (see docs/deploy-krystal.md), which also sidesteps
+  // the account's Next.js compiler memory limits since the build only
+  // ever runs in CI.
+  output: "export",
+  images: { unoptimized: true },
 };
 
 export default nextConfig;
