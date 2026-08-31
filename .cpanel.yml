@@ -20,9 +20,14 @@ deployment:
     # Replace with the command shown in cPanel > Setup Node.js App, e.g.:
     #   source /home/USERNAME/nodevenv/APPNAME/20/bin/activate
     - source /home/skimreap/nodevenv/app-dev/20/bin/activate
-    - export NODE_OPTIONS=--jitless
     - npm install -g pnpm@10.34.5
     - rm -rf $DEPLOYPATH/node_modules
+    # pnpm install's parallelism triggers a V8 "Failed to reserve virtual
+    # memory for CodeRange" OOM under this account's memory limits;
+    # --jitless avoids it. next build needs WebAssembly (Turbopack), which
+    # --jitless disables, so it's cleared again before the build step.
+    - export NODE_OPTIONS=--jitless
     - cd $DEPLOYPATH && pnpm install --frozen-lockfile
+    - export NODE_OPTIONS=
     - cd $DEPLOYPATH && pnpm run build
     - cd $DEPLOYPATH && mkdir -p tmp && touch tmp/restart.txt
