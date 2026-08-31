@@ -11,11 +11,21 @@ tracking a different branch:
 | Dev | dev.skimreapers.co.uk | `dev` | e.g. `skim-reapers-web-dev` |
 
 `.github/workflows/deploy.yml` builds and lints on every push/PR to
-either branch, then on a push to `main` or `dev` SSHes into the Krystal
-account and, for the matching environment:
-- `git pull`s the latest commit into that environment's server-side repo
-- runs `uapi VersionControl deployment create ...`, which executes the
-  tasks in `.cpanel.yml` (install deps, build, restart the app)
+either branch, then on a push to `main` or `dev` calls cPanel's UAPI
+over HTTPS (port 2083) using an API token, for the matching environment:
+- `VersionControl::update` pulls the latest commit into that
+  environment's server-side repo
+- `VersionControlDeployment::create` triggers a deployment, which runs
+  the tasks in `.cpanel.yml` (install deps, build, restart the app)
+
+> **Why API token instead of SSH**: SSH (port 22) is firewalled off on
+> this account/server — confirmed by connection timeouts from multiple
+> networks, not just the account holder's own key setup. cPanel's own
+> web port (2083) is reachable, and UAPI calls over HTTPS with an API
+> token work fine, so that's the deploy path this workflow uses instead.
+> Both `VersionControl::update` and `VersionControlDeployment::create`
+> were verified directly against this account before being wired into
+> the workflow.
 
 Do the following once in cPanel, **twice** — once per environment —
 before the workflow will work.
@@ -62,17 +72,16 @@ are the values for `KRYSTAL_PROD_REPO_ROOT` / `KRYSTAL_DEV_REPO_ROOT`
 below (e.g. `/home/USER/skim-reapers-web` and
 `/home/USER/skim-reapers-web-dev`).
 
-## 3. Enable SSH key access
+## 3. Create a cPanel API token
 
-cPanel > **SSH Access** > Manage SSH Keys > Generate a new key (or import
-one). Authorize it, then download the private key. One key covers both
-apps since they're on the same cPanel account.
+cPanel > **Security > Manage API Tokens** > Create.
 
-- Test it: `ssh -p <port> <cpanel-user>@<host>` from your machine.
-- Confirm `uapi` is runnable in that shell: `uapi --showapi VersionControl`
-  should list `deployment_create`/similar functions. If the function name
-  differs from what's in `deploy.yml`'s script steps, update those steps
-  to match — Krystal's exact cPanel version may vary.
+- Name it something identifiable, e.g. `github-actions-deploy`.
+- If cPanel offers an ACL/scope restriction, restrict it to
+  `VersionControl` (least privilege — this token only needs to pull and
+  deploy repos, not manage email/DNS/billing/etc).
+- Copy the token when shown (cPanel only displays it once). One token
+  covers both environments since they're on the same cPanel account.
 
 ## 4. Add GitHub Actions secrets
 
@@ -80,10 +89,9 @@ Repo Settings > Secrets and variables > Actions > New repository secret:
 
 | Secret | Value |
 |---|---|
-| `KRYSTAL_SSH_HOST` | Krystal server hostname (shared) |
-| `KRYSTAL_SSH_USER` | cPanel username (shared) |
-| `KRYSTAL_SSH_KEY` | SSH private key from step 3 (shared, full contents) |
-| `KRYSTAL_SSH_PORT` | SSH port, if not 22 (shared) |
+| `KRYSTAL_HOST` | Krystal server hostname, e.g. `s99.lon.krystal.io` (shared) |
+| `KRYSTAL_USER` | cPanel username (shared) |
+| `KRYSTAL_API_TOKEN` | API token from step 3 (shared) |
 | `KRYSTAL_PROD_REPO_ROOT` | Repository path for the production app |
 | `KRYSTAL_DEV_REPO_ROOT` | Repository path for the dev app |
 
@@ -96,6 +104,7 @@ deploys behind manual approval.
 ## 5. First deploy
 
 Push to `dev` first to shake out issues against the lower-stakes
-environment, then to `main`. If an SSH step fails on the `uapi` call,
-SSH in manually and run the same command to see the real error — cPanel
-version differences are the most likely culprit.
+environment, then to `main`. If a deploy step fails, the workflow prints
+cPanel's JSON response (including `errors`), which is usually enough to
+diagnose — most likely culprits are a wrong `repository_root` or the
+Node app not yet existing at that path.
