@@ -6,10 +6,11 @@ on:
   pull_request:
     branches: [main, dev]
   # Sanity calls this directly (POST to the GitHub API's /dispatches
-  # endpoint) when content is published, to rebuild dev automatically.
-  # See docs/deploy-krystal.md for the webhook setup.
+  # endpoint): sanity-publish rebuilds dev automatically on publish;
+  # promote-production fires from the "Promote to Production" Studio
+  # action. See docs/deploy-krystal.md for the webhook setup.
   repository_dispatch:
-    types: [sanity-publish]
+    types: [sanity-publish, promote-production]
 
 permissions:
   contents: write
@@ -25,9 +26,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # repository_dispatch (Sanity's publish webhook) has no
-          # natural branch context, so pin it to dev explicitly.
-          ref: ${{ github.event_name == 'repository_dispatch' && 'dev' || github.ref }}
+          # repository_dispatch (Sanity's webhooks) has no natural
+          # branch context, so pin it explicitly per dispatch type.
+          ref: >-
+            ${{
+              github.event_name == 'repository_dispatch' && github.event.action == 'sanity-publish' && 'dev' ||
+              github.event_name == 'repository_dispatch' && github.event.action == 'promote-production' && 'main' ||
+              github.ref
+            }}
 
       - uses: pnpm/action-setup@v4
 
@@ -51,7 +57,9 @@ jobs:
   deploy-production:
     name: Deploy to skimreapers.co.uk
     needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'repository_dispatch' && github.event.action == 'promote-production')
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -106,7 +114,7 @@ jobs:
     needs: build
     if: |
       (github.event_name == 'push' && github.ref == 'refs/heads/dev') ||
-      github.event_name == 'repository_dispatch'
+      (github.event_name == 'repository_dispatch' && github.event.action == 'sanity-publish')
     runs-on: ubuntu-latest
     environment: dev
     env:
