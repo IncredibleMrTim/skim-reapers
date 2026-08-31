@@ -2,3 +2,13 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteRule ^(.*)$ $1.html [L]
+
+# Studio (/admin) is a client-side SPA that pushes real sub-paths like
+# /admin/structure into browser history, but only the bare /admin route
+# is statically generated. Any hard navigation into one of those
+# sub-paths — a page refresh, a deep link, Google's OAuth callback
+# redirect after sign-in — has no matching file, so fall back to the
+# Studio shell and let its own router pick up the URL client-side.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} ^/admin
+RewriteRule ^ /admin.html [L]
