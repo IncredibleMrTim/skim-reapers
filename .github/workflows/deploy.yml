@@ -5,6 +5,11 @@ on:
     branches: [main, dev]
   pull_request:
     branches: [main, dev]
+  # Sanity calls this directly (POST to the GitHub API's /dispatches
+  # endpoint) when content is published, to rebuild dev automatically.
+  # See docs/deploy-krystal.md for the webhook setup.
+  repository_dispatch:
+    types: [sanity-publish]
 
 permissions:
   contents: write
@@ -19,6 +24,10 @@ jobs:
       NEXT_PUBLIC_SANITY_API_VERSION: ${{ vars.NEXT_PUBLIC_SANITY_API_VERSION }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # repository_dispatch (Sanity's publish webhook) has no
+          # natural branch context, so pin it to dev explicitly.
+          ref: ${{ github.event_name == 'repository_dispatch' && 'dev' || github.ref }}
 
       - uses: pnpm/action-setup@v4
 
@@ -32,7 +41,7 @@ jobs:
       - run: pnpm run build
 
       - uses: actions/upload-artifact@v4
-        if: github.event_name == 'push'
+        if: github.event_name != 'pull_request'
         with:
           name: static-build
           path: out
@@ -95,7 +104,9 @@ jobs:
   deploy-dev:
     name: Deploy to dev.skimreapers.co.uk
     needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/dev') ||
+      github.event_name == 'repository_dispatch'
     runs-on: ubuntu-latest
     environment: dev
     env:
