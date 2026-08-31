@@ -1,0 +1,7 @@
+---
+# Deploy-only branch: contents are the built standalone output,
+# pushed by .github/workflows/deploy.yml. Nothing here is built
+# on the server — just restart Passenger to pick up new files.
+deployment:
+  tasks:
+    - mkdir -p tmp && touch tmp/restart.txt
