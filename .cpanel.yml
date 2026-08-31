@@ -1,0 +1,27 @@
+---
+# cPanel Git Version Control deployment config.
+# Runs whenever a deployment is triggered (cPanel UI "Deploy HEAD Commit",
+# or the `uapi VersionControl deployment create` call from GitHub Actions).
+#
+# Prerequisites, set once in cPanel > Setup Node.js App:
+#   - Application root == the deployment path configured for this repo in
+#     cPanel > Git Version Control (so this file's commands run in place,
+#     no copying between a repo checkout and the app directory).
+#   - Note the exact "Enter to the virtual environment" activation command
+#     shown on that screen and paste it in place of NODEVENV_ACTIVATE below.
+#
+# This app is deployed to two environments (see docs/deploy-krystal.md),
+# each with its own cPanel app/activation path — this file is expected
+# to diverge between the `main` and `dev` branches; edit it per-branch.
+deployment:
+  tasks:
+    - export DEPLOYPATH=$PWD
+    # Activate this app's cPanel-managed Node virtual environment.
+    # Replace with the command shown in cPanel > Setup Node.js App, e.g.:
+    #   source /home/USERNAME/nodevenv/APPNAME/20/bin/activate
+    - source NODEVENV_ACTIVATE
+    - corepack enable
+    - corepack prepare pnpm@10.34.5 --activate
+    - cd $DEPLOYPATH && pnpm install --frozen-lockfile
+    - cd $DEPLOYPATH && pnpm run build
+    - cd $DEPLOYPATH && mkdir -p tmp && touch tmp/restart.txt
