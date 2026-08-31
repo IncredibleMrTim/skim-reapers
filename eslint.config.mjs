@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Plain Node CJS entrypoint for cPanel/Passenger, not part of the
+    // Next.js app itself — see docs/deploy-krystal.md.
+    "server.js",
   ]),
 ]);
 
