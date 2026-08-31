@@ -14,7 +14,7 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 ## Content
 
-Content is managed in [Sanity](https://sanity.io), not in this repo. Edit it at `/studio` (locally: `http://localhost:3000/studio`). Requires these in `.env.local` for local dev:
+Content is managed in [Sanity](https://sanity.io), not in this repo. Edit it at `/admin` (locally: `http://localhost:3000/admin`). Requires these in `.env.local` for local dev:
 
 ```
 NEXT_PUBLIC_SANITY_PROJECT_ID=k9mbvitn

@@ -13,8 +13,8 @@ export default async function Home() {
       <div className="flex flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
         <p className="max-w-md text-center text-lg text-zinc-600 dark:text-zinc-400">
           No home page content yet — add it in{" "}
-          <Link href="/studio" className="font-medium text-zinc-950 dark:text-zinc-50">
-            /studio
+          <Link href="/admin" className="font-medium text-zinc-950 dark:text-zinc-50">
+            /admin
           </Link>
           .
         </p>

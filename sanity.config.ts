@@ -7,9 +7,18 @@ import { schema } from "./src/sanity/schemaTypes";
 import { structure } from "./src/sanity/structure";
 
 export default defineConfig({
-  basePath: "/studio",
+  basePath: "/admin",
   projectId,
   dataset,
   schema,
   plugins: [structureTool({ structure }), visionTool({ defaultApiVersion: apiVersion })],
+  // Google as the primary sign-in, with Sanity's own email/password as a
+  // fallback if Google is unavailable — drops GitHub/Vercel from the
+  // default provider list. Only invited project members can actually sign
+  // in either way (managed in manage.sanity.io), so this is about which
+  // sign-in methods show up, not who's allowed in.
+  auth: {
+    providers: (prev) =>
+      prev.filter((provider) => provider.name === "google" || provider.name === "sanity"),
+  },
 });

@@ -49,8 +49,8 @@ directly, same rule as any other domain: repo path = actual doc root.)
 
 Content lives in Sanity, not in this repo. Project ID `k9mbvitn`,
 dataset `production` (confirm/correct in Sanity's manage console if
-different). Content is edited at `/studio` on the deployed site (or
-locally via `pnpm dev` → `http://localhost:3000/studio`).
+different). Content is edited at `/admin` on the deployed site (or
+locally via `pnpm dev` → `http://localhost:3000/admin`).
 
 ### 2. cPanel Git Version Control
 
