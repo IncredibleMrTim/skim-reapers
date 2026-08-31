@@ -49,6 +49,7 @@ jobs:
           name: standalone-build
           path: .next/standalone
           retention-days: 1
+          include-hidden-files: true
 
   deploy-production:
     name: Deploy to skimreapers.co.uk
