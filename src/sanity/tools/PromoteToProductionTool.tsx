@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button, Card, Flex, Text } from "@sanity/ui";
-import { useClient } from "sanity";
+import { ToolLink, useClient } from "sanity";
 
 const DEPLOY_TRIGGER_ID = "deployTrigger";
 
@@ -25,7 +25,9 @@ export default function PromoteToProductionTool() {
               published — visible to real visitors right away.
             </Text>
             <Flex gap={3}>
-              <Button text="Cancel" mode="ghost" onClick={() => setStatus("idle")} />
+              <Button mode="ghost" as={ToolLink} name="structure">
+                Cancel
+              </Button>
               <Button
                 text="Confirm & Promote"
                 tone="critical"
@@ -52,18 +54,23 @@ export default function PromoteToProductionTool() {
       <Card padding={4} radius={2} shadow={1}>
         <Flex direction="column" gap={4} align="center">
           <Text size={2}>Publishes the current live content to production.</Text>
-          <Button
-            text={
-              status === "done"
-                ? "Promoted!"
-                : status === "loading"
-                  ? "Promoting…"
-                  : "🚀 Promote to Production"
-            }
-            tone="positive"
-            disabled={status !== "idle"}
-            onClick={() => setStatus("confirming")}
-          />
+          <Flex gap={3}>
+            <Button mode="ghost" as={ToolLink} name="structure">
+              Cancel
+            </Button>
+            <Button
+              text={
+                status === "done"
+                  ? "Promoted!"
+                  : status === "loading"
+                    ? "Promoting…"
+                    : "🚀 Promote to Production"
+              }
+              tone="positive"
+              disabled={status !== "idle"}
+              onClick={() => setStatus("confirming")}
+            />
+          </Flex>
         </Flex>
       </Card>
     </Flex>
