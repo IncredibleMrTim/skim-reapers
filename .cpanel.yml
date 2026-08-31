@@ -19,7 +19,7 @@ deployment:
     # Activate this app's cPanel-managed Node virtual environment.
     # Replace with the command shown in cPanel > Setup Node.js App, e.g.:
     #   source /home/USERNAME/nodevenv/APPNAME/20/bin/activate
-    - source NODEVENV_ACTIVATE
+    - source /home/skimreap/nodevenv/dev.skimreapers.co.uk/20/bin/activate
     - corepack enable
     - corepack prepare pnpm@10.34.5 --activate
     - cd $DEPLOYPATH && pnpm install --frozen-lockfile
