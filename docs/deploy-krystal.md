@@ -112,40 +112,31 @@ Optionally add required-reviewer protection to `production` later
 
 ### 5. Auto-deploy from Sanity
 
-The workflow also listens for `repository_dispatch` events, which
-Sanity's webhooks call directly (no extra infrastructure needed):
-
-| Dispatch type | Fires | Triggered by |
-|---|---|---|
-| `sanity-publish` | Rebuilds **dev only** | Publishing any change in Sanity |
-| `promote-production` | Rebuilds **production only** | Clicking "Promote to Production" in Studio (on the Home Page document) — this writes to a `deployTrigger` singleton document via the editor's own Studio session, which a second webhook watches |
+The workflow also listens for a `repository_dispatch` event, which
+Sanity's webhook calls directly (no extra infrastructure needed):
+publishing **any** change in Sanity rebuilds and deploys **both** dev
+and production at once. There's no separate review/promote step —
+publish is live everywhere.
 
 **Important**: `repository_dispatch` (like `workflow_dispatch`/
 `schedule`) only reads its trigger config from the workflow file **as
-it exists on the repository's default branch**. If you change these
-triggers, they won't take effect until merged into `main` — pushing to
+it exists on the repository's default branch**. If you change this
+trigger, it won't take effect until merged into `main` — pushing to
 `dev` alone isn't enough, which is a real gotcha we hit once already.
 
-Set up two webhooks in Sanity (manage.sanity.io → project → API →
-Webhooks → Create webhook). Both need a GitHub fine-grained personal
-access token scoped to just this repo with **Contents: Read and
-write** permission, used as an `Authorization: Bearer <token>` header
-— create this once in GitHub (Settings → Developer settings →
-Personal access tokens) and reuse it for both webhooks.
-
-**Webhook 1 — dev rebuild on publish:**
+Set up one webhook in Sanity (manage.sanity.io → project → API →
+Webhooks → Create webhook):
 - URL: `https://api.github.com/repos/IncredibleMrTim/skim-reapers/dispatches`
 - Dataset: `production`
 - Trigger on: Create, Update
 - Filter (GROQ): `!(_id in path("drafts.**"))` — skips draft autosaves
 - HTTP method: `POST`
 - Headers: `Authorization: Bearer <token>`, `Accept: application/vnd.github+json`
+  — the token is a GitHub fine-grained personal access token scoped to
+  just this repo with **Contents: Read and write** permission (create
+  once in GitHub Settings → Developer settings → Personal access
+  tokens)
 - Payload: `{"event_type": "sanity-publish"}`
-
-**Webhook 2 — promote to production:**
-- Same URL, dataset, method, headers as above
-- Filter (GROQ): `_type == "deployTrigger"`
-- Payload: `{"event_type": "promote-production"}`
 
 ## First deploy
 
