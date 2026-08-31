@@ -1,0 +1,71 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  build:
+    name: Lint & build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run lint
+      - run: pnpm run build
+
+  deploy-production:
+    name: Deploy to skimreapers.co.uk
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      KRYSTAL_REPO_ROOT: ${{ secrets.KRYSTAL_PROD_REPO_ROOT }}
+    steps:
+      - name: Pull + deploy via cPanel UAPI
+        run: |
+          set -euo pipefail
+          BASE="https://${{ secrets.KRYSTAL_HOST }}:2083/execute"
+          AUTH="Authorization: cpanel ${{ secrets.KRYSTAL_USER }}:${{ secrets.KRYSTAL_API_TOKEN }}"
+
+          resp=$(curl -sf -H "$AUTH" "$BASE/VersionControl/update?repository_root=${KRYSTAL_REPO_ROOT}")
+          echo "$resp" | jq .
+          echo "$resp" | jq -e '.status == 1' >/dev/null
+
+          resp=$(curl -sf -H "$AUTH" "$BASE/VersionControlDeployment/create?repository_root=${KRYSTAL_REPO_ROOT}")
+          echo "$resp" | jq .
+          echo "$resp" | jq -e '.status == 1' >/dev/null
+
+  deploy-dev:
+    name: Deploy to dev.skimreapers.co.uk
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    environment: dev
+    env:
+      KRYSTAL_REPO_ROOT: ${{ secrets.KRYSTAL_DEV_REPO_ROOT }}
+    steps:
+      - name: Pull + deploy via cPanel UAPI
+        run: |
+          set -euo pipefail
+          BASE="https://${{ secrets.KRYSTAL_HOST }}:2083/execute"
+          AUTH="Authorization: cpanel ${{ secrets.KRYSTAL_USER }}:${{ secrets.KRYSTAL_API_TOKEN }}"
+
+          resp=$(curl -sf -H "$AUTH" "$BASE/VersionControl/update?repository_root=${KRYSTAL_REPO_ROOT}")
+          echo "$resp" | jq .
+          echo "$resp" | jq -e '.status == 1' >/dev/null
+
+          resp=$(curl -sf -H "$AUTH" "$BASE/VersionControlDeployment/create?repository_root=${KRYSTAL_REPO_ROOT}")
+          echo "$resp" | jq .
+          echo "$resp" | jq -e '.status == 1' >/dev/null
