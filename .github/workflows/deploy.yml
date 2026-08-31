@@ -6,11 +6,10 @@ on:
   pull_request:
     branches: [main, dev]
   # Sanity calls this directly (POST to the GitHub API's /dispatches
-  # endpoint): sanity-publish rebuilds dev automatically on publish;
-  # promote-production fires from the "Promote to Production" Studio
-  # action. See docs/deploy-krystal.md for the webhook setup.
+  # endpoint) on every publish, rebuilding and deploying both dev and
+  # production. See docs/deploy-krystal.md for the webhook setup.
   repository_dispatch:
-    types: [sanity-publish, promote-production]
+    types: [sanity-publish]
 
 permissions:
   contents: write
@@ -26,14 +25,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # repository_dispatch (Sanity's webhooks) has no natural
-          # branch context, so pin it explicitly per dispatch type.
-          ref: >-
-            ${{
-              github.event_name == 'repository_dispatch' && github.event.action == 'sanity-publish' && 'dev' ||
-              github.event_name == 'repository_dispatch' && github.event.action == 'promote-production' && 'main' ||
-              github.ref
-            }}
+          # repository_dispatch (Sanity's webhook) has no natural
+          # branch context; build from main, the canonical source
+          # branch, since a content-only publish should reflect the
+          # same code on both environments.
+          ref: ${{ github.event_name == 'repository_dispatch' && 'main' || github.ref }}
 
       - uses: pnpm/action-setup@v4
 
@@ -59,7 +55,7 @@ jobs:
     needs: build
     if: |
       (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-      (github.event_name == 'repository_dispatch' && github.event.action == 'promote-production')
+      github.event_name == 'repository_dispatch'
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -114,7 +110,7 @@ jobs:
     needs: build
     if: |
       (github.event_name == 'push' && github.ref == 'refs/heads/dev') ||
-      (github.event_name == 'repository_dispatch' && github.event.action == 'sanity-publish')
+      github.event_name == 'repository_dispatch'
     runs-on: ubuntu-latest
     environment: dev
     env:
