@@ -22,6 +22,7 @@ deployment:
     - source /home/skimreap/nodevenv/app-dev/20/bin/activate
     - export NODE_OPTIONS=--jitless
     - npm install -g pnpm@10.34.5
+    - rm -rf $DEPLOYPATH/node_modules
     - cd $DEPLOYPATH && pnpm install --frozen-lockfile
     - cd $DEPLOYPATH && pnpm run build
     - cd $DEPLOYPATH && mkdir -p tmp && touch tmp/restart.txt
