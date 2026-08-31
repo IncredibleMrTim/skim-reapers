@@ -20,6 +20,11 @@ deployment:
     # Replace with the command shown in cPanel > Setup Node.js App, e.g.:
     #   source /home/USERNAME/nodevenv/APPNAME/20/bin/activate
     - source /home/skimreap/nodevenv/app-dev/20/bin/activate
+    # CloudLinux's NodeJS Selector manages node_modules as its own symlink
+    # and refuses any npm/pnpm command (even unrelated global installs) if
+    # a real folder/file already sits there instead — clear it first, on
+    # every deploy, before any npm command runs.
+    - rm -rf $DEPLOYPATH/node_modules
     - npm install -g pnpm@10.34.5
     - rm -rf $DEPLOYPATH/node_modules
     # pnpm install's parallelism triggers a V8 "Failed to reserve virtual
