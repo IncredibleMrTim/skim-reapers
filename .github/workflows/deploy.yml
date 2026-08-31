@@ -69,14 +69,26 @@ jobs:
       - name: Push standalone build to deploy branch
         run: |
           set -euo pipefail
-          cd standalone-build
-          git init -q
+          REPO_URL="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+
+          # Append a normal commit on top of the deploy branch's existing
+          # history (rather than force-pushing a fresh history each time)
+          # so cPanel's VersionControl::update, which does a fast-forward
+          # git pull, always succeeds instead of hitting "diverging
+          # branches" on the second and later deploys.
+          if git clone -q --depth 1 --branch "$DEPLOY_BRANCH" "$REPO_URL" deploy-repo 2>/dev/null; then
+            find deploy-repo -mindepth 1 -maxdepth 1 -not -name '.git' -exec rm -rf {} +
+          else
+            mkdir -p deploy-repo
+            (cd deploy-repo && git init -q && git checkout -q -b "$DEPLOY_BRANCH")
+          fi
+          cp -r standalone-build/. deploy-repo/
+          cd deploy-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -q -b "$DEPLOY_BRANCH"
           git add -A
-          git commit -q -m "Deploy ${{ github.sha }}"
-          git push -q --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" "HEAD:$DEPLOY_BRANCH"
+          git commit -q -m "Deploy ${{ github.sha }}" --allow-empty
+          git push -q "$REPO_URL" "HEAD:$DEPLOY_BRANCH"
 
       - name: Pull + deploy via cPanel UAPI
         run: |
@@ -110,14 +122,26 @@ jobs:
       - name: Push standalone build to deploy branch
         run: |
           set -euo pipefail
-          cd standalone-build
-          git init -q
+          REPO_URL="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+
+          # Append a normal commit on top of the deploy branch's existing
+          # history (rather than force-pushing a fresh history each time)
+          # so cPanel's VersionControl::update, which does a fast-forward
+          # git pull, always succeeds instead of hitting "diverging
+          # branches" on the second and later deploys.
+          if git clone -q --depth 1 --branch "$DEPLOY_BRANCH" "$REPO_URL" deploy-repo 2>/dev/null; then
+            find deploy-repo -mindepth 1 -maxdepth 1 -not -name '.git' -exec rm -rf {} +
+          else
+            mkdir -p deploy-repo
+            (cd deploy-repo && git init -q && git checkout -q -b "$DEPLOY_BRANCH")
+          fi
+          cp -r standalone-build/. deploy-repo/
+          cd deploy-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -q -b "$DEPLOY_BRANCH"
           git add -A
-          git commit -q -m "Deploy ${{ github.sha }}"
-          git push -q --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" "HEAD:$DEPLOY_BRANCH"
+          git commit -q -m "Deploy ${{ github.sha }}" --allow-empty
+          git push -q "$REPO_URL" "HEAD:$DEPLOY_BRANCH"
 
       - name: Pull + deploy via cPanel UAPI
         run: |
