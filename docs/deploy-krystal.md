@@ -47,10 +47,14 @@ directly, same rule as any other domain: repo path = actual doc root.)
 
 ### 1. Sanity
 
-Content lives in Sanity, not in this repo. Project ID `k9mbvitn`,
-dataset `production` (confirm/correct in Sanity's manage console if
-different). Content is edited at `/admin` on the deployed site (or
-locally via `pnpm dev` → `http://localhost:3000/admin`).
+Content lives in Sanity, not in this repo. Project ID `k9mbvitn`, with
+**two datasets** so dev and production have fully independent content:
+`development` (dev.skimreapers.co.uk, and local `pnpm dev`) and
+`production` (skimreapers.co.uk). They started as a copy of each other
+but now diverge independently — publishing on one Studio has no effect
+on the other. Content is edited at `/admin` on the deployed site (or
+locally via `pnpm dev` → `http://localhost:3000/admin`, which talks to
+the `development` dataset per `.env.local`).
 
 ### 2. cPanel Git Version Control
 
@@ -96,27 +100,35 @@ Repo Settings > Secrets and variables > Actions.
 | `KRYSTAL_PROD_REPO_ROOT` | Repository path for production |
 | `KRYSTAL_DEV_REPO_ROOT` | Repository path for dev |
 
-**Variables** (New repository variable — these are public build-time
-values, not secret):
+**Variables**: `NEXT_PUBLIC_SANITY_PROJECT_ID` and
+`NEXT_PUBLIC_SANITY_API_VERSION` are repo-level (New repository
+variable — public build-time values, not secret). `NEXT_PUBLIC_SANITY_DATASET`
+is **environment-scoped** instead, since dev and production now build
+against different datasets — set it per GitHub Environment (Repo
+Settings > Environments > `dev` / `production` > Environment
+variables), not at the repo level:
 
-| Variable | Value |
-|---|---|
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | `k9mbvitn` |
-| `NEXT_PUBLIC_SANITY_DATASET` | `production` |
-| `NEXT_PUBLIC_SANITY_API_VERSION` | e.g. `2026-01-01` |
+| Scope | Variable | Value |
+|---|---|---|
+| Repo | `NEXT_PUBLIC_SANITY_PROJECT_ID` | `k9mbvitn` |
+| Repo | `NEXT_PUBLIC_SANITY_API_VERSION` | e.g. `2026-01-01` |
+| Environment `dev` | `NEXT_PUBLIC_SANITY_DATASET` | `development` |
+| Environment `production` | `NEXT_PUBLIC_SANITY_DATASET` | `production` |
 
-The workflow tags its two deploy jobs with GitHub Environments
-(`production` and `dev`) — created automatically on first run.
-Optionally add required-reviewer protection to `production` later
-(Repo Settings > Environments).
+The workflow tags all four jobs (`build-dev`, `build-prod`,
+`deploy-dev`, `deploy-production`) with GitHub Environments
+(`dev`/`production`) — created automatically on first run. Optionally
+add required-reviewer protection to `production` later (Repo Settings
+> Environments).
 
 ### 5. Auto-deploy from Sanity
 
-The workflow also listens for a `repository_dispatch` event, which
-Sanity's webhook calls directly (no extra infrastructure needed):
-publishing **any** change in Sanity rebuilds and deploys **both** dev
-and production at once. There's no separate review/promote step —
-publish is live everywhere.
+The workflow also listens for `repository_dispatch` events, which
+Sanity's webhooks call directly (no extra infrastructure needed).
+Since dev and production are separate datasets now, **each dataset
+gets its own webhook** sending its own `event_type`, so a publish only
+rebuilds and deploys the matching environment — publishing in dev
+never touches production and vice versa.
 
 **Important**: `repository_dispatch` (like `workflow_dispatch`/
 `schedule`) only reads its trigger config from the workflow file **as
@@ -124,10 +136,12 @@ it exists on the repository's default branch**. If you change this
 trigger, it won't take effect until merged into `main` — pushing to
 `dev` alone isn't enough, which is a real gotcha we hit once already.
 
-Set up one webhook in Sanity (manage.sanity.io → project → API →
-Webhooks → Create webhook):
+Set up **two** webhooks in Sanity (manage.sanity.io → project → API →
+Webhooks → Create webhook), one per dataset:
+
+**Dev webhook:**
 - URL: `https://api.github.com/repos/IncredibleMrTim/skim-reapers/dispatches`
-- Dataset: `production`
+- Dataset: `development`
 - Trigger on: Create, Update
 - Filter (GROQ): `!(_id in path("drafts.**"))` — skips draft autosaves
 - HTTP method: `POST`
@@ -135,8 +149,12 @@ Webhooks → Create webhook):
   — the token is a GitHub fine-grained personal access token scoped to
   just this repo with **Contents: Read and write** permission (create
   once in GitHub Settings → Developer settings → Personal access
-  tokens)
-- Payload: `{"event_type": "sanity-publish"}`
+  tokens; the same token works for both webhooks)
+- Payload: `{"event_type": "sanity-publish-dev"}`
+
+**Production webhook:** same as above, except:
+- Dataset: `production`
+- Payload: `{"event_type": "sanity-publish-prod"}`
 
 ## First deploy
 

@@ -18,9 +18,11 @@ Content is managed in [Sanity](https://sanity.io), not in this repo. Edit it at 
 
 ```
 NEXT_PUBLIC_SANITY_PROJECT_ID=k9mbvitn
-NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_DATASET=development
 NEXT_PUBLIC_SANITY_API_VERSION=2026-01-01
 ```
+
+Dev and production are separate Sanity datasets (`development` and `production`) with independent content — see [`docs/deploy-krystal.md`](docs/deploy-krystal.md).
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
