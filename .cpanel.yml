@@ -34,5 +34,9 @@ deployment:
     - export NODE_OPTIONS=--jitless
     - cd $DEPLOYPATH && pnpm install --frozen-lockfile
     - export NODE_OPTIONS=
-    - cd $DEPLOYPATH && pnpm run build
+    # Turbopack (the default bundler) needs WebAssembly and OOMs under
+    # this account's memory limits ("Cannot allocate Wasm memory"). Fall
+    # back to webpack for this constrained environment only — local/CI
+    # builds still use Turbopack via the plain `pnpm run build` script.
+    - cd $DEPLOYPATH && pnpm exec next build --webpack
     - cd $DEPLOYPATH && mkdir -p tmp && touch tmp/restart.txt
