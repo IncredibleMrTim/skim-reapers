@@ -20,8 +20,7 @@ deployment:
     # Replace with the command shown in cPanel > Setup Node.js App, e.g.:
     #   source /home/USERNAME/nodevenv/APPNAME/20/bin/activate
     - source /home/skimreap/nodevenv/app-prod/20/bin/activate
-    - corepack enable
-    - corepack prepare pnpm@10.34.5 --activate
+    - npm install -g pnpm@10.34.5
     - cd $DEPLOYPATH && pnpm install --frozen-lockfile
     - cd $DEPLOYPATH && pnpm run build
     - cd $DEPLOYPATH && mkdir -p tmp && touch tmp/restart.txt
