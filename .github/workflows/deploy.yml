@@ -24,6 +24,29 @@ jobs:
       - run: pnpm run lint
       - run: pnpm run build
 
+      - name: Package standalone output
+        if: github.event_name == 'push'
+        run: |
+          cp -r public .next/standalone/
+          mkdir -p .next/standalone/.next
+          cp -r .next/static .next/standalone/.next/
+          cat > .next/standalone/.cpanel.yml <<'EOF'
+          ---
+          # Deploy-only branch: contents are the built standalone output,
+          # pushed by .github/workflows/deploy.yml. Nothing here is built
+          # on the server — just restart Passenger to pick up new files.
+          deployment:
+            tasks:
+              - mkdir -p tmp && touch tmp/restart.txt
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'push'
+        with:
+          name: standalone-build
+          path: .next/standalone
+          retention-days: 1
+
   deploy-production:
     name: Deploy to skimreapers.co.uk
     needs: build
@@ -32,14 +55,32 @@ jobs:
     environment: production
     env:
       KRYSTAL_REPO_ROOT: ${{ secrets.KRYSTAL_PROD_REPO_ROOT }}
+      DEPLOY_BRANCH: deploy/main
     steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: standalone-build
+          path: standalone-build
+
+      - name: Push standalone build to deploy branch
+        run: |
+          set -euo pipefail
+          cd standalone-build
+          git init -q
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -q -b "$DEPLOY_BRANCH"
+          git add -A
+          git commit -q -m "Deploy ${{ github.sha }}"
+          git push -q --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" "HEAD:$DEPLOY_BRANCH"
+
       - name: Pull + deploy via cPanel UAPI
         run: |
           set -euo pipefail
           BASE="https://${{ secrets.KRYSTAL_HOST }}:2083/execute"
           AUTH="Authorization: cpanel ${{ secrets.KRYSTAL_USER }}:${{ secrets.KRYSTAL_API_TOKEN }}"
 
-          resp=$(curl -sf -H "$AUTH" "$BASE/VersionControl/update?repository_root=${KRYSTAL_REPO_ROOT}")
+          resp=$(curl -sf -H "$AUTH" "$BASE/VersionControl/update?repository_root=${KRYSTAL_REPO_ROOT}&branch=${DEPLOY_BRANCH}")
           echo "$resp" | jq .
           echo "$resp" | jq -e '.status == 1' >/dev/null
 
@@ -55,14 +96,32 @@ jobs:
     environment: dev
     env:
       KRYSTAL_REPO_ROOT: ${{ secrets.KRYSTAL_DEV_REPO_ROOT }}
+      DEPLOY_BRANCH: deploy/dev
     steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: standalone-build
+          path: standalone-build
+
+      - name: Push standalone build to deploy branch
+        run: |
+          set -euo pipefail
+          cd standalone-build
+          git init -q
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -q -b "$DEPLOY_BRANCH"
+          git add -A
+          git commit -q -m "Deploy ${{ github.sha }}"
+          git push -q --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" "HEAD:$DEPLOY_BRANCH"
+
       - name: Pull + deploy via cPanel UAPI
         run: |
           set -euo pipefail
           BASE="https://${{ secrets.KRYSTAL_HOST }}:2083/execute"
           AUTH="Authorization: cpanel ${{ secrets.KRYSTAL_USER }}:${{ secrets.KRYSTAL_API_TOKEN }}"
 
-          resp=$(curl -sf -H "$AUTH" "$BASE/VersionControl/update?repository_root=${KRYSTAL_REPO_ROOT}")
+          resp=$(curl -sf -H "$AUTH" "$BASE/VersionControl/update?repository_root=${KRYSTAL_REPO_ROOT}&branch=${DEPLOY_BRANCH}")
           echo "$resp" | jq .
           echo "$resp" | jq -e '.status == 1' >/dev/null
 
