@@ -1,0 +1,140 @@
+/* ============================================================
+ * CUSTOMIZE PER PROJECT before wiring this in:
+ *   1. `background-image: url("/logo_dark.webp")` below — point at your
+ *      new project's logo asset (add it to /public first).
+ *   2. `width`/`height: 380px` on the logo rule — adjust to taste, or to
+ *      match a differently-proportioned logo.
+ *   3. `content: "Powered by Sanity.io"` — swap in your own footnote
+ *      text (or match your legal/trademark-attribution wording).
+ *
+ * VERSION NOTE: every selector here targets sanity@6.11.0's internal
+ * DOM structure (data-ui attributes, styled-components render order,
+ * the two-copies-of-the-footer-row quirk) — none of it is public API.
+ * If a different Sanity version is installed, these rules can silently
+ * stop matching (worst case: Sanity's defaults quietly reappear, not a
+ * hard break). Do a visual check of /admin after installing to confirm
+ * everything below is still landing.
+ * ============================================================ */
+
+/* Hides the "Sanity" wordmark credit under the login card. With a single
+ * workspace configured, Studio never renders the square monogram (that's
+ * a multi-workspace-picker element) — the wordmark is the only Sanity
+ * brand mark actually on this screen, confirmed by inspecting the live
+ * DOM. Keyed off `data-sanity-icon`, an attribute @sanity/logos sets on
+ * the SVG itself (dist/index.js) rather than a build-generated
+ * styled-components class, so it should survive Studio version bumps
+ * better than most internal-DOM hooks. If Sanity ever drops that
+ * attribute, this rule just stops matching and the wordmark reappears.
+ */
+svg[data-sanity-icon="sanity-logo"] {
+  /* !important: Studio's styled-components rules inject after this
+   * stylesheet in the DOM and win the cascade at equal specificity
+   * otherwise. */
+  display: none !important;
+}
+
+/* Hides the Community/Docs/Privacy/sanity.io link row underneath. Keyed
+ * off the snty.link shortlink domain Sanity uses for its own footer
+ * links, rather than styled-components classes (shared by every Box/
+ * Flex in Studio, far too generic to target safely). Studio actually
+ * renders two copies of this row with slightly different internal
+ * markup (one has an icon-wrapping span the other doesn't) — plain
+ * `[data-ui="Flex"]:has(a[href*="snty.link"])` alone also matches the
+ * full-page wrapper Flex (it contains this link as a descendant too),
+ * so `:not(:has([data-ui="Card"]))` excludes anything that also
+ * contains a Card — the footer row never does, the page wrapper always
+ * does. Verified live: matches both copies, nothing broader.
+ */
+[data-ui="Flex"]:has(a[href*="snty.link"]):not(:has([data-ui="Card"])) {
+  display: none !important;
+}
+
+/* Full-bleed backdrop behind the login card, painted black to match the
+ * brand. Keyed off `data-ui="NextStudioLayout"`, a page-level attribute
+ * Studio sets once for this exact wrapper, scoped down to its direct-
+ * child Card — `[data-ui="Card"]` alone is reused by every card in
+ * Studio, so it needs that parent scope to stay specific to this one.
+ * Verified live: matches exactly one full-viewport-sized element.
+ */
+[data-ui="NextStudioLayout"] > [data-ui="Card"] {
+  background-color: #000 !important;
+}
+
+/* Vertically centers the actual login card independent of the logo's
+ * size. Centering the logo+card+footnote as one flex-item group ties
+ * the card's position to the logo's size — a large logo pulls the whole
+ * group's visual center upward, leaving the card sitting visibly below
+ * true center. Moving ::before/::after onto `[data-ui="Container"]`
+ * (the direct wrapper of just the card) and absolutely positioning them
+ * relative to it decouples the two: the Flex's `justify-content:
+ * center` now centers only the card, and the logo/footnote attach
+ * visually above/below wherever that lands. Tradeoff: on short
+ * viewports the logo can extend above the top edge, since keeping the
+ * card centered needs more vertical room than centering the group as a
+ * whole would.
+ */
+[data-ui="NextStudioLayout"] > [data-ui="Card"] > [data-ui="Flex"] > [data-ui="Container"] {
+  position: relative;
+}
+
+[data-ui="NextStudioLayout"] > [data-ui="Card"] > [data-ui="Flex"] > [data-ui="Container"]::before {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 0px;
+  width: 380px;
+  height: 380px;
+  background-image: url("/logo_dark.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Trademark-acknowledgment credit below the card, in place of the
+ * default wordmark+link row hidden above. Check whatever platform's ToS
+ * you're building on for whether attribution is actually required —
+ * Sanity's (sanity.io/legal/tos, s.9.4) doesn't require any; it
+ * restricts using their marks WITHOUT consent — so this is a plain-text
+ * nominative reference (a name, not a logo/wordmark graphic) rather
+ * than a promotional "Powered by" tagline.
+ */
+[data-ui="NextStudioLayout"] > [data-ui="Card"] > [data-ui="Flex"] > [data-ui="Container"]::after {
+  content: "Powered by Sanity.io";
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 12px;
+  width: max-content;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Removes the workspace icon badge next to the title in the login card
+ * header. `icon: undefined` in sanity.config.ts doesn't achieve this —
+ * Workspace.icon always resolves to a real ReactNode internally, so an
+ * empty config value just falls back to Sanity's own auto-generated
+ * initials avatar. This targets that badge directly. No `data-ui`
+ * attribute on the badge itself, so it's identified structurally — the
+ * first child of the Flex that also contains the title Text — rather
+ * than its styled-components class. Verified live: matches exactly one
+ * element. If you'd rather show a custom icon here instead of hiding
+ * it, set `icon: createElement(YourIcon)` in sanity.config.ts and
+ * delete this rule.
+ */
+[data-ui="NextStudioLayout"] [data-ui="Flex"]:has(> [data-ui="Stack"] > [data-ui="Text"]) > :first-child {
+  display: none !important;
+}
+
+/* Hides the "Last used" badge above the previously-used login provider
+ * button. Keyed off `data-ui="Badge"`, which is unique on this screen —
+ * nothing else on the login card uses that role. Verified live: matches
+ * exactly one element.
+ */
+[data-ui="NextStudioLayout"] [data-ui="Badge"] {
+  display: none !important;
+}
