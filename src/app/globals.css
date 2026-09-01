@@ -1,26 +1,163 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--background);
+  --breakpoint-3xl: 1920px;
+  --color-brand-background: var(--background);
+  --color-brand-foreground: var(--foreground);
+  --color-brand-card: var(--card);
+  --color-brand-card-foreground: var(--card-foreground);
+  --color-brand-primary: var(--primary);
+  --color-brand-primary-foreground: var(--primary-foreground);
+  --color-brand-secondary: var(--secondary);
+  --color-brand-secondary-foreground: var(--secondary-foreground);
+  --color-brand-muted: var(--muted);
+  --color-brand-muted-foreground: var(--muted-foreground);
+  --color-brand-accent: var(--accent);
+  --color-brand-accent-foreground: var(--accent-foreground);
+  --color-brand-border: var(--border);
+  --color-brand-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --font-sans: var(--font-inter), sans-serif;
+  --font-heading: var(--font-oswald), sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+ * The brand has one look — a dark, amber-accented, sharp-edged theme — not a
+ * separate light/dark pair. `:root` and `.dark` are kept identical so shadcn
+ * components render on-brand whether or not something wraps them in `.dark`.
+ */
+:root {
+  --background: #0d0d0d;
+  --foreground: #e8e2d9;
+  --card: #161616;
+  --card-foreground: #e8e2d9;
+  --popover: #161616;
+  --popover-foreground: #e8e2d9;
+  --primary: #d4891a;
+  --primary-foreground: #0d0d0d;
+  --secondary: #1f1f1f;
+  --secondary-foreground: #a09890;
+  --muted: #1a1a1a;
+  --muted-foreground: #6b6460;
+  --accent: #d4891a;
+  --accent-foreground: #0d0d0d;
+  --destructive: #e5484d;
+  --border: #2a2a2a;
+  --input: #2a2a2a;
+  --ring: #d4891a;
+  --radius: 2px;
+  --chart-1: #d4891a;
+  --chart-2: #a0672a;
+  --chart-3: #6b6460;
+  --chart-4: #4a3c2a;
+  --chart-5: #2a2a2a;
+  --sidebar: #161616;
+  --sidebar-foreground: #e8e2d9;
+  --sidebar-primary: #d4891a;
+  --sidebar-primary-foreground: #0d0d0d;
+  --sidebar-accent: #1f1f1f;
+  --sidebar-accent-foreground: #e8e2d9;
+  --sidebar-border: #2a2a2a;
+  --sidebar-ring: #d4891a;
+}
+
+.dark {
+  --background: #0d0d0d;
+  --foreground: #e8e2d9;
+  --card: #161616;
+  --card-foreground: #e8e2d9;
+  --popover: #161616;
+  --popover-foreground: #e8e2d9;
+  --primary: #d4891a;
+  --primary-foreground: #0d0d0d;
+  --secondary: #1f1f1f;
+  --secondary-foreground: #a09890;
+  --muted: #1a1a1a;
+  --muted-foreground: #6b6460;
+  --accent: #d4891a;
+  --accent-foreground: #0d0d0d;
+  --destructive: #e5484d;
+  --border: #2a2a2a;
+  --input: #2a2a2a;
+  --ring: #d4891a;
+  --chart-1: #d4891a;
+  --chart-2: #a0672a;
+  --chart-3: #6b6460;
+  --chart-4: #4a3c2a;
+  --chart-5: #2a2a2a;
+  --sidebar: #161616;
+  --sidebar-foreground: #e8e2d9;
+  --sidebar-primary: #d4891a;
+  --sidebar-primary-foreground: #0d0d0d;
+  --sidebar-accent: #1f1f1f;
+  --sidebar-accent-foreground: #e8e2d9;
+  --sidebar-border: #2a2a2a;
+  --sidebar-ring: #d4891a;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Hide scrollbar while keeping scroll */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }

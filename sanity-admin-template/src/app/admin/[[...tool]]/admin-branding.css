@@ -87,7 +87,7 @@ svg[data-sanity-icon="sanity-logo"] {
   margin-bottom: 0px;
   width: 380px;
   height: 380px;
-  background-image: url("/logo_dark.webp");
+  background-image: url("/logo_text.svg");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
