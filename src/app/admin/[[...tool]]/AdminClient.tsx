@@ -4,6 +4,7 @@ import { NextStudio } from "next-sanity/studio";
 import { useEffect } from "react";
 
 import config from "../../../../sanity.config";
+import "./admin-branding.css";
 
 // Sanity's own "Sign out" menu item has no redirect option, and Studio
 // unmounts its own component tree on sign-out (swapping straight to its
