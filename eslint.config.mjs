@@ -12,9 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Plain Node CJS entrypoint for cPanel/Passenger, not part of the
-    // Next.js app itself — see docs/deploy-krystal.md.
-    "server.js",
+    // Reference template, not live app code — its imports are
+    // deliberately unresolved (filled in by whoever copies it into a
+    // new project), so it isn't meant to type-check or lint clean.
+    "sanity-admin-template/**",
   ]),
 ]);
 
