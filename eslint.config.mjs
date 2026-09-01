@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Reference template, not live app code — its imports are
+    // deliberately unresolved (filled in by whoever copies it into a
+    // new project), so it isn't meant to type-check or lint clean.
+    "sanity-admin-template/**",
   ]),
 ]);
 
