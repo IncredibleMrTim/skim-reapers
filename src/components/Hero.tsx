@@ -21,8 +21,8 @@ export const Hero = () => {
         <Image
           src={SMOKE_BG_URL}
           alt="Skim Reapers Ltd"
-          width={250}
-          height={250}
+          width={280}
+          height={280}
           className="absolute top-0 left-0 opacity-20 h-280 w-280"
           style={{
             maskImage:
