@@ -134,3 +134,12 @@ Static export pushed to Krystal Hosting via cPanel Git Version Control, driven b
 | Dev | dev.skimreapers.co.uk | `dev` | `deploy/dev` |
 
 Also triggered automatically by Sanity webhooks on publish (dataset-scoped, so a dev publish only redeploys dev). See `docs/deploy-krystal.md` for the full one-time setup and troubleshooting notes.
+
+## Git & PR Workflow
+
+Because pushing to `dev` or `main` auto-deploys (see Deployment above), a push isn't just "save to git" — it's a live deploy. Default flow when asked to commit/push/PR:
+
+1. Before committing, verify the three checks CI itself runs: `pnpm lint` (must exit 0 — a `react/no-unescaped-entities` or similar error will fail CI), `npx tsc --noEmit`, and `pnpm build` (the static export must actually succeed, since that's the artifact that gets deployed).
+2. Commit and push directly to the current branch (`dev` day-to-day) — this immediately deploys to dev.skimreapers.co.uk, which is the point: it's the review environment.
+3. Open a PR from `dev` into `main` to promote to production (`gh pr create --base main --head dev`). Don't push straight to `main` — production should go through a PR even though nothing technically blocks a direct push.
+4. Only reach for a separate feature branch (branch off `dev`, PR into `dev`) when a change is risky/experimental enough that it shouldn't hit the dev site before review — ask if unsure which one applies.
