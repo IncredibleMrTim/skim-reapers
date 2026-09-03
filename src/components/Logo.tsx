@@ -1,7 +1,7 @@
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <span
-      className={`inline-flex items-center gap-2 font-heading leading-none ${className}`}
+      className={`inline-flex items-center gap-2 leading-none ${className}`}
     >
       <span className="flex items-baseline gap-[0.12em] text-[1.5em] font-bold tracking-tight uppercase">
         <span className="text-white">Skim</span>
