@@ -23,7 +23,7 @@ export const Hero = () => {
           alt="Skim Reapers Ltd"
           width={250}
           height={250}
-          className="absolute top-0 left-0 opacity-20 h-250 w-250"
+          className="absolute top-0 left-0 opacity-20 h-280 w-280"
           style={{
             maskImage:
               "radial-gradient(circle at top left, black 30%, transparent 75%)",
@@ -37,19 +37,25 @@ export const Hero = () => {
       <div className="flex flex-col gap-2 mt-80 w-200 pl-26">
         <DistressedHeading
           font="font-heading"
-          className="text-brand-accent! text-lg font-bold"
+          className="text-lg font-bold opacity-100"
+          color="var(--accent)"
         >
           COMMERCIAL & DOMESTIC
         </DistressedHeading>
         <DistressedHeading className="tracking-[-0.01em]" size="text-7xl">
           {`PROFESSIONAL PLASTERING & \nDRY LINING CONTRACTORS`}
         </DistressedHeading>
-        <div className="text-brand-accent text-lg font-bold">
-          20 YEARS OF EXPERIENCE. ONE UNCOMPROMISING STANDARD.
-        </div>
         <DistressedHeading
-          className="text-lg text-brand-content font-bold opacity-80"
           font="font-heading"
+          className="text-lg font-bold opacity-100"
+          color="var(--accent)"
+        >
+          20 YEARS OF EXPERIENCE. ONE UNCOMPROMISING STANDARD.
+        </DistressedHeading>
+        <DistressedHeading
+          className="text-lg font-bold"
+          font="font-heading"
+          color="var(--content)"
         >
           {`Professional plastering and dry-lining delivered by an experienced team,\nfrom individual domestic projects to larger commercial developments.`}
         </DistressedHeading>
