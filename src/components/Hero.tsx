@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { DistressedHeading } from "@/components/DistressedHeading"
 
-const SMOKE_BG_URL = "/white_smoke_transparent_clouds_5433156.png"
+const SMOKE_BG_URL = "/smoke_bg.webp"
 const LOGO_URL = "/logo_extracted.png"
 
 export const Hero = () => {
@@ -21,12 +21,12 @@ export const Hero = () => {
         <Image
           src={SMOKE_BG_URL}
           alt="Skim Reapers Ltd"
-          width={2000}
-          height={2000}
-          className="absolute top-0 left-0 opacity-20 w-200 h-300"
+          width={250}
+          height={250}
+          className="absolute top-0 left-0 opacity-20 h-250 w-250"
           style={{
             maskImage:
-              "radial-gradient(circle at top left, black 30%, transparent 60%)",
+              "radial-gradient(circle at top left, black 30%, transparent 75%)",
             WebkitMaskImage:
               "radial-gradient(circle at top left, black 30%, transparent 60%)",
           }}
@@ -35,9 +35,12 @@ export const Hero = () => {
       </div>
 
       <div className="flex flex-col gap-2 mt-80 w-200 pl-26">
-        <div className="text-brand-accent text-lg font-bold">
+        <DistressedHeading
+          font="font-heading"
+          className="text-brand-accent! text-lg font-bold"
+        >
           COMMERCIAL & DOMESTIC
-        </div>
+        </DistressedHeading>
         <DistressedHeading className="tracking-[-0.01em]" size="text-7xl">
           {`PROFESSIONAL PLASTERING & \nDRY LINING CONTRACTORS`}
         </DistressedHeading>
