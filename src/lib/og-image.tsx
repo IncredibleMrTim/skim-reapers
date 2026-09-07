@@ -66,7 +66,7 @@ export function OgImage() {
             textAlign: "center",
           }}
         >
-          Professional Plastering & Dry-Lining Contractors
+          Professional Plastering and Dry-Lining Contractors
         </div>
         <div
           style={{
