@@ -3,6 +3,16 @@ import { dataset } from "@/sanity/env"
 
 const isProduction = dataset === "production"
 
+/** Dev and production are separate hostnames — see the deploy table in CLAUDE.md. */
+const siteUrl = isProduction
+  ? "https://skimreapers.co.uk"
+  : "https://dev.skimreapers.co.uk"
+
+const siteName = "Skim Reapers Ltd"
+
+/** Square logo mark used as the link-preview image until a proper 1200x630 OG image exists. */
+const ogImage = { url: "/logo_dark.webp", width: 345, height: 331 }
+
 type PageMetadata = {
   title: string
   description: string
@@ -25,8 +35,22 @@ const pageMetadata: Record<string, PageMetadata> = {
 export function createPageMetadata(page: keyof typeof pageMetadata): Metadata {
   const { title, description, robots } = pageMetadata[page]
   return {
-    title: `${title} | Skim Reapers LTD.`,
+    metadataBase: new URL(siteUrl),
+    title,
     description,
     robots,
+    openGraph: {
+      title,
+      description,
+      siteName,
+      type: "website",
+      images: [ogImage],
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+      images: [ogImage.url],
+    },
   }
 }
