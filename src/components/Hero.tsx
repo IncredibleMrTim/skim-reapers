@@ -43,7 +43,7 @@ export const Hero = () => {
           COMMERCIAL & DOMESTIC
         </DistressedHeading>
         <DistressedHeading className="tracking-[-0.01em]" size="text-7xl">
-          {`PROFESSIONAL PLASTERING & \nDRY LINING CONTRACTORS`}
+          {`PROFESSIONAL PLASTERING AND DRY LINING CONTRACTORS`}
         </DistressedHeading>
         <DistressedHeading
           font="font-heading"
