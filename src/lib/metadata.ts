@@ -10,9 +10,6 @@ const siteUrl = isProduction
 
 const siteName = "Skim Reapers Ltd"
 
-/** Square logo mark used as the link-preview image until a proper 1200x630 OG image exists. */
-const ogImage = { url: "/logo_dark.webp", width: 345, height: 331 }
-
 type PageMetadata = {
   title: string
   description: string
@@ -44,13 +41,11 @@ export function createPageMetadata(page: keyof typeof pageMetadata): Metadata {
       description,
       siteName,
       type: "website",
-      images: [ogImage],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title,
       description,
-      images: [ogImage.url],
     },
   }
 }
