@@ -14,16 +14,17 @@ export const Hero = () => {
         alt="Skim Reapers Ltd"
         width={342}
         height={242}
-        className="absolute top-10 left-20 z-10 w-90 brightness-110"
+        className="absolute top-30 left-1/2 -translate-x-1/2 md:top-10 md:left-20 md:translate-x-0 z-10 md:w-90 brightness-110"
         priority
       />
+
       <div className="relative h-full sm:block grow">
         <Image
           src={SMOKE_BG_URL}
           alt="Skim Reapers Ltd"
           width={280}
           height={280}
-          className="absolute top-0 left-0 opacity-20 h-280 w-280"
+          className="absolute top-0 left-0 h-280 w-280 max-w-none opacity-60 md:opacity-20"
           style={{
             maskImage:
               "radial-gradient(circle at top left, black 30%, transparent 75%)",
@@ -34,7 +35,7 @@ export const Hero = () => {
         />
       </div>
 
-      <div className="flex flex-col gap-2 mt-80 w-200 pl-26">
+      <div className="flex flex-col gap-2 justify-start mt-100 md:mt-80 w-full md:w-200 px-4 md:pl-26 mx-auto md:mx-0">
         <DistressedHeading
           font="font-heading"
           className="text-lg font-bold opacity-100"
@@ -42,8 +43,8 @@ export const Hero = () => {
         >
           COMMERCIAL & DOMESTIC
         </DistressedHeading>
-        <DistressedHeading className="tracking-[-0.01em]" size="text-7xl">
-          {`PROFESSIONAL PLASTERING AND DRY LINING CONTRACTORS`}
+        <DistressedHeading className="tracking-[-0.01em] text-5xl md:text-7xl">
+          PROFESSIONAL PLASTERING AND DRY LINING CONTRACTORS
         </DistressedHeading>
         <DistressedHeading
           font="font-heading"
@@ -53,7 +54,7 @@ export const Hero = () => {
           20 YEARS OF EXPERIENCE. ONE UNCOMPROMISING STANDARD.
         </DistressedHeading>
         <DistressedHeading
-          className="text-lg font-bold"
+          className="text-lg font-bold px-0"
           font="font-heading"
           color="var(--content)"
         >

@@ -20,7 +20,7 @@ function buildNoiseTextureUrl(distress: number): string {
 /** Bold Bronco-font heading with a mottled, weathered paint-texture fill. */
 export const DistressedHeading = ({
   children,
-  size = "text-8xl",
+  size = "",
   font = "font-bronco",
   className = "",
   distress = 25,
@@ -28,7 +28,7 @@ export const DistressedHeading = ({
 }: DistressedHeadingProps) => {
   return (
     <div
-      className={`${font} whitespace-pre-line bg-clip-text text-transparent opacity-80 ${size} ${className}`}
+      className={`${font} whitespace-pre-line bg-clip-text text-transparent opacity-80 px-4 md-px-0 ${size} ${className}`}
       style={{
         backgroundImage: `linear-gradient(${color}, ${color}), url("${buildNoiseTextureUrl(distress)}")`,
         backgroundSize: "420px 420px",
