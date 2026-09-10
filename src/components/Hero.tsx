@@ -15,7 +15,7 @@ export const Hero = () => {
         alt="Skim Reapers Ltd"
         width={342}
         height={242}
-        className="absolute top-0 left-0 mx-10 my-10 md:w-90 brightness-110"
+        className="absolute top-20 md:top-0 left-0 mx-10 my-10 md:w-90 brightness-110"
         priority
       />
       <div className="hidden md:flex w-full h-full overflow-hidden justify-end z-1 mt-20 absolute top-0 right-0">
@@ -47,7 +47,7 @@ export const Hero = () => {
         />
       </div>
 
-      <div className="flex flex-col gap-2 justify-start mt-100 md:mt-0 w-full md:w-200 md:pl-0 mx-auto md:mx-10 z-8">
+      <div className="flex flex-col gap-2 justify-start mt-105 md:mt-0 w-full md:w-200 md:pl-0 mx-auto md:mx-10 z-8 px-4 md:px-0">
         <DistressedHeading
           font="font-heading"
           className="text-lg font-bold opacity-100"
@@ -55,7 +55,7 @@ export const Hero = () => {
         >
           COMMERCIAL & DOMESTIC
         </DistressedHeading>
-        <DistressedHeading className="tracking-[-0.01em] text-lg md:text-6xl xlg:text-7xl">
+        <DistressedHeading className="tracking-[-0.01em] text-5xl md:text-6xl xlg:text-7xl">
           PROFESSIONAL PLASTERING AND
           <br /> DRY LINING CONTRACTORS
         </DistressedHeading>
