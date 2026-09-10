@@ -47,24 +47,22 @@ export function Navbar() {
   const pathname = usePathname()
 
   return (
-    <header className="flex justify-self-end h-20 light relative w-full lg:w-3/4 lg:pl-20 border-border text-foreground bg-linear-to-r from-brand-background md:from-transparent from-38% md:from-0% via-brand-background via-30% md:via-13% to-100% to-transparent md:to-brand-background">
-      <div className="mx-auto flex w-full max-w-[1920px] items-stretch justify-between gap-6 px-4">
+    <header className="flex justify-self-end h-20 light relative w-full lg:w-[78%] lg:pl-10 border-border text-foreground bg-linear-to-r from-brand-background md:from-transparent from-0% md:from-0% via-brand-background via-30% md:via-10% to-100% to-transparent md:to-brand-background pr-4">
+      <div className=" flex w-full max-w-[1920px] items-center justify-between h-full">
         {/* Tagline */}
-        <div className="flex justify-center items-center gap-6 border-r border-border py-3 pr-0 md:pr-6 border-none">
-          <div className="leading-tight">
-            <p className="text-sm font-bold tracking-tight uppercase">
-              Professional Plastering
-              <br />& Dry-Lining Contractors
-            </p>
-            <p className="text-xs font-semibold tracking-[0.15em] text-brand-primary uppercase">
-              Commercial & Domestic
-            </p>
-          </div>
+        <div className="flex flex-col justify-center items-center border-r border-border border-none ml-5">
+          <p className="text-xs font-bold uppercase w-full tracking-wider">
+            Professional Plastering
+            <br />& Dry-Lining Contractors
+          </p>
+          <p className="text-xs font-semibold tracking-wider text-brand-primary uppercase w-full">
+            Commercial & Domestic
+          </p>
         </div>
 
         {/* Links */}
         <NavigationMenu className="hidden max-w-none flex-1 lg:flex h-8 my-auto">
-          <NavigationMenuList className="h-full items-stretch justify-start gap-1">
+          <NavigationMenuList className="h-full items-stretch justify-end gap-1">
             {NAV_LINKS.slice(0, 2).map((link) => {
               const isActive = pathname === link.href
               return (
@@ -94,7 +92,7 @@ export function Navbar() {
                     <li key={service.href}>
                       <NavigationMenuLink
                         render={<a href={service.href} />}
-                        className="text-xs font-semibold tracking-[0.05em] uppercase"
+                        className="text-xs font-semibold tracking-wider uppercase"
                       >
                         {service.label}
                       </NavigationMenuLink>
@@ -117,9 +115,9 @@ export function Navbar() {
         {/* CTA */}
         <a
           href="#contact"
-          className="my-auto hidden shrink-0 items-center bg-brand-primary px-8 h-2/4 text-sm font-bold tracking-[0.08em] text-brand-primary-foreground uppercase no-underline transition-opacity hover:opacity-90 lg:flex [clip-path:polygon(6%_0,100%_0,94%_100%,0_100%)]"
+          className="my-auto ml-2 hidden shrink-0 items-center bg-brand-primary px-4 h-2/4 text-sm font-bold tracking-wider text-brand-primary-foreground uppercase no-underline transition-opacity hover:opacity-90 lg:flex [clip-path:polygon(6%_0,100%_0,94%_100%,0_100%)]"
         >
-          Get a Quote&nbsp;→
+          Get a Quote
         </a>
 
         {/* Mobile menu */}
