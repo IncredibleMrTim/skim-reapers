@@ -161,7 +161,7 @@ export function Navbar() {
                   key={service.href}
                   nativeButton={false}
                   render={<a href={service.href} />}
-                  className="rounded-md px-3 py-2 text-sm font-semibold tracking-[0.05em] text-foreground uppercase no-underline transition-colors hover:bg-muted hover:text-brand-primary"
+                  className="rounded-md px-3 py-2 text-sm font-semibold tracking-wider text-foreground uppercase no-underline transition-colors hover:bg-muted hover:text-brand-primary"
                 >
                   {service.label}
                 </SheetClose>
