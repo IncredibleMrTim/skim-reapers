@@ -40,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         geist.variable,
       )}
     >
-      <body className="min-h-full flex flex-col lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1920px] 3xl:max-w-[1920px] mx-auto bg-brand-background">
+      <body className="min-h-full flex flex-col 3xl:max-w-[1920px] mx-auto bg-brand-background">
         <div>
           <div
             className="bg-brand-background text-brand-background mx-auto"

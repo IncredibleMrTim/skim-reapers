@@ -9,17 +9,17 @@ export const BeliefBar = ({ className }: { className?: string }) => {
         icon={<TbUsers size={48} strokeWidth={1} color="var(--accent)" />}
         text="ONE TEAM. ONE STANDARD"
       />
-      <div className="h-full border-r border-brand-content/25" />
+      <div className="h-full shrink-0 border-r border-brand-content/25" />
       <BeliefCard
         icon={<TbTargetArrow size={48} strokeWidth={1} color="var(--accent)" />}
         text="WE DONT CREATE PROBLEMS"
       />
-      <div className="h-full border-r border-brand-content/25" />
+      <div className="h-full shrink-0 border-r border-brand-content/25" />
       <BeliefCard
         icon={<TbPuzzle size={48} strokeWidth={1} color="var(--accent)" />}
         text="WE CREATE SOLUTIONS"
       />
-      <div className="h-full border-r border-brand-content/25" />
+      <div className="h-full shrink-0 border-r border-brand-content/25" />
       <BeliefCard
         icon={
           <LuChartNoAxesCombined
@@ -30,7 +30,7 @@ export const BeliefBar = ({ className }: { className?: string }) => {
         }
         text="QUALITY THAT SCALES"
       />
-      <div className="h-full border-r border-brand-content/25" />
+      <div className="h-full shrink-0 border-r border-brand-content/25" />
       <BeliefCard
         icon={<LuHandshake size={48} strokeWidth={1} color="var(--accent)" />}
         text="BUILT ON TRUST & RELIABILITY"
