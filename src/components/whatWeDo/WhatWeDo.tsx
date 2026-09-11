@@ -5,7 +5,7 @@ import { Card } from "./Card"
 
 export const WhatWeDo = () => {
   return (
-    <div className="relative flex flex-col md:flex-row gap-8 justify-between w-full bg-brand-content px-9 py-4">
+    <div className="relative flex flex-col md:flex-row gap-8 justify-between w-full bg-brand-content px-8 py-4">
       <div
         className="absolute top-0 left-0 w-full h-full z-1 opacity-30"
         style={{
