@@ -28,7 +28,7 @@ export const DistressedHeading = ({
 }: DistressedHeadingProps) => {
   return (
     <div
-      className={`${font} whitespace-pre-line bg-clip-text text-transparent opacity-80 px-4 md-px-0 ${size} ${className}`}
+      className={`${font} whitespace-pre-line bg-clip-text text-transparent opacity-80 ${size} ${className}`}
       style={{
         backgroundImage: `linear-gradient(${color}, ${color}), url("${buildNoiseTextureUrl(distress)}")`,
         backgroundSize: "420px 420px",

@@ -5,6 +5,7 @@ import Link from "next/link"
 import { client } from "@/sanity/client"
 import { urlForImage } from "@/sanity/image"
 import { homePageQuery } from "@/sanity/queries"
+import { WhatWeDo } from "@/components/whatWeDo/WhatWeDo"
 
 export default async function Home() {
   const homePage = await client.fetch(homePageQuery)
@@ -32,9 +33,10 @@ export default async function Home() {
   const videoUrl = homePage.video?.asset?.url as string | undefined
 
   return (
-    <div className="w-full mx-auto lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px] 3xl:max-w-[1920px]">
-      <main className="mx-auto flex w-full flex-col gap-4 py-14">
-        <div className="flex mx-auto w-full pl-200">
+    <div className="w-full mx-auto">
+      <main className="mx-auto">
+        <WhatWeDo />
+        {/* <div className="flex mx-auto w-full pl-200">
           {homePage.heading && (
             <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-zinc-50">
               {homePage.heading}
@@ -56,7 +58,7 @@ export default async function Home() {
           {videoUrl && (
             <video controls className="w-full rounded-lg" src={videoUrl} />
           )}
-        </div>
+        </div> */}
       </main>
     </div>
   )

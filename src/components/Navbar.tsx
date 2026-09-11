@@ -2,7 +2,7 @@
 
 import { MenuIcon } from "lucide-react"
 import { usePathname } from "next/navigation"
-
+import { HiArrowNarrowRight } from "react-icons/hi"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -115,9 +115,10 @@ export function Navbar() {
         {/* CTA */}
         <a
           href="#contact"
-          className="my-auto ml-2 hidden shrink-0 items-center bg-brand-primary px-4 h-2/4 text-sm font-bold tracking-wider text-brand-primary-foreground uppercase no-underline transition-opacity hover:opacity-90 lg:flex [clip-path:polygon(6%_0,100%_0,94%_100%,0_100%)]"
+          className="my-auto ml-2 hidden shrink-0 items-center bg-brand-primary px-4 h-2/4 text-sm font-bold tracking-wider text-brand-primary-foreground uppercase no-underline transition-opacity hover:opacity-90 lg:flex lg:gap-2 [clip-path:polygon(6%_0,100%_0,94%_100%,0_100%)]"
         >
           Get a Quote
+          <HiArrowNarrowRight className="mt-0.5" />
         </a>
 
         {/* Mobile menu */}
@@ -183,9 +184,9 @@ export function Navbar() {
               <SheetClose
                 nativeButton={false}
                 render={<a href="#contact" />}
-                className="flex h-11 items-center justify-center bg-brand-primary text-sm font-bold tracking-[0.08em] text-brand-primary-foreground uppercase no-underline transition-opacity hover:opacity-90 [clip-path:polygon(6%_0,100%_0,94%_100%,0_100%)]"
+                className="flex gap-2 h-11 items-center justify-center bg-brand-primary text-sm font-bold tracking-[0.08em] text-brand-primary-foreground uppercase no-underline transition-opacity hover:opacity-90 [clip-path:polygon(6%_0,100%_0,94%_100%,0_100%)]"
               >
-                Get a Quote&nbsp;→
+                Get a Quote <HiArrowNarrowRight className="mt-0.5" />
               </SheetClose>
             </div>
           </SheetContent>
