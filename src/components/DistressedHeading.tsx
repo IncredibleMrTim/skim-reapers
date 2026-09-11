@@ -7,6 +7,8 @@ interface DistressedHeadingProps {
   className?: string
   /** 0 (flat, no texture) to 100 (harsh, high-contrast mottling). Defaults to 25. */
   distress?: number
+  /** Base fill color the noise texture is multiplied against. Defaults to white. */
+  color?: string
 }
 
 function buildNoiseTextureUrl(distress: number): string {
@@ -18,16 +20,17 @@ function buildNoiseTextureUrl(distress: number): string {
 /** Bold Bronco-font heading with a mottled, weathered paint-texture fill. */
 export const DistressedHeading = ({
   children,
-  size = "text-8xl",
+  size = "",
   font = "font-bronco",
   className = "",
   distress = 25,
+  color = "#fff",
 }: DistressedHeadingProps) => {
   return (
     <div
       className={`${font} whitespace-pre-line bg-clip-text text-transparent opacity-80 ${size} ${className}`}
       style={{
-        backgroundImage: `linear-gradient(#fff, #fff), url("${buildNoiseTextureUrl(distress)}")`,
+        backgroundImage: `linear-gradient(${color}, ${color}), url("${buildNoiseTextureUrl(distress)}")`,
         backgroundSize: "420px 420px",
         backgroundBlendMode: "multiply",
         WebkitTextFillColor: "transparent",
