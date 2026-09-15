@@ -4,6 +4,8 @@ import localFont from "next/font/local"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 import { Header } from "@/components/header/Header"
+import { Footer } from "@/components/footer/Footer"
+import { Separator } from "@/components/ui/separator"
 
 export const metadata = createPageMetadata("home")
 
@@ -53,6 +55,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Header />
           </div>
           <div>{children}</div>
+          <Separator variant="linear" className="via-brand-content/50" />
+          <Footer />
         </div>
       </body>
     </html>
