@@ -9,7 +9,7 @@ interface ICard {
 
 export const Card = ({ image, title, text, url }: ICard) => {
   return (
-    <div className="text-center mx-auto w-[calc(50%-0.5rem)] md:w-1/6 z-10 text-brand-accent-foreground px-6 py-4 border border-background/10">
+    <div className="text-center mx-auto w-[calc(50%-0.5rem)] md:w-1/6 min-w-0 z-10 text-brand-accent-foreground px-6 py-4 border border-background/10">
       <div className="flex flex-col items-center justify-between gap-2 w-full h-full">
         <div className="flex flex-col gap-1 items-center justify-between">
           {image && (

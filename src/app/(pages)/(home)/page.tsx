@@ -6,6 +6,7 @@ import { client } from "@/sanity/client"
 import { urlForImage } from "@/sanity/image"
 import { homePageQuery } from "@/sanity/queries"
 import { WhatWeDo } from "@/components/whatWeDo/WhatWeDo"
+import { BeliefBar } from "@/components/beliefBar/BeliefBar"
 
 export default async function Home() {
   const homePage = await client.fetch(homePageQuery)
@@ -35,7 +36,11 @@ export default async function Home() {
   return (
     <div className="w-full mx-auto">
       <main className="mx-auto">
+        <div className="hidden md:block w-full">
+          <BeliefBar />
+        </div>
         <WhatWeDo />
+
         {/* <div className="flex mx-auto w-full pl-200">
           {homePage.heading && (
             <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-zinc-50">

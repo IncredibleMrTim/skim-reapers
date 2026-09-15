@@ -47,7 +47,7 @@ export function Navbar() {
   const pathname = usePathname()
 
   return (
-    <header className="flex justify-self-end h-20 light relative w-full lg:w-[78%] lg:pl-10 border-border text-foreground bg-linear-to-r from-brand-background md:from-transparent from-0% md:from-0% via-brand-background via-30% md:via-10% to-100% to-transparent md:to-brand-background pr-4">
+    <header className="flex justify-self-end h-20 light relative w-full xl:w-[78%] 2xl:w-[80%]  lg:pl-10 border-border text-foreground bg-linear-to-r from-brand-background md:from-transparent from-0% md:from-0% via-brand-background via-30% md:via-10% to-100% to-transparent md:to-brand-background pr-4">
       <div className=" flex w-full max-w-[1920px] items-center justify-between h-full">
         {/* Tagline */}
         <div className="flex flex-col justify-center items-center border-r border-border border-none ml-5">
