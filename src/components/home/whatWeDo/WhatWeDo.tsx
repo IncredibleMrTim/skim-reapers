@@ -1,5 +1,5 @@
-import { DistressedHeading } from "../DistressedHeading"
-import { Button } from "../ui/button"
+import { DistressedHeading } from "@/components/DistressedHeading"
+import { Button } from "@/components/ui/button"
 import { HiArrowNarrowRight } from "react-icons/hi"
 import { Card } from "./Card"
 
