@@ -21,7 +21,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 
-const NAV_LINKS = [
+export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Commercial", href: "#commercial" },
@@ -34,10 +34,10 @@ const NAV_LINKS = [
 ]
 
 const SERVICE_LINKS = [
-  { label: "Skimming & Rendering", href: "#services-skimming" },
-  { label: "Artex Removal", href: "#services-artex" },
-  { label: "Dry Lining", href: "#services-dry-lining" },
-  { label: "Full Refurbs", href: "#services-refurbs" },
+  { label: "Skimming & Rendering", href: "/services/#services-skimming" },
+  { label: "Artex Removal", href: "/services/#services-artex" },
+  { label: "Dry Lining", href: "/services/#services-dry-lining" },
+  { label: "Full Refurbs", href: "/services/#services-refurbs" },
 ]
 
 const navLinkClassName =
