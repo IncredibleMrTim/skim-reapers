@@ -5,8 +5,9 @@ import Link from "next/link"
 import { client } from "@/sanity/client"
 import { urlForImage } from "@/sanity/image"
 import { homePageQuery } from "@/sanity/queries"
-import { WhatWeDo } from "@/components/whatWeDo/WhatWeDo"
-import { BeliefBar } from "@/components/beliefBar/BeliefBar"
+import { WhatWeDo } from "@/components/home/whatWeDo/WhatWeDo"
+import { BeliefBar } from "@/components/home/beliefBar/BeliefBar"
+import { ExperienceBar } from "@/components/home/experienceBar/experienceBar"
 
 export default async function Home() {
   const homePage = await client.fetch(homePageQuery)
@@ -40,6 +41,7 @@ export default async function Home() {
           <BeliefBar />
         </div>
         <WhatWeDo />
+        <ExperienceBar />
 
         {/* <div className="flex mx-auto w-full pl-200">
           {homePage.heading && (
