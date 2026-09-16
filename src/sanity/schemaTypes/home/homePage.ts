@@ -5,14 +5,26 @@ export const homePage = defineType({
   title: "Home Page",
   type: "document",
   groups: [
-    { name: "hero", title: "Hero", default: true },
-    { name: "content", title: "Content" },
+    { name: "content", title: "Content", default: true },
+    { name: "hero", title: "Hero" },
+    { name: "belief", title: "Belief Banner" },
+    { name: "whatWeDo", title: "What We Do" },
   ],
   fields: [
     defineField({
       name: "hero",
       type: "hero",
       group: "hero",
+    }),
+    defineField({
+      name: "belief",
+      type: "belief",
+      group: "belief",
+    }),
+    defineField({
+      name: "whatWeDo",
+      type: "whatWeDo",
+      group: "whatWeDo",
     }),
     defineField({
       name: "heading",

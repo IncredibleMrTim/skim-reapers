@@ -1,9 +1,21 @@
+"use client"
 import { DistressedHeading } from "@/components/DistressedHeading"
 import { Button } from "@/components/ui/button"
 import { HiArrowNarrowRight } from "react-icons/hi"
 import { Card } from "./Card"
+import { PortableText } from "@portabletext/react"
+import type { WhatWeDo as WhatWeDoQueryResult } from "@/sanity/types"
+import { urlForImage } from "@/sanity/image"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
 
-export const WhatWeDo = () => {
+type WhatWeDoProps = {
+  queryResult: WhatWeDoQueryResult
+}
+
+export const WhatWeDo = ({ queryResult }: WhatWeDoProps) => {
+  const router = useRouter()
+
   return (
     <div className="relative flex flex-col md:flex-row gap-8 justify-between w-full bg-brand-content px-8 py-4">
       <div
@@ -13,56 +25,59 @@ export const WhatWeDo = () => {
           backgroundSize: "20%",
         }}
       />
-      <div className="flex flex-col gap-1 md:w-150 z-10 w-full">
-        <h2 className="text-brand-accent">What We Do</h2>
-        <div className="flex flex-col gap-1">
-          <DistressedHeading color="#000" className="text-3xl" distress={0}>
-            COMPLETE PLASTERING AND DRY LINING SOLUTIONS
-          </DistressedHeading>
-          <p className="text-brand-accent-foreground text-sm">
-            From specification to final finish. We supply, coordinate and
-            deliver complete internal packages - on time, on budget, to the
-            highest standard.
-          </p>
-          <div>
-            <Button variant="secondary" size="lg" className="text-white">
-              VIEW ALL SERVICES
-              <HiArrowNarrowRight className="mt-0.5" />
-            </Button>
+      {queryResult?.cards
+        ?.filter((c) => !c.listCard)
+        .map((c) => (
+          <div
+            key={c._key}
+            className="flex flex-col gap-1 md:w-150 z-10 w-full"
+          >
+            <h2 className="text-brand-accent">{c.heading}</h2>
+            <div className="flex flex-col gap-1">
+              <DistressedHeading color="#000" className="text-3xl" distress={0}>
+                {c.subHeading}
+              </DistressedHeading>
+              <div className="text-brand-accent-foreground text-sm">
+                {c?.text && <PortableText value={c.text} />}
+              </div>
+              <div>
+                {c?.buttons?.map((b) => (
+                  <Button
+                    key={b._key}
+                    variant="secondary"
+                    size="lg"
+                    className="text-white"
+                    onClick={b?.path ? () => router.push(b.path) : undefined}
+                  >
+                    {b.label}
+                    {b?.icon ? (
+                      <Image
+                        src={urlForImage(b?.icon).url()}
+                        alt={`${b.label} navigation button`}
+                        width={24}
+                        height={24}
+                      />
+                    ) : (
+                      <HiArrowNarrowRight className="mt-0.5" />
+                    )}
+                  </Button>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        ))}
       <div className="flex flex-wrap md:flex-nowrap gap-4">
-        <Card
-          image="/icons/plastering.png"
-          title="PLASTERING"
-          text="Skimming, bonding, float & set, over-skimming & more."
-        />
-        <Card
-          image="/icons/dry-lining-partitioning.png"
-          title="DRY-LINING & PARTITIONING"
-          text="Plasterboarding, stud walls, MF ceilings & systems."
-        />
-        <Card
-          image="/icons/insulation-performance.png"
-          title="INSULATION & PERFORMANCE"
-          text="IWI, loft insulation, acoustic & damp resistant systems."
-        />
-        <Card
-          image="/icons/traditional-lime.png"
-          title="TRADITIONAL & LIME"
-          text="Lime plastering, restoration & heritage work."
-        />
-        <Card
-          image="/icons/feature-bespoke.png"
-          title="FEATURE & BESPOKE"
-          text="Media walls, feature ceilings & bespoke finishes."
-        />
-        <Card
-          image="/icons/removal-preparation.png"
-          title="REMOVAL & PREPARATION"
-          text="Plaster rip-outs, lath & plaster removal & preparation."
-        />
+        {queryResult?.cards
+          ?.filter((c) => c.listCard)
+          .map((c) => (
+            <Card
+              key={c._key}
+              image={c.image ? urlForImage(c.image).url() : undefined}
+              title={c?.heading ?? undefined}
+              text={c?.text ?? undefined}
+              buttons={c?.buttons}
+            />
+          ))}
       </div>
     </div>
   )
