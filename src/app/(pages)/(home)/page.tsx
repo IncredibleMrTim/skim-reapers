@@ -8,6 +8,7 @@ import { homePageQuery } from "@/sanity/queries"
 import { WhatWeDo } from "@/components/home/whatWeDo/WhatWeDo"
 import { BeliefBar } from "@/components/home/beliefBar/BeliefBar"
 import { ExperienceBar } from "@/components/home/experienceBar/experienceBar"
+import { Header } from "@/components/header/Header"
 
 export default async function Home() {
   const homePage = await client.fetch(homePageQuery)
@@ -35,15 +36,17 @@ export default async function Home() {
   const videoUrl = homePage.video?.asset?.url as string | undefined
 
   return (
-    <div className="w-full mx-auto">
-      <main className="mx-auto">
-        <div className="hidden md:block w-full">
-          <BeliefBar />
-        </div>
-        <WhatWeDo />
-        <ExperienceBar />
+    <>
+      <Header hero={homePage.hero ?? undefined} />
+      <div className="w-full mx-auto">
+        <main className="mx-auto">
+          <div className="hidden md:block w-full">
+            <BeliefBar />
+          </div>
+          <WhatWeDo />
+          <ExperienceBar />
 
-        {/* <div className="flex mx-auto w-full pl-200">
+          {/* <div className="flex mx-auto w-full pl-200">
           {homePage.heading && (
             <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-zinc-50">
               {homePage.heading}
@@ -66,7 +69,8 @@ export default async function Home() {
             <video controls className="w-full rounded-lg" src={videoUrl} />
           )}
         </div> */}
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   )
 }

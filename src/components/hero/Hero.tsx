@@ -2,12 +2,18 @@ import Image from "next/image"
 import { DistressedHeading } from "@/components/DistressedHeading"
 import { Button } from "../ui/button"
 import { HiArrowNarrowRight } from "react-icons/hi"
+import type { HomePageQueryResult } from "@/sanity/types"
+import { urlForImage } from "@/sanity/image"
 
 const SMOKE_BG_URL = "/smoke_bg.webp"
 const LOGO_URL = "/logo_extracted.png"
 const HERO_IMAGE_URL = "/window.webp"
 
-export const Hero = () => {
+type HeroProps = {
+  hero?: NonNullable<HomePageQueryResult>["hero"]
+}
+
+export const Hero = ({ hero }: HeroProps) => {
   return (
     <div className="relative h-full px-4">
       <Image
@@ -21,14 +27,16 @@ export const Hero = () => {
 
       <div className="hidden md:flex justify-end z-1 absolute top-0 right-0 w-2/3 h-full">
         <div className="w-full h-full absolute top-0 right-0 bg-linear-to-r from-brand-background from-10% via-transparent via-40% to-transparent z-1" />
-        <Image
-          src={HERO_IMAGE_URL}
-          alt="Skim Reapers Ltd"
-          width={200}
-          height={200}
-          className="object-cover h-full w-full repeat-0"
-          priority
-        />
+        {hero?.image && (
+          <Image
+            src={urlForImage(hero.image).url()}
+            alt="Skim Reapers Ltd"
+            width={200}
+            height={200}
+            className="object-cover h-full w-full repeat-0"
+            priority
+          />
+        )}
       </div>
       <div className="absolute">
         <div className="relative h-full sm:block z-9">
@@ -54,24 +62,24 @@ export const Hero = () => {
             className="text-lg font-bold opacity-100"
             color="var(--accent)"
           >
-            COMMERCIAL & DOMESTIC
+            {hero?.eyebrow}
           </DistressedHeading>
           <DistressedHeading className="tracking-[-0.01em] text-5xl md:text-6xl xlg:text-7xl">
-            PROFESSIONAL PLASTERING AND DRY LINING CONTRACTORS
+            {hero?.heading}
           </DistressedHeading>
           <DistressedHeading
             font="font-heading"
             className="text-lg font-bold opacity-100"
             color="var(--accent)"
           >
-            20 YEARS OF EXPERIENCE. ONE UNCOMPROMISING STANDARD.
+            {hero?.subheading}
           </DistressedHeading>
           <DistressedHeading
             className="text-lg font-bold px-0"
             font="font-heading"
             color="var(--content)"
           >
-            {`Professional plastering and dry-lining delivered by an experienced team,\nfrom individual domestic projects to larger commercial developments.`}
+            {hero?.text}
           </DistressedHeading>
           <div className="flex gap-2 mt-4">
             <Button size="2xl">
