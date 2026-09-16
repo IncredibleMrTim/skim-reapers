@@ -22,6 +22,83 @@ export type SanityImageAssetReference = {
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
+export type CardImage = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  _type: "image";
+};
+
+export type Icon = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "icon.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  _type: "image";
+};
+
+export type CardIcon = {
+  name: string;
+  package: string;
+};
+
+export type Image1 = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "card.image.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  _type: "image";
+};
+
+export type Belief = Array<{
+  internalTitle: string;
+  heading: string;
+  icon?: CardIcon;
+  image?: Image1;
+  _type: "card";
+  _key: string;
+}>;
+
+export type WhatWeDo = {
+  _type: "whatWeDo";
+  cards?: Array<{
+    internalTitle: string;
+    listCard?: boolean;
+    heading?: string;
+    subHeading?: string;
+    image?: CardImage;
+    text?: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    cardPath?: string;
+    buttons?: Array<{
+      label: string;
+      path: string;
+      icon?: Icon;
+      _type: "buttons";
+      _key: string;
+    }>;
+    _type: "card";
+    _key: string;
+  }>;
+};
+
 export type Hero = {
   _type: "hero";
   eyebrow?: string;
@@ -51,6 +128,8 @@ export type HomePage = {
   _updatedAt: string;
   _rev: string;
   hero?: Hero;
+  belief?: Belief;
+  whatWeDo?: WhatWeDo;
   heading?: string;
   body?: Array<{
     children?: Array<{
@@ -205,6 +284,12 @@ export type Slug = {
 
 export type AllSanitySchemaTypes =
   | SanityImageAssetReference
+  | CardImage
+  | Icon
+  | CardIcon
+  | Image1
+  | Belief
+  | WhatWeDo
   | Hero
   | SanityFileAssetReference
   | HomePage
@@ -222,9 +307,11 @@ export type AllSanitySchemaTypes =
 
 // Source: src/sanity/queries.ts
 // Variable: homePageQuery
-// Query: *[_type == "homePage"][0]{  hero,  heading,  body,  image,  video{ asset->{url} }}
+// Query: *[_type == "homePage"][0]{  hero,  whatWeDo,  belief,  heading,  body,  image,  video{ asset->{url} }}
 export type HomePageQueryResult = {
   hero: Hero | null;
+  whatWeDo: WhatWeDo | null;
+  belief: Belief | null;
   heading: string | null;
   body: Array<{
     children?: Array<{
@@ -262,6 +349,6 @@ export type HomePageQueryResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '*[_type == "homePage"][0]{\n  hero,\n  heading,\n  body,\n  image,\n  video{ asset->{url} }\n}': HomePageQueryResult;
+    '*[_type == "homePage"][0]{\n  hero,\n  whatWeDo,\n  belief,\n  heading,\n  body,\n  image,\n  video{ asset->{url} }\n}': HomePageQueryResult;
   }
 }

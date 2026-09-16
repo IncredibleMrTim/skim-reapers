@@ -36,6 +36,20 @@ pnpm typegen
 
 This extracts the schema to `schema.json` (gitignored) and regenerates `src/sanity/types.ts` (checked in). Import result types from there, e.g. `HomePageQueryResult`, rather than writing a duplicate interface by hand.
 
+**Portable Text fields**: don't type a component's rich-text prop against `@portabletext/react`'s exported `PortableTextBlock` — it won't structurally match the generated type. TypeGen makes every field on a block optional (`children?`, `style?`, etc.), matching what GROQ can actually return, while `PortableTextBlock` is the stricter, hand-authored canonical shape (`children` required, etc.) — same data, incompatible types. Derive the prop type from the generated schema type instead:
+
+```tsx
+import type { WhatWeDo } from "@/sanity/types"
+
+type CardData = NonNullable<WhatWeDo["cards"]>[number]
+
+interface ICard {
+  text?: CardData["text"] // not PortableTextBlock[]
+}
+```
+
+`<PortableText value={text} />` itself accepts this fine — only the prop's own declared type needs to come from the generated Sanity type, not the package.
+
 ### Adding a new page with a hero section
 
 `Header` (`Navbar` + `Hero`) is rendered per-page, not in the shared `(pages)` layout, since each page's hero content comes from a different Sanity document. To add it to a new page:
