@@ -19,7 +19,7 @@ export const Card = ({ image, title, text, buttons, path }: ICard) => {
   return (
     <div
       onClick={path ? () => router.push(path) : undefined}
-      className="text-center mx-auto w-[calc(50%-0.5rem)] md:w-1/6 min-w-0 z-10 text-brand-accent-foreground px-6 py-4 border border-background/10"
+      className={`text-center mx-auto w-[calc(50%-0.5rem)] md:w-1/6 min-w-0 z-10 text-brand-accent-foreground px-6 py-4 border border-background/10 ${path ? "cursor-pointer" : ""}`}
     >
       <div className="flex flex-col items-center justify-between gap-2 w-full h-full">
         <div className="flex flex-col gap-1 items-center justify-between">

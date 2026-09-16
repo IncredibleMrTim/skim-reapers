@@ -76,6 +76,7 @@ export const WhatWeDo = ({ queryResult }: WhatWeDoProps) => {
               title={c?.heading ?? undefined}
               text={c?.text ?? undefined}
               buttons={c?.buttons}
+              path={c?.cardPath}
             />
           ))}
       </div>
