@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator"
 
 export const ExperienceBar = () => {
   return (
-    <div className="relative flex flex-col md:flex-row justify-between  w-full items-center bg-brand-background">
+    <div className="relative flex flex-col md:flex-row justify-between  w-full items-center bg-brand-background mb-4 md:mb-0">
       <Image
         width={500}
         height={500}
@@ -48,7 +48,7 @@ export const ExperienceBar = () => {
         <div className="w-full md:w-1/8 justify-center md:justify-start flex self-stretch px-4">
           <div className="flex gap-2">
             <TfiCup className="text-brand-accent" size={80} />
-            <div className="flex flex-wrap flex-col items-center text-center md:text-right gap-1 ">
+            <div className="flex flex-wrap flex-col text-center  md:text-right gap-1 ">
               <span className="text-6xl">20</span>
               <p>YEARS EXPERIENCE</p>
             </div>

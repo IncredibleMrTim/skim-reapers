@@ -10,34 +10,8 @@ export const homePage = defineType({
   ],
   fields: [
     defineField({
-      name: "heroEyebrow",
-      title: "Hero Eyebrow",
-      type: "string",
-      group: "hero",
-    }),
-    defineField({
-      name: "heroHeading",
-      title: "Hero Heading",
-      type: "string",
-      group: "hero",
-    }),
-    defineField({
-      name: "heroSubheading",
-      title: "Hero Subheading",
-      type: "string",
-      group: "hero",
-    }),
-    defineField({
-      name: "heroText",
-      title: "Hero Paragraph",
-      type: "text",
-      group: "hero",
-    }),
-    defineField({
-      name: "heroImage",
-      title: "Hero Image",
-      type: "image",
-      options: { hotspot: true },
+      name: "hero",
+      type: "hero",
       group: "hero",
     }),
     defineField({
