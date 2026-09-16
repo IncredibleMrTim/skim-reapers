@@ -3,9 +3,6 @@ import { Inter, Oswald, Geist } from "next/font/google"
 import localFont from "next/font/local"
 import "./globals.css"
 import { cn } from "@/lib/utils"
-import { Header } from "@/components/header/Header"
-import { Footer } from "@/components/footer/Footer"
-import { Separator } from "@/components/ui/separator"
 
 export const metadata = createPageMetadata("home")
 
@@ -42,22 +39,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         geist.variable,
       )}
     >
-      <body className="min-h-full flex flex-col 3xl:max-w-[1920px] mx-auto bg-brand-background">
-        <div>
-          <div
-            className="bg-brand-background text-brand-background mx-auto"
-            style={{
-              background: "var(--background)",
-              color: "var(--foreground)",
-              overflowX: "hidden",
-            }}
-          >
-            <Header />
-          </div>
-          <div>{children}</div>
-          <Separator variant="linear" className="via-brand-content/50" />
-          <Footer />
-        </div>
+      <body className="3xl:max-w-[1920px] mx-auto bg-brand-background min-h-full">
+        {children}
       </body>
     </html>
   )
