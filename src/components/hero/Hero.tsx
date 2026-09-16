@@ -62,24 +62,24 @@ export const Hero = ({ hero }: HeroProps) => {
             className="text-lg font-bold opacity-100"
             color="var(--accent)"
           >
-            COMMERCIAL & DOMESTIC
+            {hero?.eyebrow}
           </DistressedHeading>
           <DistressedHeading className="tracking-[-0.01em] text-5xl md:text-6xl xlg:text-7xl">
-            PROFESSIONAL PLASTERING AND DRY LINING CONTRACTORS
+            {hero?.heading}
           </DistressedHeading>
           <DistressedHeading
             font="font-heading"
             className="text-lg font-bold opacity-100"
             color="var(--accent)"
           >
-            20 YEARS OF EXPERIENCE. ONE UNCOMPROMISING STANDARD.
+            {hero?.subheading}
           </DistressedHeading>
           <DistressedHeading
             className="text-lg font-bold px-0"
             font="font-heading"
             color="var(--content)"
           >
-            {`Professional plastering and dry-lining delivered by an experienced team,\nfrom individual domestic projects to larger commercial developments.`}
+            {hero?.text}
           </DistressedHeading>
           <div className="flex gap-2 mt-4">
             <Button size="2xl">
