@@ -44,8 +44,30 @@ jobs:
           node-version: 22
           cache: pnpm
 
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Cache Next.js build cache
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: nextjs-dev-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+          restore-keys: |
+            nextjs-dev-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+
       - run: pnpm install --frozen-lockfile
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+
+      # Sanity's webhook only fires on content publish — no code changed
+      # since the last push that already passed lint, so re-linting here
+      # is redundant.
       - run: pnpm run lint
+        if: github.event_name != 'repository_dispatch'
+
       - run: pnpm run build
 
       - uses: actions/upload-artifact@v4
@@ -83,8 +105,30 @@ jobs:
           node-version: 22
           cache: pnpm
 
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Cache Next.js build cache
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: nextjs-prod-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+          restore-keys: |
+            nextjs-prod-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+
       - run: pnpm install --frozen-lockfile
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+
+      # Sanity's webhook only fires on content publish — no code changed
+      # since the last push that already passed lint, so re-linting here
+      # is redundant.
       - run: pnpm run lint
+        if: github.event_name != 'repository_dispatch'
+
       - run: pnpm run build
 
       - uses: actions/upload-artifact@v4
