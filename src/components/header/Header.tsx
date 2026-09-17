@@ -1,12 +1,14 @@
+import type { ComponentType } from "react"
 import { Navbar } from "../Navbar"
 import { Hero } from "../hero/Hero"
-import type { HomePageQueryResult } from "@/sanity/types"
+import type { Hero as HeroData } from "@/sanity/types"
 
 type HeaderProps = {
-  hero?: NonNullable<HomePageQueryResult>["hero"]
+  hero?: HeroData | null
+  customComp?: ComponentType
 }
 
-export const Header = ({ hero }: HeaderProps) => {
+export const Header = ({ hero, customComp }: HeaderProps) => {
   return (
     <section
       id="home"
@@ -21,7 +23,7 @@ export const Header = ({ hero }: HeaderProps) => {
         <Navbar />
       </div>
 
-      <Hero hero={hero} />
+      <Hero hero={hero} customComp={customComp} />
     </section>
   )
 }

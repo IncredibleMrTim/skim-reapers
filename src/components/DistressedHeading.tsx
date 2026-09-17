@@ -9,6 +9,8 @@ interface DistressedHeadingProps {
   distress?: number
   /** Base fill color the noise texture is multiplied against. Defaults to white. */
   color?: string
+  /** Rendered as the `data-slot` attribute, for CMS-authored CSS to target. */
+  dataSlot?: string
 }
 
 function buildNoiseTextureUrl(distress: number): string {
@@ -25,10 +27,12 @@ export const DistressedHeading = ({
   className = "",
   distress = 25,
   color = "#fff",
+  dataSlot,
 }: DistressedHeadingProps) => {
   return (
     <div
-      className={`${font} whitespace-pre-line bg-clip-text text-transparent opacity-80 ${size} ${className}`}
+      data-slot={dataSlot}
+      className={`${font} whitespace-pre-line bg-clip-text text-transparent opacity-80 [&_p]:pb-2 ${size} ${className}`}
       style={{
         backgroundImage: `linear-gradient(${color}, ${color}), url("${buildNoiseTextureUrl(distress)}")`,
         backgroundSize: "420px 420px",

@@ -51,6 +51,67 @@ export type Image1 = {
   _type: "image";
 };
 
+export type AboutPage = {
+  _id: string;
+  _type: "aboutPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  hero?: Hero;
+  about?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+};
+
+export type Hero = {
+  _type: "hero";
+  showSmoke?: boolean;
+  background?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  eyebrow?: string;
+  heading?: string;
+  subheading?: string;
+  content?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  customCss?: Code;
+};
+
 export type Belief = Array<{
   internalTitle: string;
   heading: string;
@@ -97,21 +158,6 @@ export type WhatWeDo = {
     _type: "card";
     _key: string;
   }>;
-};
-
-export type Hero = {
-  _type: "hero";
-  eyebrow?: string;
-  heading?: string;
-  subheading?: string;
-  text?: string;
-  image?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
 };
 
 export type SanityFileAssetReference = {
@@ -177,6 +223,14 @@ export type SanityImageHotspot = {
   y: number;
   height: number;
   width: number;
+};
+
+export type Code = {
+  _type: "code";
+  language?: string;
+  filename?: string;
+  code?: string;
+  highlightedLines?: Array<number>;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -288,13 +342,15 @@ export type AllSanitySchemaTypes =
   | Icon
   | CardIcon
   | Image1
+  | AboutPage
+  | Hero
   | Belief
   | WhatWeDo
-  | Hero
   | SanityFileAssetReference
   | HomePage
   | SanityImageCrop
   | SanityImageHotspot
+  | Code
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -345,10 +401,19 @@ export type HomePageQueryResult = {
   } | null;
 } | null;
 
+// Source: src/sanity/queries.ts
+// Variable: aboutPageQuery
+// Query: *[_type == "aboutPage"][0]{  hero,  heading}
+export type AboutPageQueryResult = {
+  hero: Hero | null;
+  heading: null;
+} | null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "homePage"][0]{\n  hero,\n  whatWeDo,\n  belief,\n  heading,\n  body,\n  image,\n  video{ asset->{url} }\n}': HomePageQueryResult;
+    '*[_type == "aboutPage"][0]{\n  hero,\n  heading\n}': AboutPageQueryResult;
   }
 }

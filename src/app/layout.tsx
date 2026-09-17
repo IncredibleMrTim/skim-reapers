@@ -39,7 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         geist.variable,
       )}
     >
-      <body className="3xl:max-w-[1920px] mx-auto bg-brand-background min-h-full">
+      <body className="relative 3xl:max-w-[1920px] mx-auto bg-brand-background min-h-full">
         {children}
       </body>
     </html>
