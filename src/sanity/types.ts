@@ -65,15 +65,22 @@ export type AboutPage = {
       _type: "span";
       _key: string;
     }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
     listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
+    markDefs?: Array<
+      | {
+          href?: string;
+          _type: "link";
+          _key: string;
+        }
+      | {
+          hex?: string;
+          _type: "color";
+          _key: string;
+        }
+    >;
     level?: number;
-    _type: "block";
+    _type: "content";
     _key: string;
   }>;
 };
@@ -98,7 +105,7 @@ export type Hero = {
       _type: "span";
       _key: string;
     }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       href?: string;
@@ -403,10 +410,34 @@ export type HomePageQueryResult = {
 
 // Source: src/sanity/queries.ts
 // Variable: aboutPageQuery
-// Query: *[_type == "aboutPage"][0]{  hero,  heading}
+// Query: *[_type == "aboutPage"][0]{  hero,  about}
 export type AboutPageQueryResult = {
   hero: Hero | null;
-  heading: null;
+  about: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<
+      | {
+          hex?: string;
+          _type: "color";
+          _key: string;
+        }
+      | {
+          href?: string;
+          _type: "link";
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: "content";
+    _key: string;
+  }> | null;
 } | null;
 
 // Query TypeMap
@@ -414,6 +445,6 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "homePage"][0]{\n  hero,\n  whatWeDo,\n  belief,\n  heading,\n  body,\n  image,\n  video{ asset->{url} }\n}': HomePageQueryResult;
-    '*[_type == "aboutPage"][0]{\n  hero,\n  heading\n}': AboutPageQueryResult;
+    '*[_type == "aboutPage"][0]{\n  hero,\n  about\n}': AboutPageQueryResult;
   }
 }
