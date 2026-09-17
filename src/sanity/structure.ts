@@ -1,7 +1,7 @@
 import type { StructureResolver } from "sanity/structure";
 
-// Present Home Page as a singleton (a single editable document, not a
-// list of documents) since there's exactly one homepage.
+// Present Home Page and About Page as singletons (a single editable
+// document each, not a list of documents) since there's exactly one of each.
 export const structure: StructureResolver = (S) =>
   S.list()
     .title("Content")
@@ -10,5 +10,10 @@ export const structure: StructureResolver = (S) =>
         .title("Home Page")
         .child(
           S.document().schemaType("homePage").documentId("homePage")
+        ),
+      S.listItem()
+        .title("About Page")
+        .child(
+          S.document().schemaType("aboutPage").documentId("aboutPage")
         ),
     ]);

@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import { NextStudio } from "next-sanity/studio";
-import { useEffect } from "react";
+import { NextStudio } from "next-sanity/studio"
+import { useEffect } from "react"
 
-import config from "../../../../sanity.config";
-import "./admin-branding.css";
+import config from "../../../../../sanity.config"
+import "./admin-branding.css"
 
 // Sanity's own "Sign out" menu item has no redirect option, and Studio
 // unmounts its own component tree on sign-out (swapping straight to its
@@ -21,19 +21,19 @@ import "./admin-branding.css";
 function useRedirectOnSignOut() {
   useEffect(() => {
     function handleClick(event: MouseEvent) {
-      const target = event.target;
-      if (!(target instanceof Element)) return;
-      const menuItem = target.closest('[role="menuitem"]');
+      const target = event.target
+      if (!(target instanceof Element)) return
+      const menuItem = target.closest('[role="menuitem"]')
       if (menuItem?.textContent?.trim() === "Sign out") {
-        window.location.href = "/";
+        window.location.href = "/"
       }
     }
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
-  }, []);
+    document.addEventListener("click", handleClick)
+    return () => document.removeEventListener("click", handleClick)
+  }, [])
 }
 
 export default function AdminClient() {
-  useRedirectOnSignOut();
-  return <NextStudio config={config} />;
+  useRedirectOnSignOut()
+  return <NextStudio config={config} />
 }
