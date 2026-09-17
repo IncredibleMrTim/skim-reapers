@@ -12,5 +12,5 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
 
 export const aboutPageQuery = defineQuery(`*[_type == "aboutPage"][0]{
   hero,
-  heading
+  about
 }`)

@@ -12,10 +12,12 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
+    "@portabletext/editor": "^8.1.5",
     "@portabletext/react": "^8.0.1",
     "@sanity/client": "^7.26.2",
     "@sanity/code-input": "^7.3.8",
     "@sanity/image-url": "^2.1.1",
+    "@sanity/types": "6.11.0",
     "@sanity/vision": "^6.11.0",
     "@types/lodash": "^4.17.25",
     "class-variance-authority": "^0.7.1",
