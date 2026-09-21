@@ -13,22 +13,22 @@ export default async function AboutPage() {
     <>
       <Header hero={aboutPage?.hero ?? undefined} />
 
-      <section className="pt-20 w-full flex justify-end">
-        <div>
-          <Image
-            className="absolute left-20  [--mask-pos:center_top] md:[--mask-pos:right_bottom] opacity-15 z-2"
-            style={{
-              maskImage:
-                "radial-gradient(circle at var(--mask-pos),  black 15%, transparent 100%)",
-              WebkitMaskImage:
-                "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",
-            }}
-            priority
-            fill
-            alt="background"
-            src="/uneven-wall-plaster.jpg"
-          />
-        </div>
+      <section className="relative pt-20 w-full flex justify-end">
+        <Image
+          className="absolute left-0 top-0 bottom-0 h-full [--mask-pos:center_top] md:[--mask-pos:right_bottom] opacity-15 z-2  self-stretch object-fill"
+          style={{
+            maskImage:
+              "radial-gradient(circle at var(--mask-pos),  black 15%, transparent 100%)",
+            WebkitMaskImage:
+              "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",
+          }}
+          priority
+          width={2000}
+          height={2000}
+          alt="background"
+          src="/uneven-wall-plaster.jpg"
+        />
+
         <div className="flex relative z-10 px-8 w-350">
           <div className="grid grid-cols-[auto_1fr]">
             <div className="p-8">
