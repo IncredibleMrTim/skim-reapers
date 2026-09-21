@@ -14,10 +14,17 @@ const LOGO_URL = "/logo_extracted.png"
 
 type HeroProps = {
   hero?: HeroData | null
+  showHeroImageOnMobile?: boolean
+  showHeroTextOnMobile?: boolean
   customComp?: ComponentType
 }
 
-export const Hero = ({ hero, customComp: CustomComp }: HeroProps) => {
+export const Hero = ({
+  hero,
+  showHeroImageOnMobile = true,
+  showHeroTextOnMobile = true,
+  customComp: CustomComp,
+}: HeroProps) => {
   const customCss = sanitizeCustomCss(hero?.customCss?.code)
 
   const heroTextContent = (
@@ -66,11 +73,13 @@ export const Hero = ({ hero, customComp: CustomComp }: HeroProps) => {
         alt="Skim Reapers Ltd"
         width={342}
         height={242}
-        className="absolute top-0 md:-top-20 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 md:mx-4 my-4 md:my-10 w-70 md:w-90 brightness-110"
+        className={`absolute top-0 md:-top-20 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 md:mx-4 my-4 md:my-10 w-70 md:w-90 brightness-110 ${showHeroImageOnMobile ? "" : "max-md:hidden"}`}
         priority
       />
 
-      <div className="hidden md:flex justify-end z-1 absolute top-0 right-0 w-2/3 h-full">
+      <div
+        className={`hidden md:flex justify-end z-1 absolute top-0 right-0 w-2/3 h-full ${showHeroImageOnMobile ? "" : "max-md:hidden"}`}
+      >
         <div className="w-full h-full absolute top-0 right-0 bg-linear-to-r from-brand-background from-10% via-transparent via-40% to-transparent z-1" />
         {hero?.background && (
           <Image
@@ -107,7 +116,7 @@ export const Hero = ({ hero, customComp: CustomComp }: HeroProps) => {
           <div className="flex flex-row gap-4 w-full">
             <div
               data-slot="hero-content-container"
-              className="relative flex flex-col gap-1 justify-start mt-60 md:mt-0 md:pt-60 w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0"
+              className={`relative flex flex-col gap-1 justify-start mt-60 md:mt-0 md:pt-60 w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 ${showHeroTextOnMobile ? "" : "max-md:hidden"}`}
             >
               {heroTextContent}
             </div>
@@ -116,7 +125,7 @@ export const Hero = ({ hero, customComp: CustomComp }: HeroProps) => {
         ) : (
           <div
             data-slot="hero-content-container"
-            className="relative flex flex-col gap-1 justify-start mt-60 md:mt-0 md:pt-60 w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 md:w-4/10"
+            className={`relative flex flex-col gap-1 justify-start mt-60 md:mt-0 md:pt-60 w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 md:w-4/10 ${showHeroTextOnMobile ? "" : "max-md:hidden"}`}
           >
             {heroTextContent}
           </div>
