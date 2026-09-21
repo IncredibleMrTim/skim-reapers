@@ -30,7 +30,8 @@ import * as Ti from "react-icons/ti"
 import * as Vsc from "react-icons/vsc"
 import * as Wi from "react-icons/wi"
 import type { IconType } from "react-icons"
-import type { CardIcon } from "@/sanity/types"
+
+type IconReference = { name?: string; package?: string }
 
 const ICON_PACKAGES: Record<string, Record<string, IconType>> = {
   ai: Ai,
@@ -67,8 +68,8 @@ const ICON_PACKAGES: Record<string, Record<string, IconType>> = {
 }
 
 /** Resolves a Sanity-authored { name, package } pair (e.g. "FaHome", "react-icons/fa") to its react-icons component. */
-export function getIconComponent(icon?: CardIcon): IconType | undefined {
-  if (!icon) return undefined
+export function getIconComponent(icon?: IconReference): IconType | undefined {
+  if (!icon?.name || !icon.package) return undefined
 
   const packageKey = icon.package.toLowerCase()
   return ICON_PACKAGES[packageKey]?.[icon.name]

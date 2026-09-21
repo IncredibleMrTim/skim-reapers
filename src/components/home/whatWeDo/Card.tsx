@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { PortableText } from "@portabletext/react"
 import type { WhatWeDo } from "@/sanity/types"
-import { Button } from "@/components/ui/button"
+import { CtaButtons } from "@/components/CtaButtons"
 import { useRouter } from "next/navigation"
 
 type CardData = NonNullable<WhatWeDo["cards"]>[number]
@@ -37,17 +37,7 @@ export const Card = ({ image, title, text, buttons, path }: ICard) => {
         <div className="text-sm">
           <PortableText value={text} />
         </div>
-        {buttons?.map((b) => (
-          <Button
-            key={b._key}
-            onClick={(e) => {
-              e.stopPropagation()
-              router.push(b.path)
-            }}
-          >
-            {b.label}
-          </Button>
-        ))}
+        <CtaButtons buttons={buttons} />
       </div>
     </div>
   )

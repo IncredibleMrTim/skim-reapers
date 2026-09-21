@@ -22,6 +22,19 @@ export type SanityImageAssetReference = {
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
+export type ImageIcon = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "imageIcon.media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  _type: "image";
+};
+
+export type ReactIcon = {
+  name?: string;
+  package?: string;
+};
+
 export type CardImage = {
   asset?: SanityImageAssetReference;
   media?: unknown; // Unable to locate the referenced type "image.media" in schema
@@ -114,6 +127,16 @@ export type Hero = {
     }>;
     level?: number;
     _type: "block";
+    _key: string;
+  }>;
+  buttons?: Array<{
+    label: string;
+    path: string;
+    variant:
+      "default" | "outline" | "secondary" | "ghost" | "destructive" | "link";
+    imageIcon?: ImageIcon;
+    reactIcon?: ReactIcon;
+    _type: "buttons";
     _key: string;
   }>;
   customCss?: Code;
@@ -345,6 +368,8 @@ export type Slug = {
 
 export type AllSanitySchemaTypes =
   | SanityImageAssetReference
+  | ImageIcon
+  | ReactIcon
   | CardImage
   | Icon
   | CardIcon
