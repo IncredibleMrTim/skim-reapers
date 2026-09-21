@@ -71,6 +71,14 @@ export type AboutPage = {
   _updatedAt: string;
   _rev: string;
   hero?: Hero;
+  images?: Array<{
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }>;
   about?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -96,6 +104,22 @@ export type AboutPage = {
     _type: "content";
     _key: string;
   }>;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x: number;
+  y: number;
+  height: number;
+  width: number;
 };
 
 export type Hero = {
@@ -239,22 +263,6 @@ export type HomePage = {
   };
 };
 
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-};
-
 export type Code = {
   _type: "code";
   language?: string;
@@ -375,13 +383,13 @@ export type AllSanitySchemaTypes =
   | CardIcon
   | Image1
   | AboutPage
+  | SanityImageCrop
+  | SanityImageHotspot
   | Hero
   | Belief
   | WhatWeDo
   | SanityFileAssetReference
   | HomePage
-  | SanityImageCrop
-  | SanityImageHotspot
   | Code
   | SanityImagePaletteSwatch
   | SanityImagePalette
@@ -435,9 +443,17 @@ export type HomePageQueryResult = {
 
 // Source: src/sanity/queries.ts
 // Variable: aboutPageQuery
-// Query: *[_type == "aboutPage"][0]{  hero,  about}
+// Query: *[_type == "aboutPage"][0]{  hero,  images,  about}
 export type AboutPageQueryResult = {
   hero: Hero | null;
+  images: Array<{
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }> | null;
   about: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -470,6 +486,6 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "homePage"][0]{\n  hero,\n  whatWeDo,\n  belief,\n  heading,\n  body,\n  image,\n  video{ asset->{url} }\n}': HomePageQueryResult;
-    '*[_type == "aboutPage"][0]{\n  hero,\n  about\n}': AboutPageQueryResult;
+    '*[_type == "aboutPage"][0]{\n  hero,\n  images,\n  about\n}': AboutPageQueryResult;
   }
 }

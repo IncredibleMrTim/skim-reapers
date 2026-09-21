@@ -27,6 +27,29 @@ export function AccentMark({ children }: MarkProps) {
 }
 
 /**
+ * Heading-*looking* marks, not semantic headings — Portable Text's `style`
+ * field is block-only, so there's no way to make part of a paragraph a real
+ * `<h1>`. These give editors the same visual weight on an arbitrary text
+ * selection via an inline `<span>`, sized to match the block-level heading
+ * styles (see `STYLE_TAGS` in `PortableTextLiveInput.tsx`).
+ */
+export function Heading1Mark({ children }: MarkProps) {
+  return <span className="text-4xl font-bold">{children}</span>
+}
+
+export function Heading2Mark({ children }: MarkProps) {
+  return <span className="text-3xl font-bold">{children}</span>
+}
+
+export function Heading3Mark({ children }: MarkProps) {
+  return <span className="text-2xl font-bold">{children}</span>
+}
+
+export function Heading4Mark({ children }: MarkProps) {
+  return <span className="text-xl font-bold">{children}</span>
+}
+
+/**
  * `@portabletext/editor` ships no built-in decorator styling at all ("the
  * engine applies no decorator markup of its own") — unlike `@portabletext/react`,
  * which already renders these natively on the frontend. These exist only to
@@ -34,7 +57,7 @@ export function AccentMark({ children }: MarkProps) {
  * marks that the bundled editor would normally provide for free.
  */
 export function StrongMark({ children }: MarkProps) {
-  return <strong>{children}</strong>
+  return <strong className="font-bold">{children}</strong>
 }
 
 export function EmMark({ children }: MarkProps) {
@@ -84,6 +107,10 @@ export const DECORATOR_MARKS: Record<
   medium: MediumMark,
   large: LargeMark,
   accent: AccentMark,
+  heading1: Heading1Mark,
+  heading2: Heading2Mark,
+  heading3: Heading3Mark,
+  heading4: Heading4Mark,
   strong: StrongMark,
   em: EmMark,
   underline: UnderlineMark,
@@ -124,6 +151,10 @@ export const PORTABLE_TEXT_COMPONENTS: PortableTextComponents = {
     medium: ({ children }) => renderDecoratorMark("medium", children),
     large: ({ children }) => renderDecoratorMark("large", children),
     accent: ({ children }) => renderDecoratorMark("accent", children),
+    heading1: ({ children }) => renderDecoratorMark("heading1", children),
+    heading2: ({ children }) => renderDecoratorMark("heading2", children),
+    heading3: ({ children }) => renderDecoratorMark("heading3", children),
+    heading4: ({ children }) => renderDecoratorMark("heading4", children),
     link: ({ children, value }) =>
       renderAnnotationMark("link", value, children),
     color: ({ children, value }) =>

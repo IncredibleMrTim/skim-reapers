@@ -5,6 +5,7 @@ import type { AboutPageQueryResult } from "@/sanity/types"
 import Image from "next/image"
 import { PortableText } from "@portabletext/react"
 import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
+import { urlForImage } from "@/sanity/image"
 
 export default async function AboutPage() {
   const aboutPage = (await client.fetch(aboutPageQuery)) as AboutPageQueryResult
@@ -15,10 +16,10 @@ export default async function AboutPage() {
 
       <section className="relative pt-20 w-full flex justify-end">
         <Image
-          className="absolute left-0 top-0 bottom-0 h-full [--mask-pos:center_top] md:[--mask-pos:right_bottom] opacity-15 z-2  self-stretch object-fill"
+          className="absolute left-0 top-0 bottom-0 h-full [--mask-pos:center_top] md:[--mask-pos:top_left] opacity-15 z-2 "
           style={{
             maskImage:
-              "radial-gradient(circle at var(--mask-pos),  black 15%, transparent 100%)",
+              "radial-gradient(circle at var(--mask-pos), black 85%, transparent 10%)",
             WebkitMaskImage:
               "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",
           }}
@@ -26,19 +27,22 @@ export default async function AboutPage() {
           width={2000}
           height={2000}
           alt="background"
-          src="/uneven-wall-plaster.jpg"
+          src="/smoke_bg.webp"
         />
 
         <div className="flex relative z-10 px-8 w-350">
           <div className="grid grid-cols-[auto_1fr]">
-            <div className="p-8">
-              <Image
-                src="/profile-sm.jpg"
-                width={400}
-                height={200}
-                alt="Test"
-                className="border border-white p-1"
-              />
+            <div className="p-10 flex flex-col gap-4">
+              {aboutPage?.images?.map((image) => (
+                <Image
+                  key={image._key}
+                  src={urlForImage(image).url()}
+                  width={400}
+                  height={200}
+                  alt=""
+                  className="border border-white p-1 object-fit"
+                />
+              ))}
             </div>
             <div className="p-8 [&_strong]:font-heading font-inter">
               {aboutPage?.about && (
