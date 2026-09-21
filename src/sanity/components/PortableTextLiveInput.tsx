@@ -19,7 +19,12 @@ import {
   type Editor,
   type EditorEmittedEvent,
 } from "@portabletext/editor"
-import { EventListenerPlugin, NodePlugin } from "@portabletext/editor/plugins"
+import {
+  BehaviorPlugin,
+  EventListenerPlugin,
+  NodePlugin,
+} from "@portabletext/editor/plugins"
+import { defineBehavior, raise } from "@portabletext/editor/behaviors"
 import {
   getActiveAnnotations,
   isActiveAnnotation,
@@ -44,6 +49,7 @@ import type { PortableTextBlock } from "@portabletext/editor"
 import {
   renderAnnotationMark,
   renderDecoratorMark,
+  STYLE_TAGS,
 } from "@/components/portableText/marks"
 import { Button } from "@/components/ui/button"
 
@@ -99,22 +105,48 @@ function mapToSchemaFieldType(
 }
 
 /**
- * Studio's own CSS reset strips the browser's default heading styles, so
- * bare `<h1>`/`<h2>` tags render as plain text with no visual feedback —
- * these classNames give editors the same live-preview signal decorators get.
+ * Pressing Enter already splits into a new block (that's the default
+ * editor behavior). Pasting multi-paragraph plain text doesn't get the
+ * same treatment — the built-in deserializer keeps it as one block with
+ * the blank lines embedded as literal "\n\n" in a single span, which is
+ * why pasted and typed content end up structured differently even though
+ * both render the same way (see `whitespace-pre-line` on `renderBlock` in
+ * marks.tsx). This splits pasted text on blank lines into real blocks,
+ * matching what pressing Enter between each paragraph would have produced.
  */
-const STYLE_TAGS: Record<string, { tag: string; className: string }> = {
-  h1: { tag: "h1", className: "text-4xl font-bold" },
-  h2: { tag: "h2", className: "text-3xl font-bold" },
-  h3: { tag: "h3", className: "text-2xl font-bold" },
-  h4: { tag: "h4", className: "text-xl font-bold" },
-  h5: { tag: "h5", className: "text-lg font-bold" },
-  h6: { tag: "h6", className: "text-base font-bold" },
-  blockquote: {
-    tag: "blockquote",
-    className: "border-l-2 pl-4 italic opacity-80",
+const deserializePlainTextParagraphs = defineBehavior({
+  on: "deserialize.data",
+  guard: ({ snapshot, event }) => {
+    if (event.mimeType !== "text/plain") return false
+    const paragraphs = event.data
+      .split(/\n[ \t]*\n+/)
+      .map((paragraph) => paragraph.trim())
+      .filter(Boolean)
+    if (paragraphs.length < 2) return false
+    const blocks: PortableTextBlock[] = paragraphs.map((text) => ({
+      _key: snapshot.context.keyGenerator(),
+      _type: "block",
+      style: "normal",
+      markDefs: [],
+      children: [
+        {
+          _key: snapshot.context.keyGenerator(),
+          _type: "span",
+          text,
+          marks: [],
+        },
+      ],
+    }))
+    return { blocks }
   },
-}
+  actions: [
+    ({ event }, { blocks }) => [
+      raise({ ...event, type: "deserialization.success", data: blocks }),
+    ],
+  ],
+})
+
+const CUSTOM_BEHAVIORS = [deserializePlainTextParagraphs]
 
 function renderIcon(
   icon: BlockDecoratorDefinition["icon"] | ObjectSchemaType["icon"],
@@ -588,6 +620,7 @@ function PortableTextLiveInputComponent(
         }}
       />
       <NodePlugin nodes={nodes} />
+      <BehaviorPlugin behaviors={CUSTOM_BEHAVIORS} />
       <Toolbar decorators={decorators} annotations={annotations} />
       <PortableTextEditable
         style={{

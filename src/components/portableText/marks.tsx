@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import type { ElementType, ReactNode } from "react"
 import type { PortableTextComponents } from "@portabletext/react"
 
 /**
@@ -84,6 +84,49 @@ export function ColorMark({ children, hex }: MarkProps & { hex?: string }) {
   return hex ? <span style={{ color: hex }}>{children}</span> : <>{children}</>
 }
 
+/**
+ * Tag/className for each `block.style` value. Shared by the Studio editing
+ * canvas (`PortableTextLiveInput`) and the live frontend so headings/quotes
+ * look the same in both places.
+ */
+export const STYLE_TAGS: Record<string, { tag: string; className: string }> =
+  {
+    h1: { tag: "h1", className: "text-4xl font-bold" },
+    h2: { tag: "h2", className: "text-3xl font-bold" },
+    h3: { tag: "h3", className: "text-2xl font-bold" },
+    h4: { tag: "h4", className: "text-xl font-bold" },
+    h5: { tag: "h5", className: "text-lg font-bold" },
+    h6: { tag: "h6", className: "text-base font-bold" },
+    blockquote: {
+      tag: "blockquote",
+      className: "border-l-2 pl-4 italic opacity-80",
+    },
+  }
+
+/**
+ * Every block gets bottom margin regardless of style — otherwise adjacent
+ * paragraphs (and the blank-line blocks editors use as spacers) collapse
+ * to zero gap under Tailwind's preflight reset.
+ *
+ * `whitespace-pre-line` matters here too: editors press Enter mid-block
+ * (soft line break) rather than always starting a new block, which the
+ * editor stores as a literal "\n"/"\n\n" inside the span text rather than
+ * a dedicated break node. The Studio's `contenteditable` canvas renders
+ * that whitespace for free; a plain rendered `<p>` collapses it under
+ * normal CSS whitespace handling, so line breaks silently disappear.
+ */
+export function renderBlock(style: string | undefined, children: ReactNode) {
+  const resolved = style ? STYLE_TAGS[style] : undefined
+  const Tag = (resolved?.tag ?? "p") as ElementType
+  return (
+    <Tag
+      className={`mb-[0.5em] whitespace-pre-line ${resolved?.className ?? ""}`.trim()}
+    >
+      {children}
+    </Tag>
+  )
+}
+
 export function LinkMark({ children, href }: MarkProps & { href?: string }) {
   return (
     <a
@@ -146,6 +189,16 @@ export function renderAnnotationMark(
  * aren't listed here — `@portabletext/react` already renders those natively.
  */
 export const PORTABLE_TEXT_COMPONENTS: PortableTextComponents = {
+  block: {
+    normal: ({ children }) => renderBlock("normal", children),
+    h1: ({ children }) => renderBlock("h1", children),
+    h2: ({ children }) => renderBlock("h2", children),
+    h3: ({ children }) => renderBlock("h3", children),
+    h4: ({ children }) => renderBlock("h4", children),
+    h5: ({ children }) => renderBlock("h5", children),
+    h6: ({ children }) => renderBlock("h6", children),
+    blockquote: ({ children }) => renderBlock("blockquote", children),
+  },
   marks: {
     small: ({ children }) => renderDecoratorMark("small", children),
     medium: ({ children }) => renderDecoratorMark("medium", children),

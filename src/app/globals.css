@@ -172,6 +172,36 @@
   --ring: #af7c3c;
 }
 
+/*
+ * Sanity Studio marks its own light/dark regions with `data-scheme` (via
+ * @sanity/ui), independent of this site's `.dark`/`.light` classes. Our
+ * shadcn Button (used by `PortableTextLiveInput`'s formatting toolbar)
+ * otherwise inherits the brand's fixed dark `--background`/`--foreground`
+ * from `:root` no matter what Studio's own scheme is — invisible dark text
+ * on a dark button when Studio is in light mode. Mirroring `.light`'s
+ * values onto `[data-scheme="light"]` keeps the toolbar readable in
+ * whichever scheme the surrounding Studio chrome is actually using.
+ */
+[data-scheme="light"] {
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --primary: #af7c3c;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f4;
+  --secondary-foreground: #4a4a4a;
+  --muted: #f4f4f4;
+  --muted-foreground: #6b6460;
+  --accent: #af7c3c;
+  --accent-foreground: #ffffff;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #af7c3c;
+}
+
 html, body, #root {
   height: 100%;
 }
