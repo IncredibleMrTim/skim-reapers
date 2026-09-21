@@ -1,12 +1,13 @@
+"use client"
+
 import Image from "next/image"
 import { PortableText } from "@portabletext/react"
 import { DistressedHeading } from "@/components/DistressedHeading"
-import { Button } from "../ui/button"
-import { HiArrowNarrowRight } from "react-icons/hi"
 import type { Hero as HeroData } from "@/sanity/types"
 import { urlForImage } from "@/sanity/image"
 import { sanitizeCustomCss } from "@/lib/sanity"
 import type { ComponentType } from "react"
+import { CtaButtons } from "@/components/CtaButtons"
 
 const SMOKE_BG_URL = "/smoke_bg.webp"
 const LOGO_URL = "/logo_extracted.png"
@@ -20,7 +21,7 @@ export const Hero = ({ hero, customComp: CustomComp }: HeroProps) => {
   const customCss = sanitizeCustomCss(hero?.customCss?.code)
 
   const heroTextContent = (
-    <>
+    <div className="px-4">
       <DistressedHeading
         dataSlot="hero-eyebrow"
         font="font-heading"
@@ -52,16 +53,9 @@ export const Hero = ({ hero, customComp: CustomComp }: HeroProps) => {
         {hero?.content && <PortableText value={hero.content} />}
       </DistressedHeading>
       <div className="flex gap-2 mt-4">
-        <Button size="2xl">
-          GET A QUOTE
-          <HiArrowNarrowRight className="mt-0.5" />
-        </Button>
-        <Button size="2xl" variant="outline">
-          VIEW OUR WORK
-          <HiArrowNarrowRight className="mt-0.5" />
-        </Button>
+        <CtaButtons buttons={hero?.buttons} size="2xl" />
       </div>
-    </>
+    </div>
   )
 
   return (
@@ -113,7 +107,7 @@ export const Hero = ({ hero, customComp: CustomComp }: HeroProps) => {
           <div className="flex flex-row gap-4 w-full">
             <div
               data-slot="hero-content-container"
-              className="relative flex flex-col gap-1 justify-start mt-60 md:mt-0 md:pt-60 w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 md:w-4/10"
+              className="relative flex flex-col gap-1 justify-start mt-60 md:mt-0 md:pt-60 w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0"
             >
               {heroTextContent}
             </div>

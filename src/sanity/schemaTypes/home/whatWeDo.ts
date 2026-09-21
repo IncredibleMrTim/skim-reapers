@@ -81,7 +81,7 @@ export const whatWeDo = defineType({
               name: "buttons",
               type: "array",
               description:
-                "Action buttons for this card.  These can link off to other plages.",
+                "Action buttons for this card.  These can link off to other pages.",
               of: [
                 defineArrayMember({
                   name: "buttons",

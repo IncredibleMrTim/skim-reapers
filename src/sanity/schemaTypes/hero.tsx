@@ -89,12 +89,102 @@ export const hero = defineType({
       ],
     }),
     defineField({
+      name: "buttons",
+      type: "array",
+      description:
+        "Action buttons for the Hero Banner.  These can link off to other pages.",
+      of: [
+        defineArrayMember({
+          name: "buttons",
+          type: "object",
+          fields: [
+            defineField({
+              name: "label",
+              type: "string",
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "path",
+              type: "string",
+              description: "Where to navigate when this button is clicked.",
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "variant",
+              title: "Variant",
+              description: "The button style to use.",
+              type: "string",
+              options: {
+                list: [
+                  { title: "Default", value: "default" },
+                  { title: "Outline", value: "outline" },
+                  { title: "Secondary", value: "secondary" },
+                  { title: "Ghost", value: "ghost" },
+                  { title: "Destructive", value: "destructive" },
+                  { title: "Link", value: "link" },
+                ],
+                layout: "dropdown",
+              },
+              initialValue: "default",
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "imageIcon",
+              title: "Image Icon",
+              description:
+                "A custom image icon will be displayed on the button in place of the default -> icon.",
+              type: "image",
+              validation: (rule) =>
+                rule.custom((value, context) => {
+                  const parent = context.parent as
+                    | { reactIcon?: { name?: string } }
+                    | undefined
+                  if (value && parent?.reactIcon?.name) {
+                    return "Only one of Image Icon or React Icon can be set."
+                  }
+                  return true
+                }),
+            }),
+            defineField({
+              name: "reactIcon",
+              title: "React Icon",
+              description:
+                "A custom React-Icon will be displayed on the button in place of the default -> icon.",
+              type: "object",
+              fields: [
+                defineField({
+                  name: "name",
+                  type: "string",
+                  description: "The icon component name from React Icons.",
+                }),
+                defineField({
+                  name: "package",
+                  type: "string",
+                  description: "The react-icons package (e.g. react-icons/fa).",
+                }),
+              ],
+              validation: (rule) =>
+                rule.custom((value, context) => {
+                  const parent = context.parent as
+                    | { imageIcon?: { asset?: unknown } }
+                    | undefined
+                  if (value?.name && parent?.imageIcon?.asset) {
+                    return "Only one of Image Icon or React Icon can be set."
+                  }
+                  return true
+                }),
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
       name: "customCss",
       title: "Custom CSS applied to the Hero Banner (Advanced).",
       description: (
         <>
-          Vanilla CSS. Click a selector to copy it, then scope your rules
-          under it to target specific elements of the Hero:
+          Vanilla CSS. Click a selector to copy it, then scope your rules under
+          it to target specific elements of the Hero:
           <ul
             style={{
               margin: "0.5em 0 0",
