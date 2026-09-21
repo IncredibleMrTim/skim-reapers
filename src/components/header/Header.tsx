@@ -5,10 +5,21 @@ import type { Hero as HeroData } from "@/sanity/types"
 
 type HeaderProps = {
   hero?: HeroData | null
+  showHero?: boolean
+  showHeroOnMobile?: boolean
+  showHeroImageOnMobile?: boolean
+  showHeroTextOnMobile?: boolean
   customComp?: ComponentType
 }
 
-export const Header = ({ hero, customComp }: HeaderProps) => {
+export const Header = ({
+  hero,
+  showHero = true,
+  showHeroOnMobile = true,
+  showHeroImageOnMobile = true,
+  showHeroTextOnMobile = true,
+  customComp,
+}: HeaderProps) => {
   return (
     <section
       id="home"
@@ -23,7 +34,16 @@ export const Header = ({ hero, customComp }: HeaderProps) => {
         <Navbar />
       </div>
 
-      <Hero hero={hero} customComp={customComp} />
+      {showHero && (
+        <div className={showHeroOnMobile ? undefined : "hidden md:block"}>
+          <Hero
+            hero={hero}
+            customComp={customComp}
+            showHeroImageOnMobile={showHeroImageOnMobile}
+            showHeroTextOnMobile={showHeroTextOnMobile}
+          />
+        </div>
+      )}
     </section>
   )
 }
