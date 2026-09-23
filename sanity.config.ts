@@ -2,6 +2,7 @@ import { visionTool } from "@sanity/vision"
 import { defineConfig } from "sanity"
 import { structureTool } from "sanity/structure"
 
+import { codeInput } from "@sanity/code-input"
 import { apiVersion, dataset, projectId } from "./src/sanity/env"
 import { schema } from "./src/sanity/schemaTypes"
 import { structure } from "./src/sanity/structure"
@@ -15,6 +16,7 @@ export default defineConfig({
   plugins: [
     structureTool({ structure }),
     visionTool({ defaultApiVersion: apiVersion }),
+    codeInput(),
   ],
   // Google as the primary sign-in, with Sanity's own email/password as a
   // fallback if Google is unavailable — drops GitHub/Vercel from the

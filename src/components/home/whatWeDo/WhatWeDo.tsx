@@ -1,21 +1,16 @@
 "use client"
 import { DistressedHeading } from "@/components/DistressedHeading"
-import { Button } from "@/components/ui/button"
-import { HiArrowNarrowRight } from "react-icons/hi"
+import { CtaButtons } from "@/components/CtaButtons"
 import { Card } from "./Card"
 import { PortableText } from "@portabletext/react"
 import type { WhatWeDo as WhatWeDoQueryResult } from "@/sanity/types"
 import { urlForImage } from "@/sanity/image"
-import Image from "next/image"
-import { useRouter } from "next/navigation"
 
 type WhatWeDoProps = {
   queryResult: WhatWeDoQueryResult
 }
 
 export const WhatWeDo = ({ queryResult }: WhatWeDoProps) => {
-  const router = useRouter()
-
   return (
     <div className="relative flex flex-col md:flex-row gap-8 justify-between w-full bg-brand-content px-8 py-4">
       <div
@@ -41,27 +36,12 @@ export const WhatWeDo = ({ queryResult }: WhatWeDoProps) => {
                 {c?.text && <PortableText value={c.text} />}
               </div>
               <div>
-                {c?.buttons?.map((b) => (
-                  <Button
-                    key={b._key}
-                    variant="secondary"
-                    size="lg"
-                    className="text-white"
-                    onClick={b?.path ? () => router.push(b.path) : undefined}
-                  >
-                    {b.label}
-                    {b?.icon ? (
-                      <Image
-                        src={urlForImage(b?.icon).url()}
-                        alt={`${b.label} navigation button`}
-                        width={24}
-                        height={24}
-                      />
-                    ) : (
-                      <HiArrowNarrowRight className="mt-0.5" />
-                    )}
-                  </Button>
-                ))}
+                <CtaButtons
+                  buttons={c?.buttons}
+                  variant="secondary"
+                  size="lg"
+                  className="text-white"
+                />
               </div>
             </div>
           </div>

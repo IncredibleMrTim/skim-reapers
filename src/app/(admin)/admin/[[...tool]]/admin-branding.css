@@ -121,3 +121,18 @@ svg[data-sanity-icon="sanity-logo"] {
   display: none !important;
 }
 
+/* Widens the document editing form (640px by default) so fields with more
+ * going on — like the About page's rich-text toolbar with its Format/
+ * Size/Heading/Other button groups — have room to lay out in one row
+ * instead of wrapping. No `data-ui` hook exists on this element, so this
+ * is keyed off `FormContainer`, the stable styled-components display-name
+ * class Sanity leaves on it (the trailing hash after it is the unstable
+ * per-build part and isn't included) — a Sanity Studio version bump could
+ * rename it and silently stop matching, unlike the `data-ui` selectors
+ * above. Verified live: matches exactly one element, the document pane's
+ * form wrapper.
+ */
+[class*="FormContainer-"] {
+  max-width: 1100px !important;
+}
+

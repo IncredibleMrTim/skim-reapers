@@ -4,6 +4,11 @@ export const homePage = defineType({
   name: "homePage",
   title: "Home Page",
   type: "document",
+  preview: {
+    prepare() {
+      return { title: "Home Page" }
+    },
+  },
   groups: [
     { name: "content", title: "Content", default: true },
     { name: "hero", title: "Hero" },

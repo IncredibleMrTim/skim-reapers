@@ -9,3 +9,9 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
   image,
   video{ asset->{url} }
 }`)
+
+export const aboutPageQuery = defineQuery(`*[_type == "aboutPage"][0]{
+  hero,
+  images,
+  about
+}`)

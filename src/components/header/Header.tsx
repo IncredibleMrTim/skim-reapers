@@ -1,16 +1,29 @@
+import type { ComponentType } from "react"
 import { Navbar } from "../Navbar"
 import { Hero } from "../hero/Hero"
-import type { HomePageQueryResult } from "@/sanity/types"
+import type { Hero as HeroData } from "@/sanity/types"
 
 type HeaderProps = {
-  hero?: NonNullable<HomePageQueryResult>["hero"]
+  hero?: HeroData | null
+  showHero?: boolean
+  showHeroOnMobile?: boolean
+  showHeroImageOnMobile?: boolean
+  showHeroTextOnMobile?: boolean
+  customComp?: ComponentType
 }
 
-export const Header = ({ hero }: HeaderProps) => {
+export const Header = ({
+  hero,
+  showHero = true,
+  showHeroOnMobile = true,
+  showHeroImageOnMobile = true,
+  showHeroTextOnMobile = true,
+  customComp,
+}: HeaderProps) => {
   return (
     <section
       id="home"
-      className="relative flex w-full flex-col grow-0 h-190 md:h-164 overflow-hidden bg-brand-background text-brand-background mx-auto"
+      className="absolute flex w-full flex-col grow-0 h-190 md:h-164 overflow-hidden bg-brand-background text-brand-background mx-auto"
       style={{
         background: "var(--background)",
         color: "var(--foreground)",
@@ -21,7 +34,16 @@ export const Header = ({ hero }: HeaderProps) => {
         <Navbar />
       </div>
 
-      <Hero hero={hero} />
+      {showHero && (
+        <div className={showHeroOnMobile ? undefined : "hidden md:block"}>
+          <Hero
+            hero={hero}
+            customComp={customComp}
+            showHeroImageOnMobile={showHeroImageOnMobile}
+            showHeroTextOnMobile={showHeroTextOnMobile}
+          />
+        </div>
+      )}
     </section>
   )
 }
