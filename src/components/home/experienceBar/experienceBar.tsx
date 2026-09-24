@@ -49,7 +49,7 @@ export const ExperienceBar = () => {
           orientation="vertical"
           className="via-brand-content/50"
         />
-        <div className="w-full md:w-1/7 justify-center md:justify-start flex">
+        <div className="justify-center md:justify-start lg:justify-center flex">
           <div className="flex px-4 gap-1 h-full">
             <TfiCup className="text-brand-accent size-full py-2" />
             <div className="flex flex-wrap flex-col text-center md:text-right gap-1 ">
