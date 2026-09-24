@@ -136,3 +136,16 @@ svg[data-sanity-icon="sanity-logo"] {
   max-width: 1100px !important;
 }
 
+/* Portable Text blocks get their own separate reading-width cap (measured
+ * live: a fixed 640px, centered with equal padding on both sides) from
+ * `@sanity/ui`'s theme, independent of the `FormContainer` width above —
+ * widening the form didn't widen the text block inside it. Keyed off
+ * `data-pt-block`, a stable functional attribute the Portable Text editor
+ * sets on every block element (not a styled-components hash), so this
+ * survives Sanity Studio version bumps better than a class selector would.
+ */
+[data-pt-block] {
+  width: 100% !important;
+  max-width: none !important;
+}
+
