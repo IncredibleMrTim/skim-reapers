@@ -17,8 +17,8 @@ permissions:
   contents: write
 
 jobs:
-  build-dev:
-    name: Lint & build (dev)
+  dev:
+    name: Lint, build & deploy (dev)
     if: |
       (github.event_name == 'push' && github.ref == 'refs/heads/dev') ||
       (github.event_name == 'pull_request' && github.base_ref == 'dev') ||
@@ -29,6 +29,8 @@ jobs:
       NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
       NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
       NEXT_PUBLIC_SANITY_API_VERSION: ${{ vars.NEXT_PUBLIC_SANITY_API_VERSION }}
+      KRYSTAL_REPO_ROOT: ${{ secrets.KRYSTAL_DEV_REPO_ROOT }}
+      DEPLOY_BRANCH: deploy/dev
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,75 +46,35 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run lint
-      - run: pnpm run build
-
-      - uses: actions/upload-artifact@v4
-        if: github.event_name != 'pull_request'
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
         with:
-          name: static-build-dev
-          path: out
-          retention-days: 1
-          include-hidden-files: true
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
 
-  build-prod:
-    name: Lint & build (production)
-    if: |
-      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-      (github.event_name == 'pull_request' && github.base_ref == 'main') ||
-      (github.event_name == 'repository_dispatch' && github.event.action == 'sanity-publish-prod')
-    runs-on: ubuntu-latest
-    environment: production
-    env:
-      NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
-      NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
-      NEXT_PUBLIC_SANITY_API_VERSION: ${{ vars.NEXT_PUBLIC_SANITY_API_VERSION }}
-    steps:
-      - uses: actions/checkout@v4
+      - name: Cache Next.js build cache
+        uses: actions/cache@v4
         with:
-          # repository_dispatch (Sanity's webhook) has no natural branch
-          # context, so pin it to main — the production dataset's
-          # publish should always rebuild main's own code.
-          ref: ${{ github.event_name == 'repository_dispatch' && 'main' || github.ref }}
-
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
+          path: .next/cache
+          key: nextjs-dev-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+          restore-keys: |
+            nextjs-dev-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
 
       - run: pnpm install --frozen-lockfile
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+
+      # Sanity's webhook only fires on content publish — no code changed
+      # since the last push that already passed lint, so re-linting here
+      # is redundant.
       - run: pnpm run lint
+        if: github.event_name != 'repository_dispatch'
+
       - run: pnpm run build
 
-      - uses: actions/upload-artifact@v4
-        if: github.event_name != 'pull_request'
-        with:
-          name: static-build-prod
-          path: out
-          retention-days: 1
-          include-hidden-files: true
-
-  deploy-production:
-    name: Deploy to skimreapers.co.uk
-    needs: build-prod
-    if: |
-      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-      (github.event_name == 'repository_dispatch' && github.event.action == 'sanity-publish-prod')
-    runs-on: ubuntu-latest
-    environment: production
-    env:
-      KRYSTAL_REPO_ROOT: ${{ secrets.KRYSTAL_PROD_REPO_ROOT }}
-      DEPLOY_BRANCH: deploy/main
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: static-build-prod
-          path: static-build
-
+      # PRs only need lint+build to validate — never deploy.
       - name: Push static build to deploy branch
+        if: github.event_name != 'pull_request'
         run: |
           set -euo pipefail
           REPO_URL="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
@@ -128,7 +90,7 @@ jobs:
             mkdir -p deploy-repo
             (cd deploy-repo && git init -q && git checkout -q -b "$DEPLOY_BRANCH")
           fi
-          cp -r static-build/. deploy-repo/
+          cp -r out/. deploy-repo/
           cd deploy-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -137,6 +99,7 @@ jobs:
           git push -q "$REPO_URL" "HEAD:$DEPLOY_BRANCH"
 
       - name: Pull into Krystal via cPanel UAPI
+        if: github.event_name != 'pull_request'
         run: |
           set -euo pipefail
           BASE="https://${{ secrets.KRYSTAL_HOST }}:2083/execute"
@@ -150,24 +113,64 @@ jobs:
           echo "$resp" | jq .
           echo "$resp" | jq -e '.status == 1' >/dev/null
 
-  deploy-dev:
-    name: Deploy to dev.skimreapers.co.uk
-    needs: build-dev
+  production:
+    name: Lint, build & deploy (production)
     if: |
-      (github.event_name == 'push' && github.ref == 'refs/heads/dev') ||
-      (github.event_name == 'repository_dispatch' && github.event.action == 'sanity-publish-dev')
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'pull_request' && github.base_ref == 'main') ||
+      (github.event_name == 'repository_dispatch' && github.event.action == 'sanity-publish-prod')
     runs-on: ubuntu-latest
-    environment: dev
+    environment: production
     env:
-      KRYSTAL_REPO_ROOT: ${{ secrets.KRYSTAL_DEV_REPO_ROOT }}
-      DEPLOY_BRANCH: deploy/dev
+      NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+      NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
+      NEXT_PUBLIC_SANITY_API_VERSION: ${{ vars.NEXT_PUBLIC_SANITY_API_VERSION }}
+      KRYSTAL_REPO_ROOT: ${{ secrets.KRYSTAL_PROD_REPO_ROOT }}
+      DEPLOY_BRANCH: deploy/main
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v4
         with:
-          name: static-build-dev
-          path: static-build
+          # repository_dispatch (Sanity's webhook) has no natural branch
+          # context, so pin it to main — the production dataset's
+          # publish should always rebuild main's own code.
+          ref: ${{ github.event_name == 'repository_dispatch' && 'main' || github.ref }}
 
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Cache Next.js build cache
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: nextjs-prod-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+          restore-keys: |
+            nextjs-prod-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+
+      - run: pnpm install --frozen-lockfile
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+
+      # Sanity's webhook only fires on content publish — no code changed
+      # since the last push that already passed lint, so re-linting here
+      # is redundant.
+      - run: pnpm run lint
+        if: github.event_name != 'repository_dispatch'
+
+      - run: pnpm run build
+
+      # PRs only need lint+build to validate — never deploy.
       - name: Push static build to deploy branch
+        if: github.event_name != 'pull_request'
         run: |
           set -euo pipefail
           REPO_URL="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
@@ -178,7 +181,7 @@ jobs:
             mkdir -p deploy-repo
             (cd deploy-repo && git init -q && git checkout -q -b "$DEPLOY_BRANCH")
           fi
-          cp -r static-build/. deploy-repo/
+          cp -r out/. deploy-repo/
           cd deploy-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -187,6 +190,7 @@ jobs:
           git push -q "$REPO_URL" "HEAD:$DEPLOY_BRANCH"
 
       - name: Pull into Krystal via cPanel UAPI
+        if: github.event_name != 'pull_request'
         run: |
           set -euo pipefail
           BASE="https://${{ secrets.KRYSTAL_HOST }}:2083/execute"
