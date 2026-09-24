@@ -8,6 +8,7 @@ import { BeliefBar } from "@/components/home/beliefBar/BeliefBar"
 import { ExperienceBar } from "@/components/home/experienceBar/experienceBar"
 import { Header } from "@/components/header/Header"
 import { HomePageQueryResult } from "@/sanity/types"
+import { PageContainer } from "@/components/PageContainer"
 
 export default async function Home() {
   const homePage = (await client.fetch(homePageQuery)) as HomePageQueryResult
@@ -32,15 +33,13 @@ export default async function Home() {
   return (
     <>
       <Header hero={homePage.hero ?? undefined} />
-      <div className="w-full mx-auto">
-        <main className="mx-auto">
-          <div className="hidden md:block w-full">
-            <BeliefBar queryResult={homePage.belief ?? []} />
-          </div>
-          {homePage.whatWeDo && <WhatWeDo queryResult={homePage.whatWeDo} />}
-          <ExperienceBar />
-        </main>
-      </div>
+      <PageContainer>
+        <div className="hidden md:block w-full">
+          <BeliefBar queryResult={homePage.belief ?? []} />
+        </div>
+        {homePage.whatWeDo && <WhatWeDo queryResult={homePage.whatWeDo} />}
+        <ExperienceBar />
+      </PageContainer>
     </>
   )
 }

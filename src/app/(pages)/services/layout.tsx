@@ -1,6 +1,6 @@
 import { createPageMetadata } from "@/lib/metadata"
 
-export const metadata = createPageMetadata("about")
+export const metadata = createPageMetadata("services")
 
 export default function DispatchLayout({
   children,

@@ -3,8 +3,12 @@ import {
   defineField,
   type BlockAnnotationProps,
   type BlockDecoratorProps,
+  type BlockProps,
 } from "sanity"
 import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
   Bold,
   Code,
   Heading1,
@@ -41,6 +45,31 @@ function annotationComponent(props: BlockAnnotationProps) {
   return (
     <>{renderAnnotationMark(props.schemaType.name, props.value, props.textElement)}</>
   )
+}
+
+/** Matches `IMAGE_SIZE_CLASSES` in `components/portableText/marks.tsx` so the
+ * Studio canvas previews an image block at roughly the width it renders on
+ * the live site. */
+const IMAGE_EDITOR_WIDTH: Record<string, string> = {
+  small: "33%",
+  medium: "66%",
+  large: "100%",
+}
+
+/** Matches `IMAGE_ALIGNMENT_CLASSES` in `components/portableText/marks.tsx`. */
+const IMAGE_EDITOR_MARGIN: Record<string, string> = {
+  left: "0 auto 0 0",
+  center: "0 auto",
+  right: "0 0 0 auto",
+}
+
+function imageBlockPreviewComponent(props: BlockProps) {
+  const value = props.value as
+    | { size?: string; alignment?: string }
+    | undefined
+  const width = IMAGE_EDITOR_WIDTH[value?.size ?? "large"]
+  const margin = IMAGE_EDITOR_MARGIN[value?.alignment ?? "center"]
+  return <div style={{ width, margin }}>{props.renderDefault(props)}</div>
 }
 
 type TPortableTextSchema = {
@@ -144,6 +173,24 @@ export const portableTextSchema = ({
               icon: Heading4,
               component: decoratorComponent,
             },
+            {
+              title: "Align Left",
+              value: "align-left",
+              icon: AlignLeft,
+              component: decoratorComponent,
+            },
+            {
+              title: "Align Center",
+              value: "align-center",
+              icon: AlignCenter,
+              component: decoratorComponent,
+            },
+            {
+              title: "Align Right",
+              value: "align-right",
+              icon: AlignRight,
+              component: decoratorComponent,
+            },
           ],
           annotations: [
             defineArrayMember({
@@ -193,6 +240,52 @@ export const portableTextSchema = ({
             }),
           ],
         },
+      }),
+      defineArrayMember({
+        name: "image",
+        type: "image",
+        options: { hotspot: true },
+        components: { block: imageBlockPreviewComponent },
+        fields: [
+          defineField({
+            name: "alt",
+            title: "Alt Text",
+            description: "Describes the image for screen readers and SEO.",
+            type: "string",
+            validation: (Rule) => Rule.required(),
+          }),
+          defineField({
+            name: "size",
+            title: "Size",
+            description: "How wide the image displays on the page.",
+            type: "string",
+            options: {
+              list: [
+                { title: "Small", value: "small" },
+                { title: "Medium", value: "medium" },
+                { title: "Large (full width)", value: "large" },
+              ],
+              layout: "radio",
+            },
+            initialValue: "large",
+          }),
+          defineField({
+            name: "alignment",
+            title: "Alignment",
+            description:
+              "Where the image sits horizontally when it's narrower than full width.",
+            type: "string",
+            options: {
+              list: [
+                { title: "Left", value: "left" },
+                { title: "Center", value: "center" },
+                { title: "Right", value: "right" },
+              ],
+              layout: "radio",
+            },
+            initialValue: "center",
+          }),
+        ],
       }),
     ],
   })

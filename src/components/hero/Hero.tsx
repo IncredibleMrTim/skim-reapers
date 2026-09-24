@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { PortableText } from "@portabletext/react"
+import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
 import { DistressedHeading } from "@/components/DistressedHeading"
 import type { Hero as HeroData } from "@/sanity/types"
 import { urlForImage } from "@/sanity/image"
@@ -61,7 +62,12 @@ export const Hero = ({
         font="font-heading"
         color="var(--content)"
       >
-        {hero?.content && <PortableText value={hero.content} />}
+        {hero?.content && (
+          <PortableText
+            value={hero.content}
+            components={PORTABLE_TEXT_COMPONENTS}
+          />
+        )}
       </DistressedHeading>
       <div className="flex gap-2 mt-4">
         <CtaButtons buttons={hero?.buttons} size="2xl" />
@@ -71,7 +77,7 @@ export const Hero = ({
 
   return (
     <div
-      className={cn("relative px-4", floating && "h-full")}
+      className={cn("relative px-4 min-h-164", floating && "h-full")}
       data-slot="hero-container"
     >
       {customCss && <style>{customCss}</style>}
@@ -135,7 +141,7 @@ export const Hero = ({
         <div
           data-slot="hero-content-container"
           className={cn(
-            "relative justify-start w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 md:w-4/10",
+            "relative justify-start w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 md:w-[var(--hero-content-width)]",
             floating ? "mt-60 md:mt-0 md:pt-60" : "pt-60 pb-8",
             showHeroTextOnMobile ? "" : "max-md:hidden",
           )}
