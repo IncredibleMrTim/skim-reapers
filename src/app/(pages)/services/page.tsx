@@ -12,7 +12,7 @@ export default async function ServicesPage() {
   return (
     <>
       <Header hero={servicePage?.hero ?? undefined} />
-      <div className="w-full mx-auto pt-164">
+      <div className="w-full mx-auto">
         <main className="mx-auto"></main>
       </div>
     </>

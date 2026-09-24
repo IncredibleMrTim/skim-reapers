@@ -8,6 +8,7 @@ import { urlForImage } from "@/sanity/image"
 import { sanitizeCustomCss } from "@/lib/sanity"
 import type { ComponentType } from "react"
 import { CtaButtons } from "@/components/CtaButtons"
+import { cn } from "@/lib/utils"
 
 const SMOKE_BG_URL = "/smoke_bg.webp"
 const LOGO_URL = "/logo_extracted1.png"
@@ -17,6 +18,8 @@ type HeroProps = {
   showHeroImageOnMobile?: boolean
   showHeroTextOnMobile?: boolean
   customComp?: ComponentType
+  /** See Header's `floating` prop — Hero mirrors it so its own sizing matches. */
+  floating?: boolean
 }
 
 export const Hero = ({
@@ -24,11 +27,12 @@ export const Hero = ({
   showHeroImageOnMobile = true,
   showHeroTextOnMobile = true,
   customComp: CustomComp,
+  floating = false,
 }: HeroProps) => {
   const customCss = sanitizeCustomCss(hero?.customCss?.code)
 
   const heroTextContent = (
-    <div className="flex flex-col gap-2 px-4">
+    <div className="flex flex-col gap-1 px-4">
       <DistressedHeading
         dataSlot="hero-eyebrow"
         font="font-heading"
@@ -39,7 +43,7 @@ export const Hero = ({
       </DistressedHeading>
       <DistressedHeading
         dataSlot="hero-heading"
-        className="tracking-[-0.01em] text-5xl md:text-6xl xlg:text-7xl"
+        className="tracking-[-0.01em] text-5xl md:text-5xl xl:text-6xl"
       >
         {hero?.heading}
       </DistressedHeading>
@@ -66,7 +70,10 @@ export const Hero = ({
   )
 
   return (
-    <div className="relative h-full px-4" data-slot="hero-container">
+    <div
+      className={cn("relative px-4", floating && "h-full")}
+      data-slot="hero-container"
+    >
       {customCss && <style>{customCss}</style>}
       <Image
         src={LOGO_URL}
@@ -92,45 +99,50 @@ export const Hero = ({
           />
         )}
       </div>
-      <div className="absolute inset-x-0">
-        <div className="relative h-full sm:block z-9">
-          {hero?.showSmoke && (
-            <Image
-              src={SMOKE_BG_URL}
-              alt="Skim Reapers Ltd"
-              width={280}
-              height={150}
-              className="absolute -top-20 left-1/2 -translate-x-1/2 md:-left-10 md:translate-x-0 h-180 w-280 max-w-none opacity-60 md:opacity-40 z-9 object-cover [--mask-pos:center_top] md:[--mask-pos:top_left]"
-              style={{
-                maskImage:
-                  "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",
-                WebkitMaskImage:
-                  "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",
-              }}
-              priority
-            />
-          )}
-        </div>
 
-        {CustomComp ? (
-          <div className="flex flex-row gap-4 w-full">
-            <div
-              data-slot="hero-content-container"
-              className={`relative flex flex-col gap-1 justify-start mt-60 md:mt-0 md:pt-60 w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 ${showHeroTextOnMobile ? "" : "max-md:hidden"}`}
-            >
-              {heroTextContent}
-            </div>
-            <CustomComp />
-          </div>
-        ) : (
+      {hero?.showSmoke && (
+        <Image
+          src={SMOKE_BG_URL}
+          alt="Skim Reapers Ltd"
+          width={280}
+          height={150}
+          className="absolute -top-20 left-1/2 -translate-x-1/2 md:-left-10 md:translate-x-0 h-180 w-280 max-w-none opacity-60 md:opacity-40 z-9 object-cover [--mask-pos:center_top] md:[--mask-pos:top_left]"
+          style={{
+            maskImage:
+              "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",
+            WebkitMaskImage:
+              "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",
+          }}
+          priority
+        />
+      )}
+
+      {CustomComp ? (
+        <div className="relative flex flex-row gap-4 w-full">
           <div
             data-slot="hero-content-container"
-            className={`relative justify-start mt-60 md:mt-0 md:pt-60 w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 md:w-4/10 ${showHeroTextOnMobile ? "" : "max-md:hidden"}`}
+            className={cn(
+              "relative flex flex-col gap-1 justify-start w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0",
+              floating ? "mt-60 md:mt-0 md:pt-60" : "pt-60 pb-8",
+              showHeroTextOnMobile ? "" : "max-md:hidden",
+            )}
           >
             {heroTextContent}
           </div>
-        )}
-      </div>
+          <CustomComp />
+        </div>
+      ) : (
+        <div
+          data-slot="hero-content-container"
+          className={cn(
+            "relative justify-start w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 md:w-4/10",
+            floating ? "mt-60 md:mt-0 md:pt-60" : "pt-60 pb-8",
+            showHeroTextOnMobile ? "" : "max-md:hidden",
+          )}
+        >
+          {heroTextContent}
+        </div>
+      )}
     </div>
   )
 }

@@ -32,7 +32,7 @@ export default async function Home() {
   return (
     <>
       <Header hero={homePage.hero ?? undefined} />
-      <div className="w-full mx-auto pt-164">
+      <div className="w-full mx-auto">
         <main className="mx-auto">
           <div className="hidden md:block w-full">
             <BeliefBar queryResult={homePage.belief ?? []} />
