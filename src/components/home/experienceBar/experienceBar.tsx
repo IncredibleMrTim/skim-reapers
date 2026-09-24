@@ -12,7 +12,7 @@ export const ExperienceBar = () => {
         height={500}
         alt="Experience bar image"
         src="/grim_reaper.png"
-        className="h-full"
+        className="self-stretch object-cover"
       />
 
       <Separator
@@ -20,12 +20,12 @@ export const ExperienceBar = () => {
         orientation="vertical"
         className="via-brand-content/50"
       />
-      <div className="flex flex-wrap md:flex-nowrap flex-col md:flex-row items-center md:items-start w-full gap-8 md:gap-2 mt-8 md:mt-0">
-        <div className="flex flex-col self-stretch w-full md:w-1/4 justify-between px-4 items-center md:items-start gap-4 md:gap-">
-          <div className="flex flex-col gap-4 md:gap-1 items-center md:items-start  text-center md:text-left">
+      <div className="flex flex-wrap md:flex-nowrap flex-col md:flex-row items-center md:items-start w-full gap-8 md:gap-2 mt-8 md:mt-0 py-4">
+        <div className="flex flex-col self-stretch w-full md:w-1/4 justify-between px-4 items-center md:items-start gap-4 md:gap-1">
+          <div className="flex flex-col gap-4 md:gap-1 items-center md:items-start text-center md:text-left">
             <div>
               <p className="text-brand-accent text-sm">THE NAME IS NEW.</p>
-              <p className="text-brand-content">THE EXPERIENCE ISN`T.</p>
+              <p className="text-brand-content">THE EXPERIENCE ISN&apos;T.</p>
             </div>
             <p className="text-brand-content text-sm md:text-xs">
               Skim Reapers is the next chapter of an established plastering
@@ -45,10 +45,10 @@ export const ExperienceBar = () => {
           orientation="vertical"
           className="via-brand-content/50"
         />
-        <div className="w-full md:w-1/8 justify-center md:justify-start flex self-stretch px-4">
-          <div className="flex gap-2">
-            <TfiCup className="text-brand-accent" size={80} />
-            <div className="flex flex-wrap flex-col text-center  md:text-right gap-1 ">
+        <div className="w-full md:w-1/8 justify-center md:justify-start flex px-4">
+          <div className="flex flex-row md:flex-col xl:flex-row">
+            <TfiCup className="text-brand-accent size-20 md:size-14 xl:size-20" />
+            <div className="flex flex-wrap flex-col text-center gap-1 ">
               <span className="text-6xl">20</span>
               <p>YEARS EXPERIENCE</p>
             </div>
