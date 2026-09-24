@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .s { fill: #000000; }
+    .r { fill: #af7c3c; }
+    @media (prefers-color-scheme: dark) {
+      .s { fill: #ece9e4; }
+    }
+  </style>
+  <text
+    y="24"
+    font-family="Arial, Helvetica, sans-serif"
+    font-weight="800"
+    font-size="22"
+  ><tspan class="s" x="1">S</tspan><tspan class="r" x="15">R</tspan></text>
+</svg>
