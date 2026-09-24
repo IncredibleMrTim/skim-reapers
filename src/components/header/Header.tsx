@@ -68,7 +68,8 @@ export const Header = ({
       </section>
       {floating && (
         <Image
-          className="absolute top-0 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 max-w-none opacity-40 md:opacity-15 z-9 object-cover [--mask-pos:center_top] md:[--mask-pos:top_left] h-screen"
+          fill
+          className="object-cover object-center md:object-left-top opacity-40 md:opacity-15 z-9 [--mask-pos:center_top] md:[--mask-pos:top_left]"
           style={{
             maskImage:
               "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",
@@ -76,8 +77,6 @@ export const Header = ({
               "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",
           }}
           priority
-          width={2000}
-          height={2000}
           alt="background"
           src="/smoke_bg.webp"
         />

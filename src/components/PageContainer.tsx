@@ -13,7 +13,7 @@ export const PageContainer = ({
   children,
 }: TPageContainerProps) => {
   return (
-    <div className={`font-inter ${floatingHero ? "p-10" : ""}`}>
+    <div className={`${floatingHero ? "p-10" : ""}`}>
       {floatingHero ? (
         <section className="relative flex flex-1 pt-20 md:pt-20 w-full">
           <div className="flex relative z-10 px-0 md:px-8 w-full max-w-[1920px] mx-auto md:ml-(--hero-content-width) md:w-[calc(100%-var(--hero-content-width))] border-l border-l-white/10">
