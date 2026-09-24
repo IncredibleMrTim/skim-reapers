@@ -34,7 +34,11 @@ export const ExperienceBar = () => {
             </p>
           </div>
           <div>
-            <Button variant="outline" size="lg" className="text-brand-content">
+            <Button
+              variant="outline"
+              size="default"
+              className="text-brand-content"
+            >
               READ OUR STORY
               <HiArrowNarrowRight className="mt-0.5" />
             </Button>
@@ -45,10 +49,10 @@ export const ExperienceBar = () => {
           orientation="vertical"
           className="via-brand-content/50"
         />
-        <div className="w-full md:w-1/8 justify-center md:justify-start flex px-4">
-          <div className="flex flex-row md:flex-col xl:flex-row">
-            <TfiCup className="text-brand-accent size-20 md:size-14 xl:size-20" />
-            <div className="flex flex-wrap flex-col text-center gap-1 ">
+        <div className="w-full md:w-1/7 justify-center md:justify-start flex">
+          <div className="flex px-4 gap-1 h-full">
+            <TfiCup className="text-brand-accent size-full py-2" />
+            <div className="flex flex-wrap flex-col text-center md:text-right gap-1 ">
               <span className="text-6xl">20</span>
               <p>YEARS EXPERIENCE</p>
             </div>
@@ -66,7 +70,7 @@ export const ExperienceBar = () => {
               <p className="text-sm">Take a look at some of our projects.</p>
             </div>
             <div>
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="default">
                 VIEW OUR WORK
                 <HiArrowNarrowRight className="mt-0.5" />
               </Button>
