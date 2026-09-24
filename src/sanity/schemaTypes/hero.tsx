@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { defineType, defineField, defineArrayMember } from "sanity"
-import { BLOCK_STYLES } from "@/sanity/schemaTypes/blockStyles"
+import { portableTextSchema } from "./helpers/portableText"
 
 const HERO_DATA_SLOTS: { slot: string; description?: string }[] = [
   { slot: "hero-container", description: "outer wrapper" },
@@ -78,16 +78,8 @@ export const hero = defineType({
       title: "Sub Heading",
       type: "string",
     }),
-    defineField({
-      name: "content",
-      type: "array",
-      of: [
-        defineArrayMember({
-          type: "block",
-          styles: BLOCK_STYLES,
-        }),
-      ],
-    }),
+    portableTextSchema({ name: "content", title: "Content" }),
+
     defineField({
       name: "buttons",
       type: "array",

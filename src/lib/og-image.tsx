@@ -9,7 +9,7 @@ export const ogImageSize = { width: 1200, height: 630 }
  * depends on request data — read once at module scope.
  */
 const [logoData, smokeData, broncoData] = await Promise.all([
-  readFile(join(process.cwd(), "public/logo_extracted.png")),
+  readFile(join(process.cwd(), "public/logo_extracted1.png")),
   readFile(join(process.cwd(), "public/smoke_bg.png")),
   readFile(join(process.cwd(), "src/fonts/Bronco.ttf")),
 ])
@@ -18,7 +18,12 @@ const smokeSrc = `data:image/png;base64,${smokeData.toString("base64")}`
 
 /** Pass to the `fonts` option of ImageResponse so `fontFamily: "Bronco"` resolves. */
 export const ogImageFonts = [
-  { name: "Bronco", data: broncoData, weight: 400 as const, style: "normal" as const },
+  {
+    name: "Bronco",
+    data: broncoData,
+    weight: 400 as const,
+    style: "normal" as const,
+  },
 ]
 
 /** Shared 1200x630 link-preview card used by both opengraph-image and twitter-image routes. */

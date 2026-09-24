@@ -3,9 +3,10 @@ import type { PortableTextComponents } from "@portabletext/react"
 
 /**
  * Single source of truth for how each custom Portable Text mark renders.
- * Consumed both by the real frontend (`@portabletext/react`) and by
- * `PortableTextLiveInput`'s Studio editing canvas, so the two can never
- * drift out of sync the way the hand-duplicated versions previously did.
+ * Consumed both by the real frontend (`@portabletext/react`) and by the
+ * per-decorator/annotation/style `component` overrides wired up in
+ * `helpers/portableText.tsx` and `blockStyles.tsx`, so the Studio editing
+ * canvas and the live frontend can never drift out of sync.
  */
 
 type MarkProps = { children: ReactNode }
@@ -31,7 +32,7 @@ export function AccentMark({ children }: MarkProps) {
  * field is block-only, so there's no way to make part of a paragraph a real
  * `<h1>`. These give editors the same visual weight on an arbitrary text
  * selection via an inline `<span>`, sized to match the block-level heading
- * styles (see `STYLE_TAGS` in `PortableTextLiveInput.tsx`).
+ * styles (see `STYLE_TAGS` below).
  */
 export function Heading1Mark({ children }: MarkProps) {
   return <span className="text-4xl font-bold">{children}</span>
@@ -86,8 +87,8 @@ export function ColorMark({ children, hex }: MarkProps & { hex?: string }) {
 
 /**
  * Tag/className for each `block.style` value. Shared by the Studio editing
- * canvas (`PortableTextLiveInput`) and the live frontend so headings/quotes
- * look the same in both places.
+ * canvas and the live frontend so headings/quotes look the same in both
+ * places.
  */
 export const STYLE_TAGS: Record<string, { tag: string; className: string }> =
   {
@@ -177,7 +178,8 @@ export function renderAnnotationMark(
     return <LinkMark href={href}>{children}</LinkMark>
   }
   if (typeName === "color") {
-    const hex = (value as { hex?: string } | undefined)?.hex
+    const hex = (value as { swatch?: { hex?: string } } | undefined)?.swatch
+      ?.hex
     return <ColorMark hex={hex}>{children}</ColorMark>
   }
   return children

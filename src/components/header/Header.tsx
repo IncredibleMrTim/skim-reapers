@@ -35,7 +35,9 @@ export const Header = ({
       </div>
 
       {showHero && (
-        <div className={showHeroOnMobile ? undefined : "hidden md:block"}>
+        <div
+          className={`flex-1 min-h-0 ${showHeroOnMobile ? "" : "hidden md:block"}`}
+        >
           <Hero
             hero={hero}
             customComp={customComp}

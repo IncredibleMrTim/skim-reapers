@@ -10,7 +10,7 @@ import type { ComponentType } from "react"
 import { CtaButtons } from "@/components/CtaButtons"
 
 const SMOKE_BG_URL = "/smoke_bg.webp"
-const LOGO_URL = "/logo_extracted.png"
+const LOGO_URL = "/logo_extracted1.png"
 
 type HeroProps = {
   hero?: HeroData | null
@@ -28,7 +28,7 @@ export const Hero = ({
   const customCss = sanitizeCustomCss(hero?.customCss?.code)
 
   const heroTextContent = (
-    <div className="px-4">
+    <div className="flex flex-col gap-2 px-4">
       <DistressedHeading
         dataSlot="hero-eyebrow"
         font="font-heading"
@@ -72,7 +72,7 @@ export const Hero = ({
         src={LOGO_URL}
         alt="Skim Reapers Ltd"
         width={342}
-        height={242}
+        height={250}
         className={`absolute top-0 md:-top-20 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 md:mx-4 my-4 md:my-10 w-70 md:w-90 brightness-110 ${showHeroImageOnMobile ? "" : "max-md:hidden"}`}
         priority
       />
@@ -125,7 +125,7 @@ export const Hero = ({
         ) : (
           <div
             data-slot="hero-content-container"
-            className={`relative flex flex-col gap-1 justify-start mt-60 md:mt-0 md:pt-60 w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 md:w-4/10 ${showHeroTextOnMobile ? "" : "max-md:hidden"}`}
+            className={`relative justify-start mt-60 md:mt-0 md:pt-60 w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 md:w-4/10 ${showHeroTextOnMobile ? "" : "max-md:hidden"}`}
           >
             {heroTextContent}
           </div>
