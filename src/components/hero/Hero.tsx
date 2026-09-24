@@ -28,7 +28,7 @@ export const Hero = ({
   const customCss = sanitizeCustomCss(hero?.customCss?.code)
 
   const heroTextContent = (
-    <div className="px-4">
+    <div className="flex flex-col gap-2 px-4">
       <DistressedHeading
         dataSlot="hero-eyebrow"
         font="font-heading"
@@ -125,7 +125,7 @@ export const Hero = ({
         ) : (
           <div
             data-slot="hero-content-container"
-            className={`relative flex flex-col gap-1 justify-start mt-60 md:mt-0 md:pt-60 w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 md:w-4/10 ${showHeroTextOnMobile ? "" : "max-md:hidden"}`}
+            className={`relative justify-start mt-60 md:mt-0 md:pt-60 w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 md:w-4/10 ${showHeroTextOnMobile ? "" : "max-md:hidden"}`}
           >
             {heroTextContent}
           </div>
