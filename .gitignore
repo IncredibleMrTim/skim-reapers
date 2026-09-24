@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# sanity typegen (regenerate with `pnpm typegen`; src/sanity/types.ts is checked in)
+/schema.json

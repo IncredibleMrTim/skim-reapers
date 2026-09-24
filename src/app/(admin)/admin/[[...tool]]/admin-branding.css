@@ -121,3 +121,31 @@ svg[data-sanity-icon="sanity-logo"] {
   display: none !important;
 }
 
+/* Widens the document editing form (640px by default) so fields with more
+ * going on — like the About page's rich-text toolbar with its Format/
+ * Size/Heading/Other button groups — have room to lay out in one row
+ * instead of wrapping. No `data-ui` hook exists on this element, so this
+ * is keyed off `FormContainer`, the stable styled-components display-name
+ * class Sanity leaves on it (the trailing hash after it is the unstable
+ * per-build part and isn't included) — a Sanity Studio version bump could
+ * rename it and silently stop matching, unlike the `data-ui` selectors
+ * above. Verified live: matches exactly one element, the document pane's
+ * form wrapper.
+ */
+[class*="FormContainer-"] {
+  max-width: 1100px !important;
+}
+
+/* Portable Text blocks get their own separate reading-width cap (measured
+ * live: a fixed 640px, centered with equal padding on both sides) from
+ * `@sanity/ui`'s theme, independent of the `FormContainer` width above —
+ * widening the form didn't widen the text block inside it. Keyed off
+ * `data-pt-block`, a stable functional attribute the Portable Text editor
+ * sets on every block element (not a styled-components hash), so this
+ * survives Sanity Studio version bumps better than a class selector would.
+ */
+[data-pt-block] {
+  width: 100% !important;
+  max-width: none !important;
+}
+

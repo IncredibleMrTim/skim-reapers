@@ -129,7 +129,7 @@ Dev and production are **separate Sanity datasets** (`development` / `production
 Static export pushed to Krystal Hosting via cPanel Git Version Control, driven by GitHub Actions (`.github/workflows/deploy.yml`) — no Node.js process on the server, `git pull` (via cPanel's UAPI) is the entire deploy.
 
 | Environment | URL | Source branch | Deploy branch |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Production | skimreapers.co.uk | `main` | `deploy/main` |
 | Dev | dev.skimreapers.co.uk | `dev` | `deploy/dev` |
 
@@ -143,3 +143,11 @@ Because pushing to `dev` or `main` auto-deploys (see Deployment above), a push i
 2. Commit and push directly to the current branch (`dev` day-to-day) — this immediately deploys to dev.skimreapers.co.uk, which is the point: it's the review environment.
 3. Open a PR from `dev` into `main` to promote to production (`gh pr create --base main --head dev`). Don't push straight to `main` — production should go through a PR even though nothing technically blocks a direct push.
 4. Only reach for a separate feature branch (branch off `dev`, PR into `dev`) when a change is risky/experimental enough that it shouldn't hit the dev site before review — ask if unsure which one applies.
+
+### Commits
+
+- Follow conventional commits: `type(scope): description`
+- Types: `feature`, `fix`, `chore`, `docs`, `style`, `refactor`, `test`
+- Keep commits atomic and focused
+- commit messages should always been in lower case except scope
+- Reference ticket numbers in commit body if applicable
