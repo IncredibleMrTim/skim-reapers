@@ -61,7 +61,7 @@ export function Navbar() {
         </div>
 
         {/* Links */}
-        <NavigationMenu className="hidden max-w-none flex-1 lg:flex h-8 my-auto">
+        <NavigationMenu className="z-20 hidden max-w-none flex-1 lg:flex h-8 my-auto">
           <NavigationMenuList className="h-full items-stretch justify-end gap-1">
             {NAV_LINKS.slice(0, 2).map((link) => {
               const isActive = pathname === link.href

@@ -18,7 +18,7 @@ const chunk = <T,>(items: T[], size: number): T[][] => {
 
 export const Footer = () => {
   return (
-    <div className="px-4 md:px-8 py-4 flex flex-col gap-6 md:gap-4 mb-2">
+    <div className="px-4 md:px-8  flex flex-col gap-6 md:gap-4 mb-2">
       <Separator variant="linear" className="via-brand-content/50" />
       <div className="flex flex-col md:flex-row w-full md:justify-between gap-6 md:gap-0">
         <div className="flex flex-col md:flex-row w-fit mx-auto md:mx-0 md:w-1/3 md:justify-between gap-1 md:gap-0 text-sm items-start">

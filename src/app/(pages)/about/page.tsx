@@ -16,6 +16,7 @@ export default async function AboutPage() {
         hero={aboutPage?.hero ?? undefined}
         showHeroImageOnMobile={false}
         showHeroTextOnMobile={false}
+        floating
       />
 
       <section className="relative pt-20 md:pt-20 w-full overflow-hidden">

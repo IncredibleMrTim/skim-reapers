@@ -64,6 +64,165 @@ export type Image1 = {
   _type: "image";
 };
 
+export type ServicesPage = {
+  _id: string;
+  _type: "servicesPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  hero?: Hero;
+  content?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<
+      | {
+          href?: string;
+          _type: "link";
+          _key: string;
+        }
+      | {
+          swatch?: Color;
+          _type: "color";
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  services?: Array<{
+    heading?: string;
+    content?: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    serviceButton?: Array<{
+      label: string;
+      path: string;
+      icon?: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      };
+      _type: "buttons";
+      _key: string;
+    }>;
+    _type: "service";
+    _key: string;
+  }>;
+  servicePageButtons?: Array<{
+    label: string;
+    path: string;
+    icon?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    _type: "buttons";
+    _key: string;
+  }>;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+};
+
+export type Color = {
+  _type: "color";
+  hex?: string;
+  alpha?: number;
+  hsl?: HslaColor;
+  hsv?: HsvaColor;
+  rgb?: RgbaColor;
+};
+
+export type Hero = {
+  _type: "hero";
+  showSmoke?: boolean;
+  background?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  eyebrow?: string;
+  heading?: string;
+  subheading?: string;
+  content?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<
+      | {
+          href?: string;
+          _type: "link";
+          _key: string;
+        }
+      | {
+          swatch?: Color;
+          _type: "color";
+          _key: string;
+        }
+    >;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  buttons?: Array<{
+    label: string;
+    path: string;
+    variant:
+      "default" | "outline" | "secondary" | "ghost" | "destructive" | "link";
+    imageIcon?: ImageIcon;
+    reactIcon?: ReactIcon;
+    _type: "buttons";
+    _key: string;
+  }>;
+  customCss?: Code;
+};
+
 export type AboutPage = {
   _id: string;
   _type: "aboutPage";
@@ -95,75 +254,15 @@ export type AboutPage = {
           _key: string;
         }
       | {
-          hex?: string;
+          swatch?: Color;
           _type: "color";
           _key: string;
         }
     >;
     level?: number;
-    _type: "content";
-    _key: string;
-  }>;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-};
-
-export type Hero = {
-  _type: "hero";
-  showSmoke?: boolean;
-  background?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  eyebrow?: string;
-  heading?: string;
-  subheading?: string;
-  content?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
     _type: "block";
     _key: string;
   }>;
-  buttons?: Array<{
-    label: string;
-    path: string;
-    variant:
-      "default" | "outline" | "secondary" | "ghost" | "destructive" | "link";
-    imageIcon?: ImageIcon;
-    reactIcon?: ReactIcon;
-    _type: "buttons";
-    _key: string;
-  }>;
-  customCss?: Code;
 };
 
 export type Belief = Array<{
@@ -269,6 +368,30 @@ export type Code = {
   filename?: string;
   code?: string;
   highlightedLines?: Array<number>;
+};
+
+export type RgbaColor = {
+  _type: "rgbaColor";
+  r?: number;
+  g?: number;
+  b?: number;
+  a?: number;
+};
+
+export type HsvaColor = {
+  _type: "hsvaColor";
+  h?: number;
+  s?: number;
+  v?: number;
+  a?: number;
+};
+
+export type HslaColor = {
+  _type: "hslaColor";
+  h?: number;
+  s?: number;
+  l?: number;
+  a?: number;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -382,15 +505,20 @@ export type AllSanitySchemaTypes =
   | Icon
   | CardIcon
   | Image1
-  | AboutPage
+  | ServicesPage
   | SanityImageCrop
   | SanityImageHotspot
+  | Color
   | Hero
+  | AboutPage
   | Belief
   | WhatWeDo
   | SanityFileAssetReference
   | HomePage
   | Code
+  | RgbaColor
+  | HsvaColor
+  | HslaColor
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -465,7 +593,7 @@ export type AboutPageQueryResult = {
     listItem?: "bullet" | "number";
     markDefs?: Array<
       | {
-          hex?: string;
+          swatch?: Color;
           _type: "color";
           _key: string;
         }
@@ -476,7 +604,50 @@ export type AboutPageQueryResult = {
         }
     >;
     level?: number;
-    _type: "content";
+    _type: "block";
+    _key: string;
+  }> | null;
+} | null;
+
+// Source: src/sanity/queries.ts
+// Variable: servicesPageQuery
+// Query: *[_type == "servicesPage"][0]{  hero,  services}
+export type ServicesPageQueryResult = {
+  hero: Hero | null;
+  services: Array<{
+    heading?: string;
+    content?: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    serviceButton?: Array<{
+      label: string;
+      path: string;
+      icon?: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      };
+      _type: "buttons";
+      _key: string;
+    }>;
+    _type: "service";
     _key: string;
   }> | null;
 } | null;
@@ -487,5 +658,6 @@ declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "homePage"][0]{\n  hero,\n  whatWeDo,\n  belief,\n  heading,\n  body,\n  image,\n  video{ asset->{url} }\n}': HomePageQueryResult;
     '*[_type == "aboutPage"][0]{\n  hero,\n  images,\n  about\n}': AboutPageQueryResult;
+    '*[_type == "servicesPage"][0]{\n  hero,\n  services\n}': ServicesPageQueryResult;
   }
 }
