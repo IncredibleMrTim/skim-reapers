@@ -18,5 +18,6 @@ export const aboutPageQuery = defineQuery(`*[_type == "aboutPage"][0]{
 
 export const servicesPageQuery = defineQuery(`*[_type == "servicesPage"][0]{
   hero,
+  content,
   services
 }`)

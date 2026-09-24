@@ -37,7 +37,7 @@ export type ReactIcon = {
 
 export type CardImage = {
   asset?: SanityImageAssetReference;
-  media?: unknown; // Unable to locate the referenced type "image.media" in schema
+  media?: unknown; // Unable to locate the referenced type "card.image.media" in schema
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   _type: "image";
@@ -58,7 +58,7 @@ export type CardIcon = {
 
 export type Image1 = {
   asset?: SanityImageAssetReference;
-  media?: unknown; // Unable to locate the referenced type "card.image.media" in schema
+  media?: unknown; // Unable to locate the referenced type "media1" in schema
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
   _type: "image";
@@ -71,51 +71,85 @@ export type ServicesPage = {
   _updatedAt: string;
   _rev: string;
   hero?: Hero;
-  content?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<
+  content?: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<
+          | {
+              href?: string;
+              _type: "link";
+              _key: string;
+            }
+          | {
+              swatch?: Color;
+              _type: "color";
+              _key: string;
+            }
+        >;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt: string;
+        size?: "small" | "medium" | "large";
+        alignment?: "left" | "center" | "right";
+        _type: "image";
+        _key: string;
+      }
+  >;
+  services?: Array<{
+    heading?: string;
+    urlQuery?: string;
+    content?: Array<
       | {
-          href?: string;
-          _type: "link";
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<
+            | {
+                href?: string;
+                _type: "link";
+                _key: string;
+              }
+            | {
+                swatch?: Color;
+                _type: "color";
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: "block";
           _key: string;
         }
       | {
-          swatch?: Color;
-          _type: "color";
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt: string;
+          size?: "small" | "medium" | "large";
+          alignment?: "left" | "center" | "right";
+          _type: "image";
           _key: string;
         }
     >;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
-  services?: Array<{
-    heading?: string;
-    content?: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        href?: string;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }>;
     serviceButton?: Array<{
       label: string;
       path: string;
@@ -185,31 +219,44 @@ export type Hero = {
   eyebrow?: string;
   heading?: string;
   subheading?: string;
-  content?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<
-      | {
-          href?: string;
-          _type: "link";
+  content?: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
           _key: string;
-        }
-      | {
-          swatch?: Color;
-          _type: "color";
-          _key: string;
-        }
-    >;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+        }>;
+        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<
+          | {
+              href?: string;
+              _type: "link";
+              _key: string;
+            }
+          | {
+              swatch?: Color;
+              _type: "color";
+              _key: string;
+            }
+        >;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt: string;
+        size?: "small" | "medium" | "large";
+        alignment?: "left" | "center" | "right";
+        _type: "image";
+        _key: string;
+      }
+  >;
   buttons?: Array<{
     label: string;
     path: string;
@@ -238,31 +285,44 @@ export type AboutPage = {
     _type: "image";
     _key: string;
   }>;
-  about?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<
-      | {
-          href?: string;
-          _type: "link";
+  about?: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
           _key: string;
-        }
-      | {
-          swatch?: Color;
-          _type: "color";
-          _key: string;
-        }
-    >;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+        }>;
+        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<
+          | {
+              href?: string;
+              _type: "link";
+              _key: string;
+            }
+          | {
+              swatch?: Color;
+              _type: "color";
+              _key: string;
+            }
+        >;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt: string;
+        size?: "small" | "medium" | "large";
+        alignment?: "left" | "center" | "right";
+        _type: "image";
+        _key: string;
+      }
+  >;
 };
 
 export type Belief = Array<{
@@ -582,58 +642,130 @@ export type AboutPageQueryResult = {
     _type: "image";
     _key: string;
   }> | null;
-  about: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<
-      | {
-          swatch?: Color;
-          _type: "color";
+  about: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
           _key: string;
-        }
-      | {
-          href?: string;
-          _type: "link";
-          _key: string;
-        }
-    >;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }> | null;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<
+          | {
+              swatch?: Color;
+              _type: "color";
+              _key: string;
+            }
+          | {
+              href?: string;
+              _type: "link";
+              _key: string;
+            }
+        >;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt: string;
+        size?: "large" | "medium" | "small";
+        alignment?: "center" | "left" | "right";
+        _type: "image";
+        _key: string;
+      }
+  > | null;
 } | null;
 
 // Source: src/sanity/queries.ts
 // Variable: servicesPageQuery
-// Query: *[_type == "servicesPage"][0]{  hero,  services}
+// Query: *[_type == "servicesPage"][0]{  hero,  content,  services}
 export type ServicesPageQueryResult = {
   hero: Hero | null;
+  content: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<
+          | {
+              swatch?: Color;
+              _type: "color";
+              _key: string;
+            }
+          | {
+              href?: string;
+              _type: "link";
+              _key: string;
+            }
+        >;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt: string;
+        size?: "large" | "medium" | "small";
+        alignment?: "center" | "left" | "right";
+        _type: "image";
+        _key: string;
+      }
+  > | null;
   services: Array<{
     heading?: string;
-    content?: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        href?: string;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }>;
+    urlQuery?: string;
+    content?: Array<
+      | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<
+            | {
+                swatch?: Color;
+                _type: "color";
+                _key: string;
+              }
+            | {
+                href?: string;
+                _type: "link";
+                _key: string;
+              }
+          >;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }
+      | {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt: string;
+          size?: "large" | "medium" | "small";
+          alignment?: "center" | "left" | "right";
+          _type: "image";
+          _key: string;
+        }
+    >;
     serviceButton?: Array<{
       label: string;
       path: string;
@@ -658,6 +790,6 @@ declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "homePage"][0]{\n  hero,\n  whatWeDo,\n  belief,\n  heading,\n  body,\n  image,\n  video{ asset->{url} }\n}': HomePageQueryResult;
     '*[_type == "aboutPage"][0]{\n  hero,\n  images,\n  about\n}': AboutPageQueryResult;
-    '*[_type == "servicesPage"][0]{\n  hero,\n  services\n}': ServicesPageQueryResult;
+    '*[_type == "servicesPage"][0]{\n  hero,\n  content,\n  services\n}': ServicesPageQueryResult;
   }
 }

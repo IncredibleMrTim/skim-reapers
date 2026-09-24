@@ -191,6 +191,17 @@ export const hero = defineType({
               </li>
             ))}
           </ul>
+          <p style={{ marginTop: "0.5em" }}>
+            The hero text column&apos;s width is controlled by the{" "}
+            <code>--hero-content-width</code> CSS variable (default{" "}
+            <code>40%</code>). Set it on <code>:root</code> — e.g.{" "}
+            <code>:root {"{"} --hero-content-width: 28%; {"}"}</code> —
+            rather than setting <code>width</code> directly on the hero
+            column: page content placed next to the hero on the page itself
+            (e.g. the Services page tabs) reads the same variable and
+            automatically fills whatever width is left over, but only if the
+            variable is changed at the page-wide (<code>:root</code>) level.
+          </p>
         </>
       ),
       type: "code",

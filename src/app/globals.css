@@ -72,6 +72,8 @@
  * components render on-brand whether or not something wraps them in `.dark`.
  */
 :root {
+  /* Width of the Hero's text column (see [data-slot="hero-content-container"]). Overridable per-page via the Hero's Custom CSS field in Sanity; page content laid out next to the Hero (e.g. the Services page tabs) reads the same variable to fill the remaining width. */
+  --hero-content-width: 40%;
   --background: #0a0a0a;
   --foreground: #ece9e4;
   --card: #161616;

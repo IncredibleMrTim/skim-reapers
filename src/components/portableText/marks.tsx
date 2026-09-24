@@ -1,5 +1,8 @@
 import type { ElementType, ReactNode } from "react"
 import type { PortableTextComponents } from "@portabletext/react"
+import NextImage from "next/image"
+import type { Image as SanityImage } from "sanity"
+import { urlForImage } from "@/sanity/image"
 
 /**
  * Single source of truth for how each custom Portable Text mark renders.
@@ -25,6 +28,27 @@ export function LargeMark({ children }: MarkProps) {
 
 export function AccentMark({ children }: MarkProps) {
   return <span style={{ color: "var(--accent)" }}>{children}</span>
+}
+
+/**
+ * Portable Text has no block-level alignment field — `type: "block"` doesn't
+ * accept custom `fields` (Sanity schema validation rejects it outright). The
+ * documented workaround (see Sanity's "Align Text with Block Content" guide)
+ * is a decorator applied to the block's full text selection, rendered as a
+ * `w-full` block so `text-align` visually spans the whole line rather than
+ * just the selected span. Only one alignment decorator should be applied to
+ * a given selection at a time — nothing enforces that mutual exclusivity.
+ */
+export function LeftAlignMark({ children }: MarkProps) {
+  return <div className="w-full text-left">{children}</div>
+}
+
+export function CenterAlignMark({ children }: MarkProps) {
+  return <div className="w-full text-center">{children}</div>
+}
+
+export function RightAlignMark({ children }: MarkProps) {
+  return <div className="w-full text-right">{children}</div>
 }
 
 /**
@@ -90,24 +114,28 @@ export function ColorMark({ children, hex }: MarkProps & { hex?: string }) {
  * canvas and the live frontend so headings/quotes look the same in both
  * places.
  */
-export const STYLE_TAGS: Record<string, { tag: string; className: string }> =
-  {
-    h1: { tag: "h1", className: "text-4xl font-bold" },
-    h2: { tag: "h2", className: "text-3xl font-bold" },
-    h3: { tag: "h3", className: "text-2xl font-bold" },
-    h4: { tag: "h4", className: "text-xl font-bold" },
-    h5: { tag: "h5", className: "text-lg font-bold" },
-    h6: { tag: "h6", className: "text-base font-bold" },
-    blockquote: {
-      tag: "blockquote",
-      className: "border-l-2 pl-4 italic opacity-80",
-    },
-  }
+export const STYLE_TAGS: Record<string, { tag: string; className: string }> = {
+  h1: { tag: "h1", className: "text-4xl font-bold" },
+  h2: { tag: "h2", className: "text-3xl font-bold" },
+  h3: { tag: "h3", className: "text-2xl font-bold" },
+  h4: { tag: "h4", className: "text-xl font-bold" },
+  h5: { tag: "h5", className: "text-lg font-bold" },
+  h6: { tag: "h6", className: "text-base font-bold" },
+  blockquote: {
+    tag: "blockquote",
+    className: "border-l-2 pl-4 italic opacity-80",
+  },
+}
 
 /**
- * Every block gets bottom margin regardless of style — otherwise adjacent
+ * Every block gets bottom spacing regardless of style — otherwise adjacent
  * paragraphs (and the blank-line blocks editors use as spacers) collapse
- * to zero gap under Tailwind's preflight reset.
+ * to zero gap under Tailwind's preflight reset. This has to be `padding`,
+ * not `margin`: adjacent block-level elements' vertical margins collapse
+ * to the larger one instead of summing, so stacking several empty spacer
+ * blocks in the Studio (to add extra vertical space) would still render
+ * as a single ~0.5em gap. Padding doesn't collapse, so each blank block an
+ * editor adds contributes its own space, matching what they see in Studio.
  *
  * `whitespace-pre-line` matters here too: editors press Enter mid-block
  * (soft line break) rather than always starting a new block, which the
@@ -121,10 +149,71 @@ export function renderBlock(style: string | undefined, children: ReactNode) {
   const Tag = (resolved?.tag ?? "p") as ElementType
   return (
     <Tag
-      className={`mb-[0.5em] whitespace-pre-line ${resolved?.className ?? ""}`.trim()}
+      className={`pb-[0.5em] whitespace-pre-line ${resolved?.className ?? ""}`.trim()}
     >
       {children}
     </Tag>
+  )
+}
+
+/**
+ * Tailwind's preflight resets `ul`/`ol` to `list-style: none`, so
+ * `@portabletext/react`'s default list/listItem renderers (bare `<ul>`,
+ * `<ol>`, `<li>` with no classes) show no bullets/numbers at all — the list
+ * items are in the DOM, just visually indistinguishable from paragraphs.
+ * These restore markers via Tailwind's `list-disc`/`list-decimal` utilities.
+ */
+const LIST_TAGS: Record<string, { tag: "ul" | "ol"; className: string }> = {
+  bullet: { tag: "ul", className: "list-disc" },
+  number: { tag: "ol", className: "list-decimal" },
+}
+
+export function renderList(style: string | undefined, children: ReactNode) {
+  const resolved = (style && LIST_TAGS[style]) || LIST_TAGS.bullet
+  const Tag = resolved.tag
+  return (
+    <Tag className={`${resolved.className} pb-[0.5em] pl-6`}>{children}</Tag>
+  )
+}
+
+export function renderListItem(children: ReactNode) {
+  return <li className="pb-1">{children}</li>
+}
+
+/** Width class for each `image.size` option — matches the Studio's radio options. */
+const IMAGE_SIZE_CLASSES: Record<string, string> = {
+  small: "w-1/3",
+  medium: "w-2/3",
+  large: "w-full",
+}
+
+/** Margin class for each `image.alignment` option — matches the Studio's radio options. */
+const IMAGE_ALIGNMENT_CLASSES: Record<string, string> = {
+  left: "mr-auto",
+  center: "mx-auto",
+  right: "ml-auto",
+}
+
+/** Renders an `image` array member dropped into a Portable Text field. */
+export function PortableTextImage({
+  value,
+}: {
+  value: SanityImage & { alt?: string; size?: string; alignment?: string }
+}) {
+  if (!value?.asset) return null
+  const widthClass = IMAGE_SIZE_CLASSES[value.size ?? "large"]
+  const alignmentClass = IMAGE_ALIGNMENT_CLASSES[value.alignment ?? "center"]
+  return (
+    <figure
+      className={`relative my-4 aspect-video overflow-hidden rounded-[8px] ${widthClass} ${alignmentClass}`}
+    >
+      <NextImage
+        src={urlForImage(value).width(1600).url()}
+        alt={value.alt ?? ""}
+        fill
+        className="object-cover"
+      />
+    </figure>
   )
 }
 
@@ -143,24 +232,25 @@ export function LinkMark({ children, href }: MarkProps & { href?: string }) {
 }
 
 /** Decorators with no data of their own — just wrap `children`. */
-export const DECORATOR_MARKS: Record<
-  string,
-  (props: MarkProps) => ReactNode
-> = {
-  small: SmallMark,
-  medium: MediumMark,
-  large: LargeMark,
-  accent: AccentMark,
-  heading1: Heading1Mark,
-  heading2: Heading2Mark,
-  heading3: Heading3Mark,
-  heading4: Heading4Mark,
-  strong: StrongMark,
-  em: EmMark,
-  underline: UnderlineMark,
-  code: CodeMark,
-  "strike-through": StrikeMark,
-}
+export const DECORATOR_MARKS: Record<string, (props: MarkProps) => ReactNode> =
+  {
+    small: SmallMark,
+    medium: MediumMark,
+    large: LargeMark,
+    accent: AccentMark,
+    heading1: Heading1Mark,
+    heading2: Heading2Mark,
+    heading3: Heading3Mark,
+    heading4: Heading4Mark,
+    strong: StrongMark,
+    em: EmMark,
+    underline: UnderlineMark,
+    code: CodeMark,
+    "strike-through": StrikeMark,
+    "align-left": LeftAlignMark,
+    "align-center": CenterAlignMark,
+    "align-right": RightAlignMark,
+  }
 
 export function renderDecoratorMark(name: string, children: ReactNode) {
   const Mark = DECORATOR_MARKS[name]
@@ -191,6 +281,9 @@ export function renderAnnotationMark(
  * aren't listed here — `@portabletext/react` already renders those natively.
  */
 export const PORTABLE_TEXT_COMPONENTS: PortableTextComponents = {
+  types: {
+    image: ({ value }) => <PortableTextImage value={value} />,
+  },
   block: {
     normal: ({ children }) => renderBlock("normal", children),
     h1: ({ children }) => renderBlock("h1", children),
@@ -201,6 +294,14 @@ export const PORTABLE_TEXT_COMPONENTS: PortableTextComponents = {
     h6: ({ children }) => renderBlock("h6", children),
     blockquote: ({ children }) => renderBlock("blockquote", children),
   },
+  list: {
+    bullet: ({ children }) => renderList("bullet", children),
+    number: ({ children }) => renderList("number", children),
+  },
+  listItem: {
+    bullet: ({ children }) => renderListItem(children),
+    number: ({ children }) => renderListItem(children),
+  },
   marks: {
     small: ({ children }) => renderDecoratorMark("small", children),
     medium: ({ children }) => renderDecoratorMark("medium", children),
@@ -210,6 +311,11 @@ export const PORTABLE_TEXT_COMPONENTS: PortableTextComponents = {
     heading2: ({ children }) => renderDecoratorMark("heading2", children),
     heading3: ({ children }) => renderDecoratorMark("heading3", children),
     heading4: ({ children }) => renderDecoratorMark("heading4", children),
+    "align-left": ({ children }) => renderDecoratorMark("align-left", children),
+    "align-center": ({ children }) =>
+      renderDecoratorMark("align-center", children),
+    "align-right": ({ children }) =>
+      renderDecoratorMark("align-right", children),
     link: ({ children, value }) =>
       renderAnnotationMark("link", value, children),
     color: ({ children, value }) =>
