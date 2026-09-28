@@ -122,6 +122,8 @@ Dev and production are **separate Sanity datasets** (`development` / `production
 
 Ask before using Claude in Chrome (`mcp__claude-in-chrome__*` tools) on this project — confirm with the user first rather than opening/navigating a browser tab automatically.
 
+Always close the Claude in Chrome tab group (`tabs_close_mcp` on any tabs you opened) once you're done with it — don't leave it open past the task that needed it.
+
 ## Commands
 
 - `pnpm dev` — dev server + Studio at `http://localhost:3000/admin` (talks to the `development` dataset)

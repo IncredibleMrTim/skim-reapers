@@ -33,7 +33,7 @@ export const Hero = ({
   const customCss = sanitizeCustomCss(hero?.customCss?.code)
 
   const heroTextContent = (
-    <div className="flex flex-col gap-1 px-4">
+    <div className="flex flex-col gap-1">
       <DistressedHeading
         dataSlot="hero-eyebrow"
         font="font-heading"
@@ -77,7 +77,7 @@ export const Hero = ({
 
   return (
     <div
-      className={cn("relative px-4 min-h-164", floating && "h-full")}
+      className={cn("relative px-4 min-h-100", floating && "h-full")}
       data-slot="hero-container"
     >
       {customCss && <style>{customCss}</style>}
