@@ -37,7 +37,7 @@ export const Header = ({
         className={cn(
           "flex w-full flex-col bg-brand-background text-brand-background mx-auto",
           floating
-            ? "absolute h-190 md:h-164 overflow-hidden"
+            ? "absolute min-h-190 md:min-h-164 overflow-x-clip"
             : "relative overflow-x-clip",
         )}
         style={{
