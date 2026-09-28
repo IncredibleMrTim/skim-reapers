@@ -69,7 +69,7 @@ export const Header = ({
       {floating && (
         <Image
           fill
-          className="object-cover object-center md:object-left-top opacity-40 md:opacity-15 z-9 [--mask-pos:center_top] md:[--mask-pos:top_left]"
+          className="pointer-events-none object-cover object-center md:object-left-top opacity-40 md:opacity-15 z-9 [--mask-pos:center_top] md:[--mask-pos:top_left]"
           style={{
             maskImage:
               "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",
