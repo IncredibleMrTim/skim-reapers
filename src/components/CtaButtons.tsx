@@ -16,6 +16,18 @@ export type CtaButton = {
   icon?: SanityImage
   imageIcon?: SanityImage
   reactIcon?: { name?: string; package?: string } | null
+  size?:
+    | "default"
+    | "xs"
+    | "sm"
+    | "lg"
+    | "2xl"
+    | "icon"
+    | "icon-xs"
+    | "icon-sm"
+    | "icon-lg"
+    | null
+    | undefined
   variant?:
     | "default"
     | "outline"
@@ -52,7 +64,7 @@ export const CtaButtons = ({
           <Button
             key={b._key}
             variant={b?.variant || variant || "default"}
-            size={size}
+            size={b.size || size || "default"}
             className={className}
             onClick={(e) => {
               e.stopPropagation()

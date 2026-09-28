@@ -7,6 +7,7 @@ import { colorInput } from "@sanity/color-input"
 import { apiVersion, dataset, projectId } from "./src/sanity/env"
 import { schema } from "./src/sanity/schemaTypes"
 import { structure } from "./src/sanity/structure"
+import { deploymentStatusTool } from "./src/sanity/tools/DeploymentStatusTool"
 
 export default defineConfig({
   basePath: "/admin",
@@ -20,6 +21,7 @@ export default defineConfig({
     codeInput(),
     colorInput(),
   ],
+  tools: (prev) => [...prev, deploymentStatusTool()],
   // Google as the primary sign-in, with Sanity's own email/password as a
   // fallback if Google is unavailable — drops GitHub/Vercel from the
   // default provider list. Only invited project members can actually sign
