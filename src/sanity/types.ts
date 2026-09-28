@@ -150,9 +150,21 @@ export type ServicesPage = {
           _key: string;
         }
     >;
-    serviceButton?: Array<{
+    buttons?: Array<{
       label: string;
       path: string;
+      variant?:
+        "default" | "outline" | "secondary" | "ghost" | "destructive" | "link";
+      size?:
+        | "default"
+        | "xs"
+        | "sm"
+        | "lg"
+        | "2xl"
+        | "icon"
+        | "icon-xs"
+        | "icon-sm"
+        | "icon-lg";
       icon?: {
         asset?: SanityImageAssetReference;
         media?: unknown;
@@ -166,9 +178,21 @@ export type ServicesPage = {
     _type: "service";
     _key: string;
   }>;
-  servicePageButtons?: Array<{
+  buttons?: Array<{
     label: string;
     path: string;
+    variant?:
+      "default" | "outline" | "secondary" | "ghost" | "destructive" | "link";
+    size?:
+      | "default"
+      | "xs"
+      | "sm"
+      | "lg"
+      | "2xl"
+      | "icon"
+      | "icon-xs"
+      | "icon-sm"
+      | "icon-lg";
     icon?: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -684,7 +708,7 @@ export type AboutPageQueryResult = {
 
 // Source: src/sanity/queries.ts
 // Variable: servicesPageQuery
-// Query: *[_type == "servicesPage"][0]{  hero,  content,  services}
+// Query: *[_type == "servicesPage"][0]{  hero,  content,  services,  buttons}
 export type ServicesPageQueryResult = {
   hero: Hero | null;
   content: Array<
@@ -766,9 +790,21 @@ export type ServicesPageQueryResult = {
           _key: string;
         }
     >;
-    serviceButton?: Array<{
+    buttons?: Array<{
       label: string;
       path: string;
+      variant?:
+        "default" | "destructive" | "ghost" | "link" | "outline" | "secondary";
+      size?:
+        | "2xl"
+        | "default"
+        | "icon-lg"
+        | "icon-sm"
+        | "icon-xs"
+        | "icon"
+        | "lg"
+        | "sm"
+        | "xs";
       icon?: {
         asset?: SanityImageAssetReference;
         media?: unknown;
@@ -782,14 +818,42 @@ export type ServicesPageQueryResult = {
     _type: "service";
     _key: string;
   }> | null;
+  buttons: Array<{
+    label: string;
+    path: string;
+    variant?:
+      "default" | "destructive" | "ghost" | "link" | "outline" | "secondary";
+    size?:
+      | "2xl"
+      | "default"
+      | "icon-lg"
+      | "icon-sm"
+      | "icon-xs"
+      | "icon"
+      | "lg"
+      | "sm"
+      | "xs";
+    icon?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    _type: "buttons";
+    _key: string;
+  }> | null;
 } | null;
 
 // Query TypeMap
-import "@sanity/client";
-declare module "@sanity/client" {
+declare global {
   interface SanityQueries {
     '*[_type == "homePage"][0]{\n  hero,\n  whatWeDo,\n  belief,\n  heading,\n  body,\n  image,\n  video{ asset->{url} }\n}': HomePageQueryResult;
     '*[_type == "aboutPage"][0]{\n  hero,\n  images,\n  about\n}': AboutPageQueryResult;
-    '*[_type == "servicesPage"][0]{\n  hero,\n  content,\n  services\n}': ServicesPageQueryResult;
+    '*[_type == "servicesPage"][0]{\n  hero,\n  content,\n  services,\n  buttons\n}': ServicesPageQueryResult;
   }
+}
+// Lets @sanity/client releases that predate the global registry read it too
+declare module "@sanity/client" {
+  interface SanityQueries extends globalThis.SanityQueries {}
 }

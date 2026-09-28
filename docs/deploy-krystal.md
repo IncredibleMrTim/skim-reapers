@@ -156,6 +156,15 @@ Webhooks → Create webhook), one per dataset:
 - Dataset: `production`
 - Payload: `{"event_type": "sanity-publish-prod"}`
 
+### Checking deploy status after a publish
+
+The "Deployments" tool in Studio (`/admin`) shows the latest
+Sanity-triggered deploy for each environment — status, which commit it
+built, and a link to the GitHub Actions run. It reads the public
+GitHub Actions API directly from the browser (no token needed, since
+the repo is public); see `src/sanity/lib/deployStatus.ts` and
+`src/sanity/tools/DeploymentStatusTool.tsx`.
+
 ## First deploy
 
 Push to `dev` first, then `main`. If a deploy step fails, the workflow
