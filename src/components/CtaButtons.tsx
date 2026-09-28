@@ -7,7 +7,7 @@ import type { ComponentProps } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { urlForImage } from "@/sanity/image"
-import { getIconComponent } from "@/lib/reactIcons"
+import { DynamicReactIcon } from "@/lib/reactIcons"
 
 export type CtaButton = {
   _key: string
@@ -58,7 +58,6 @@ export const CtaButtons = ({
     <>
       {buttons?.map((b) => {
         const imageIcon = b.imageIcon ?? b.icon
-        const ReactIcon = getIconComponent(b.reactIcon ?? undefined)
 
         return (
           <Button
@@ -72,8 +71,8 @@ export const CtaButtons = ({
             }}
           >
             {b.label}
-            {ReactIcon ? (
-              <ReactIcon className="mt-0.5" />
+            {b.reactIcon?.name ? (
+              <DynamicReactIcon icon={b.reactIcon} className="mt-0.5" />
             ) : imageIcon ? (
               <Image
                 src={urlForImage(imageIcon).url()}

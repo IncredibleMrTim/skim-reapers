@@ -4,6 +4,8 @@ import { PortableText } from "@portabletext/react"
 import type { ComponentProps } from "react"
 import { useSearchParams } from "next/navigation"
 import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
+import { useIsPrimaryImageLoaded } from "@/hooks/useIsPrimaryImageLoaded"
+import { ContentSkeleton } from "@/components/tabAccordionClient/ContentSkeleton"
 import { CtaButton, CtaButtons } from "../CtaButtons"
 import {
   Accordion,
@@ -39,6 +41,8 @@ export function AccordionClient({ items }: { items: AccordionItem[] }) {
   const params = useSearchParams()
   const service = params.get("service")
   const activeKey = items.find((s) => s.urlQuery === service)?._key
+  const activeItem = items.find((s) => s._key === activeKey) ?? items[0]
+  const isImageLoaded = useIsPrimaryImageLoaded(activeItem?.content)
 
   return (
     <Accordion
@@ -53,11 +57,15 @@ export function AccordionClient({ items }: { items: AccordionItem[] }) {
               <h1 className="text-2xl font-inter font-bold text-brand-content">
                 {s.heading}
               </h1>
-              {s.content && (
-                <PortableText
-                  value={s.content}
-                  components={PORTABLE_TEXT_COMPONENTS}
-                />
+              {!isImageLoaded ? (
+                <ContentSkeleton />
+              ) : (
+                s.content && (
+                  <PortableText
+                    value={s.content}
+                    components={PORTABLE_TEXT_COMPONENTS}
+                  />
+                )
               )}
               {s.buttons && <CtaButtons buttons={s.buttons} />}
             </div>
