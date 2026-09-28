@@ -4,9 +4,12 @@ import { HiPhone, HiMail, HiLocationMarker } from "react-icons/hi"
 import { NAV_LINKS } from "../Navbar"
 import Link from "next/link"
 import Image from "next/image"
-import { LiaInstagram, LiaWhatsapp, LiaGoogle } from "react-icons/lia"
-
-import { FaFacebookF } from "react-icons/fa"
+import {
+  FacebookIcon,
+  InstagramIcon,
+  WhatsappIcon,
+  GoogleIcon,
+} from "../icons/BrandIcons"
 import { Separator } from "../ui/separator"
 const chunk = <T,>(items: T[], size: number): T[][] => {
   const groups: T[][] = []
@@ -75,13 +78,13 @@ export const Footer = () => {
             <div className="flex flex-col md:flex-row gap-2 md:gap-8 w-full md:w-1/2 items-center md:justify-end md:self-stretch md:flex-1">
               <div className="flex">FOLLOW US</div>
               <div className="flex gap-2">
-                <FaFacebookF
+                <FacebookIcon
                   size={22}
                   className="border border-brand-content rounded-full p-1"
                 />
-                <LiaInstagram size={24} />
-                <LiaWhatsapp size={24} />
-                <LiaGoogle size={24} />
+                <InstagramIcon size={24} />
+                <WhatsappIcon size={24} />
+                <GoogleIcon size={24} />
               </div>
             </div>
             <Separator
