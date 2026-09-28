@@ -44,18 +44,19 @@ export function TabsClient({ items }: { items: TabItem[] }) {
       defaultValue={activeKey}
     >
       <TabsList
-        className={`bg-transparent md:bg-black/30 rounded w-full group-data-vertical/tabs:h-full group-data-vertical/tabs:w-auto group-data-vertical/tabs:justify-start group-data-vertical/tabs:min-h-140 ${isMobile ? "flex-wrap mb-20" : ""}`}
+        className={`bg-transparent md:bg-black/30 rounded w-full group-data-vertical/tabs:h-full group-data-vertical/tabs:w-auto group-data-vertical/tabs:justify-start group-data-vertical/tabs:min-h-140 ${isMobile ? "flex-col flex-1" : ""}`}
       >
         {items.map((s) => (
           <TabsTrigger
             key={s._key}
             value={s._key}
-            className="border-b-0 rounded md:rounded-none md:border-b border-b-brand-accent m-1 md:m-0  p-4 mb:p-2 text-sm md:text-lg font-sans aria-selected:bg-white/20 group-data-vertical/tabs:flex-none group-data-vertical/tabs:h-auto"
+            className="w-full border-b-0 rounded md:rounded-none md:border-b border-b-brand-accent m-1 md:m-0  p-4 mb:p-2 text-sm md:text-lg font-sans aria-selected:bg-white/20 group-data-vertical/tabs:flex-none group-data-vertical/tabs:h-auto"
           >
             {s.heading}
           </TabsTrigger>
         ))}
       </TabsList>
+
       {items.map((s) => (
         <TabsContent
           key={s._key}

@@ -1,4 +1,3 @@
-import { Suspense } from "react"
 import { PortableText } from "@portabletext/react"
 import { Header } from "@/components/header/Header"
 import { client } from "@/sanity/client"
@@ -6,8 +5,8 @@ import { servicesPageQuery } from "@/sanity/queries"
 import type { ServicesPageQueryResult } from "@/sanity/types"
 import { PageContainer } from "@/components/PageContainer"
 import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
-import { TabsClient } from "@/components/tabsClient/TabsClient"
 import { CtaButtons } from "@/components/CtaButtons"
+import { TabAccordionClient } from "@/components/tabAccordionClient/TabAccordionClient"
 
 export default async function ServicesPage() {
   const servicePage = (await client.fetch(
@@ -32,9 +31,7 @@ export default async function ServicesPage() {
               />
             )}
           </div>
-          <Suspense fallback={null}>
-            <TabsClient items={servicePage?.services ?? []} />
-          </Suspense>
+          <TabAccordionClient items={servicePage?.services ?? []} />
 
           {servicePage?.buttons && (
             <div className="md:pl-2">
