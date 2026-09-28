@@ -3,6 +3,7 @@
 import { AccordionClient } from "@/components/accordionClient/AccordionClient"
 import { CtaButton } from "@/components/CtaButtons"
 import { TabsClient } from "@/components/tabsClient/TabsClient"
+import { TabAccordionSkeleton } from "@/components/tabAccordionClient/TabAccordionSkeleton"
 import { PortableText } from "@portabletext/react"
 import { ComponentProps, Suspense } from "react"
 import { useIsMobile } from "@/hooks/useIsMobile"
@@ -21,7 +22,11 @@ export const TabAccordionClient = ({ items }: { items: Item[] }) => {
   const isMobile = useIsMobile()
 
   return (
-    <Suspense fallback={null}>
+    <Suspense
+      fallback={
+        <TabAccordionSkeleton isMobile={isMobile} itemCount={items.length} />
+      }
+    >
       {isMobile ? (
         <AccordionClient items={items ?? []} />
       ) : (

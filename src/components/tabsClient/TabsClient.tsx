@@ -6,6 +6,8 @@ import { useSearchParams } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
 import { useIsMobile } from "@/hooks/useIsMobile"
+import { useIsPrimaryImageLoaded } from "@/hooks/useIsPrimaryImageLoaded"
+import { ContentSkeleton } from "@/components/tabAccordionClient/ContentSkeleton"
 import { CtaButton, CtaButtons } from "../CtaButtons"
 
 /**
@@ -36,6 +38,8 @@ export function TabsClient({ items }: { items: TabItem[] }) {
   const service = params.get("service")
   const activeKey = items.find((s) => s.urlQuery === service)?._key
   const isMobile = useIsMobile()
+  const activeItem = items.find((s) => s._key === activeKey) ?? items[0]
+  const isImageLoaded = useIsPrimaryImageLoaded(activeItem?.content)
 
   return (
     <Tabs
@@ -67,11 +71,15 @@ export function TabsClient({ items }: { items: TabItem[] }) {
             <h1 className="text-2xl font-inter font-bold text-brand-content pb-2">
               {s.heading}
             </h1>
-            {s.content && (
-              <PortableText
-                value={s.content}
-                components={PORTABLE_TEXT_COMPONENTS}
-              />
+            {!isImageLoaded ? (
+              <ContentSkeleton />
+            ) : (
+              s.content && (
+                <PortableText
+                  value={s.content}
+                  components={PORTABLE_TEXT_COMPONENTS}
+                />
+              )
             )}
             {s.buttons && <CtaButtons buttons={s.buttons} />}
           </div>
