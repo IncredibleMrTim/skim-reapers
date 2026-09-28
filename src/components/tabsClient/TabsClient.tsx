@@ -60,7 +60,7 @@ export function TabsClient({ items }: { items: TabItem[] }) {
           value={s._key}
           className=" p-4 md:bg-black/30 border-t border-t-brand-accent/30"
         >
-          <div className="">
+          <div className="font-inter">
             <h1 className="text-2xl font-inter font-bold text-brand-content pb-2">
               {s.heading}
             </h1>
