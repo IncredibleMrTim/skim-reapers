@@ -27,6 +27,10 @@ const pageMetadata: Record<string, PageMetadata> = {
     title: "About",
     description: "About Skim Reapers",
   },
+  services: {
+    title: "Services",
+    description: "Services offered by Skim Reapers.",
+  },
 }
 
 export function createPageMetadata(page: keyof typeof pageMetadata): Metadata {

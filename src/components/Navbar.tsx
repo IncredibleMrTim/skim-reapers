@@ -34,10 +34,27 @@ export const NAV_LINKS = [
 ]
 
 const SERVICE_LINKS = [
-  { label: "Skimming & Rendering", href: "/services/#services-skimming" },
-  { label: "Artex Removal", href: "/services/#services-artex" },
-  { label: "Dry Lining", href: "/services/#services-dry-lining" },
-  { label: "Full Refurbs", href: "/services/#services-refurbs" },
+  {
+    label: "Skimming & Rendering",
+    href: "/services?service=skimming-and-rendering",
+  },
+  {
+    label: "Dry-Lining & Partitions",
+    href: "/services?service=dry-lining-and-partitions",
+  },
+  {
+    label: "Insulation & Performance",
+    href: "/services?service=insulation-and-performance",
+  },
+  {
+    label: "Traditional & Lime",
+    href: "/services?service=traditional-and-lime",
+  },
+  { label: "Feature & Bespoke", href: "/services?service=feature-and-bespoke" },
+  {
+    label: "Removal & Preparation",
+    href: "/services?service=removal-and-preparation",
+  },
 ]
 
 const navLinkClassName =

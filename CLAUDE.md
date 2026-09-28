@@ -118,6 +118,10 @@ NEXT_PUBLIC_SANITY_API_VERSION=2026-01-01
 
 Dev and production are **separate Sanity datasets** (`development` / `production`) with independent content — they started as copies of each other but now diverge independently; publishing in one Studio never touches the other.
 
+## Browser Automation
+
+Ask before using Claude in Chrome (`mcp__claude-in-chrome__*` tools) on this project — confirm with the user first rather than opening/navigating a browser tab automatically.
+
 ## Commands
 
 - `pnpm dev` — dev server + Studio at `http://localhost:3000/admin` (talks to the `development` dataset)

@@ -47,10 +47,13 @@ export const servicesPage = defineType({
               type: "string",
             }),
             defineField({
+              name: "urlQuery",
+              title: "URL Query",
+              type: "string",
+            }),
+            portableTextSchema({
               name: "content",
               title: "Content",
-              type: "array",
-              of: [{ type: "block" }],
             }),
             buttonsSchema({
               name: "serviceButton",
