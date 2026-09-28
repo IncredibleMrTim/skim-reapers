@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
 import { useIsMobile } from "@/hooks/useIsMobile"
+import { CtaButton, CtaButtons } from "../CtaButtons"
 
 /**
  * Matches whatever `<PortableText value={...} />` itself accepts, rather
@@ -27,6 +28,7 @@ type TabItem = {
   heading?: string | null
   urlQuery?: string | null
   content?: PortableTextValue
+  buttons?: CtaButton[]
 }
 
 export function TabsClient({ items }: { items: TabItem[] }) {
@@ -70,6 +72,7 @@ export function TabsClient({ items }: { items: TabItem[] }) {
                 components={PORTABLE_TEXT_COMPONENTS}
               />
             )}
+            {s.buttons && <CtaButtons buttons={s.buttons} />}
           </div>
         </TabsContent>
       ))}

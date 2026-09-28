@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { urlForImage } from "@/sanity/image"
 import { getIconComponent } from "@/lib/reactIcons"
 
-type CtaButton = {
+export type CtaButton = {
   _key: string
   label: string
   path: string

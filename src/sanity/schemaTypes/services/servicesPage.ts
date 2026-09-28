@@ -56,7 +56,7 @@ export const servicesPage = defineType({
               title: "Content",
             }),
             buttonsSchema({
-              name: "serviceButton",
+              name: "buttons",
               title: "Service Buttons",
               description: "Buttons for this specific service.",
             }),
@@ -65,7 +65,7 @@ export const servicesPage = defineType({
       ],
     }),
     buttonsSchema({
-      name: "servicePageButtons",
+      name: "buttons",
       title: "Service Page Buttons",
       group: "content",
       description: "Buttons for the main Services page.",

@@ -150,7 +150,7 @@ export type ServicesPage = {
           _key: string;
         }
     >;
-    serviceButton?: Array<{
+    buttons?: Array<{
       label: string;
       path: string;
       icon?: {
@@ -166,7 +166,7 @@ export type ServicesPage = {
     _type: "service";
     _key: string;
   }>;
-  servicePageButtons?: Array<{
+  buttons?: Array<{
     label: string;
     path: string;
     icon?: {
@@ -766,7 +766,7 @@ export type ServicesPageQueryResult = {
           _key: string;
         }
     >;
-    serviceButton?: Array<{
+    buttons?: Array<{
       label: string;
       path: string;
       icon?: {
