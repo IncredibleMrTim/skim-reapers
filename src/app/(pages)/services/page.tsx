@@ -22,7 +22,7 @@ export default async function ServicesPage() {
         floating
       />
       <PageContainer floatingHero>
-        <div className="flex flex-col gap-8 w-full">
+        <div className="flex flex-col gap-4 md:gap-8 w-full">
           <div>
             {servicePage?.content && (
               <PortableText
