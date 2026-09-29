@@ -2,6 +2,7 @@ import type { SchemaTypeDefinition } from "sanity"
 
 import { homePage } from "./home/homePage"
 import { hero } from "./hero"
+import { colorPalette } from "./colorPalette"
 import { whatWeDo } from "./home/whatWeDo"
 import { belief } from "./home/belief"
 import { aboutPage } from "./about/aboutPage"
@@ -37,5 +38,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     ...qaSchemas,
     ...contactSchemas,
     ...workWithUsSchemas,
+    colorPalette,
   ],
 }

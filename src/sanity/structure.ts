@@ -54,4 +54,9 @@ export const structure: StructureResolver = (S) =>
             .schemaType("workWithUsPage")
             .documentId("workWithUsPage"),
         ),
+      S.listItem()
+        .title("Custom Colors")
+        .child(
+          S.document().schemaType("colorPalette").documentId("colorPalette"),
+        ),
     ])
