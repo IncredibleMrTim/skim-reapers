@@ -21,20 +21,24 @@ export default async function ServicesPage() {
         showHeroTextOnMobile={false}
         floating
       />
-      <PageContainer floatingHero>
-        <div className="flex flex-col gap-4 md:gap-8 w-full font-inter">
-          <div>
-            {query?.content && (
-              <PortableText
-                value={query.content}
-                components={PORTABLE_TEXT_COMPONENTS}
-              />
-            )}
+      <PageContainer floatingHero fillHeight>
+        <div className="flex flex-col gap-4 md:gap-8 w-full md:flex-1 md:min-h-0 font-inter">
+          <div className="flex flex-col gap-4 md:gap-8 md:overflow-y-auto md:flex-1 md:min-h-0">
+            <div>
+              {query?.content && (
+                <PortableText
+                  value={query.content}
+                  components={PORTABLE_TEXT_COMPONENTS}
+                />
+              )}
+            </div>
+            <div className="md:mr-8">
+              <TabAccordionClient items={query?.services ?? []} />
+            </div>
           </div>
-          <TabAccordionClient items={query?.services ?? []} />
 
           {query?.buttons && (
-            <div className="md:pl-2">
+            <div>
               <CtaButtons buttons={query.buttons} />
             </div>
           )}

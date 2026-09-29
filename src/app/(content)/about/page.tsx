@@ -20,8 +20,8 @@ export default async function AboutPage() {
         floating
       />
 
-      <PageContainer floatingHero>
-        <div className="grid grid-rows-[auto_1fr] md:grid-cols-[auto_1fr] w-full">
+      <PageContainer floatingHero fillHeight>
+        <div className="grid grid-rows-[auto_1fr] md:grid-cols-[auto_1fr] w-full md:flex-1 md:min-h-0 md:overflow-y-auto">
           <div className="order-2 md:order-1 p-10 flex flex-col gap-4">
             {query?.images?.map((image) => (
               <Image
