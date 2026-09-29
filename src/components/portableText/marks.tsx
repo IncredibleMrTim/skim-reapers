@@ -82,7 +82,7 @@ export function Heading4Mark({ children }: MarkProps) {
  * marks that the bundled editor would normally provide for free.
  */
 export function StrongMark({ children }: MarkProps) {
-  return <strong className="font-bold">{children}</strong>
+  return <strong className="font-bold font-inter!">{children}</strong>
 }
 
 export function EmMark({ children }: MarkProps) {
@@ -143,13 +143,22 @@ export const STYLE_TAGS: Record<string, { tag: string; className: string }> = {
  * a dedicated break node. The Studio's `contenteditable` canvas renders
  * that whitespace for free; a plain rendered `<p>` collapses it under
  * normal CSS whitespace handling, so line breaks silently disappear.
+ *
+ * `min-h-[1lh]` covers the other spacer case: pressing Enter to start a
+ * whole new (empty) block, rather than a soft line break inside one. That
+ * block's only span has `text: ""` — an empty string renders no text node
+ * at all, so a plain `<p>` with no content doesn't establish a line box
+ * and collapses to zero height, leaving only the `pb-[0.5em]` as its
+ * visible gap. That's much smaller than the full blank line the Studio's
+ * own canvas shows for it. Reserving one line's height keeps an empty
+ * block's frontend footprint matching what the editor sees while typing.
  */
 export function renderBlock(style: string | undefined, children: ReactNode) {
   const resolved = style ? STYLE_TAGS[style] : undefined
   const Tag = (resolved?.tag ?? "p") as ElementType
   return (
     <Tag
-      className={`pb-[0.5em] whitespace-pre-line ${resolved?.className ?? ""}`.trim()}
+      className={`min-h-[1lh] pb-[0.5em] whitespace-pre-line ${resolved?.className ?? ""}`.trim()}
     >
       {children}
     </Tag>
