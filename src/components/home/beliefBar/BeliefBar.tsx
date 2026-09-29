@@ -1,6 +1,6 @@
 import { BeliefCard } from "./BeliefCard"
 import type { Belief as BeliefBannerQueryResult } from "@/sanity/types"
-import { getIconComponent } from "@/lib/reactIcons"
+import { DynamicReactIcon } from "@/lib/reactIcons"
 import { ReactNode } from "react"
 import Image from "next/image"
 import { urlForImage } from "@/sanity/image"
@@ -17,10 +17,14 @@ export const BeliefBar = ({ queryResult }: BeliefBarProps) => {
         let icon: ReactNode = null
 
         if (b.icon) {
-          const Icon = getIconComponent(b.icon)
-          if (Icon) {
-            icon = <Icon size={48} strokeWidth={1} color="var(--accent)" />
-          }
+          icon = (
+            <DynamicReactIcon
+              icon={b.icon}
+              size={48}
+              strokeWidth={1}
+              color="var(--accent)"
+            />
+          )
         } else if (b.image) {
           icon = (
             <div className="relative flex-1 min-w-12 max-md:w-full aspect-48/48">
