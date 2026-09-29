@@ -9,12 +9,12 @@ import { urlForImage } from "@/sanity/image"
 import { PageContainer } from "@/components/PageContainer"
 
 export default async function AboutPage() {
-  const aboutPage = (await client.fetch(aboutPageQuery)) as AboutPageQueryResult
+  const query = (await client.fetch(aboutPageQuery)) as AboutPageQueryResult
 
   return (
     <>
       <Header
-        hero={aboutPage?.hero ?? undefined}
+        hero={query?.hero ?? undefined}
         showHeroImageOnMobile={false}
         showHeroTextOnMobile={false}
         floating
@@ -23,7 +23,7 @@ export default async function AboutPage() {
       <PageContainer floatingHero>
         <div className="grid grid-rows-[auto_1fr] md:grid-cols-[auto_1fr] w-full">
           <div className="order-2 md:order-1 p-10 flex flex-col gap-4">
-            {aboutPage?.images?.map((image) => (
+            {query?.images?.map((image) => (
               <Image
                 key={image._key}
                 src={urlForImage(image).url()}
@@ -35,9 +35,9 @@ export default async function AboutPage() {
             ))}
           </div>
           <div className="order-1 md:order-2 md:pt-8 [&_strong]:font-heading font-inter">
-            {aboutPage?.about && (
+            {query?.about && (
               <PortableText
-                value={aboutPage.about}
+                value={query.about}
                 components={PORTABLE_TEXT_COMPONENTS}
               />
             )}

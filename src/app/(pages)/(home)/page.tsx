@@ -11,9 +11,9 @@ import { HomePageQueryResult } from "@/sanity/types"
 import { PageContainer } from "@/components/PageContainer"
 
 export default async function Home() {
-  const homePage = (await client.fetch(homePageQuery)) as HomePageQueryResult
+  const query = (await client.fetch(homePageQuery)) as HomePageQueryResult
 
-  if (!homePage) {
+  if (!query) {
     return (
       <div className="flex flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
         <p className="max-w-md text-center text-lg text-zinc-600 dark:text-zinc-400">
@@ -32,12 +32,12 @@ export default async function Home() {
 
   return (
     <>
-      <Header hero={homePage.hero ?? undefined} />
+      <Header hero={query.hero ?? undefined} />
       <PageContainer>
         <div className="hidden md:block w-full">
-          <BeliefBar queryResult={homePage.belief ?? []} />
+          <BeliefBar queryResult={query.belief ?? []} />
         </div>
-        {homePage.whatWeDo && <WhatWeDo queryResult={homePage.whatWeDo} />}
+        {query.whatWeDo && <WhatWeDo queryResult={query.whatWeDo} />}
         <ExperienceBar />
       </PageContainer>
     </>

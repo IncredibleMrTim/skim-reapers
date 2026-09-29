@@ -1,8 +1,8 @@
 import { createPageMetadata } from "@/lib/metadata"
 
-export const metadata = createPageMetadata("services")
+export const metadata = createPageMetadata("workWithUs")
 
-export default function ServicesLayout({
+export default function WorkWithUsLayout({
   children,
 }: {
   children: React.ReactNode
