@@ -1,14 +1,14 @@
-import { defineArrayMember, defineField, defineType } from "sanity"
+import { defineField, defineType } from "sanity"
 import { portableTextSchema } from "../helpers/portableText"
 import { buttonsSchema } from "../helpers/buttons"
 
-export const aboutPage = defineType({
-  name: "aboutPage",
-  title: "About Page",
+export const commercialPage = defineType({
+  name: "commercialPage",
+  title: "Commercial Page",
   type: "document",
   preview: {
     prepare() {
-      return { title: "About Page" }
+      return { title: "Commercial Page" }
     },
   },
   groups: [
@@ -21,14 +21,7 @@ export const aboutPage = defineType({
       type: "hero",
       group: "hero",
     }),
-    defineField({
-      name: "images",
-      title: "About page images",
-      group: "content",
-      type: "array",
-      of: [defineArrayMember({ type: "image", options: { hotspot: true } })],
-    }),
-    portableTextSchema({ name: "about", title: "About", group: "content" }),
+    portableTextSchema({ name: "content", title: "Content", group: "content" }),
     buttonsSchema({
       name: "buttons",
       title: "Commercial Page Buttons",

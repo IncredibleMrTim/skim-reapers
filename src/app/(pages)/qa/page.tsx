@@ -1,17 +1,14 @@
 import { PortableText } from "@portabletext/react"
 import { Header } from "@/components/header/Header"
 import { client } from "@/sanity/client"
-import { servicesPageQuery } from "@/sanity/queries"
-import type { ServicesPageQueryResult } from "@/sanity/types"
+import { qaPageQuery } from "@/sanity/queries"
+import type { QaPage as QaPageQueryResults } from "@/sanity/types"
 import { PageContainer } from "@/components/PageContainer"
 import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
 import { CtaButtons } from "@/components/CtaButtons"
-import { TabAccordionClient } from "@/components/tabAccordionClient/TabAccordionClient"
 
-export default async function ServicesPage() {
-  const query = (await client.fetch(
-    servicesPageQuery,
-  )) as ServicesPageQueryResult
+export default async function QaPage() {
+  const query = (await client.fetch(qaPageQuery)) as QaPageQueryResults
 
   return (
     <>
@@ -31,7 +28,6 @@ export default async function ServicesPage() {
               />
             )}
           </div>
-          <TabAccordionClient items={query?.services ?? []} />
 
           {query?.buttons && (
             <div className="md:pl-2">

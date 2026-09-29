@@ -20,17 +20,18 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { useRouter } from "next/navigation"
 
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Commercial", href: "#commercial" },
-  { label: "Domestic", href: "#domestic" },
-  { label: "Our Work", href: "#our-work" },
-  { label: "Reviews", href: "#reviews" },
-  { label: "Q&A", href: "#qa" },
-  { label: "Contact", href: "#contact" },
-  { label: "Work With Us", href: "#work-with-us" },
+  { label: "Commercial", href: "/commercial" },
+  { label: "Domestic", href: "/domestic" },
+  { label: "Our Work", href: "ourWork" },
+  { label: "Reviews", href: "/reviews" },
+  { label: "Q&A", href: "/qa" },
+  { label: "Contact", href: "/contact" },
+  { label: "Work With Us", href: "/workWithUs" },
 ]
 
 const SERVICE_LINKS = [
@@ -62,6 +63,7 @@ const navLinkClassName =
 
 export function Navbar() {
   const pathname = usePathname()
+  const router = useRouter()
 
   return (
     <header className="flex justify-self-end h-20 light relative w-full xl:w-[78%] 2xl:w-[80%]  lg:pl-10 border-border text-foreground bg-linear-to-r from-brand-background md:from-transparent from-0% md:from-0% via-brand-background via-30% md:via-10% to-100% to-transparent md:to-brand-background pr-4">
@@ -76,7 +78,6 @@ export function Navbar() {
             Commercial & Domestic
           </p>
         </div>
-
         {/* Links */}
         <NavigationMenu className="z-20 hidden max-w-none flex-1 lg:flex h-8 my-auto">
           <NavigationMenuList className="h-full items-stretch justify-end gap-1">
@@ -128,16 +129,14 @@ export function Navbar() {
             ))}
           </NavigationMenuList>
         </NavigationMenu>
-
         {/* CTA */}
-        <a
-          href="#contact"
-          className="my-auto ml-2 hidden shrink-0 items-center bg-brand-primary px-4 h-2/4 text-sm font-bold tracking-wider text-brand-primary-foreground uppercase no-underline transition-opacity hover:opacity-90 lg:flex lg:gap-2 [clip-path:polygon(6%_0,100%_0,94%_100%,0_100%)]"
+        <Button
+          className="my-auto ml-2 hidden shrink-0 items-center bg-brand-primary px-4 h-2/4 text-sm font-bold tracking-wider text-brand-primary-foreground uppercase no-underline transition-opacity hover:opacity-90 lg:flex lg:gap-2 [clip-path:polygon(6%_0,100%_0,94%_100%,0_100%)] z-20"
+          onClick={() => router.push("/contact")}
         >
           Get a Quote
           <HiArrowNarrowRight className="mt-0.5" />
-        </a>
-
+        </Button>
         {/* Mobile menu */}
         <Sheet>
           <SheetTrigger

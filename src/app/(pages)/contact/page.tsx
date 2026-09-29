@@ -1,17 +1,16 @@
 import { PortableText } from "@portabletext/react"
 import { Header } from "@/components/header/Header"
 import { client } from "@/sanity/client"
-import { servicesPageQuery } from "@/sanity/queries"
-import type { ServicesPageQueryResult } from "@/sanity/types"
+import { contactPageQuery } from "@/sanity/queries"
+import type { ContactPage as ContactPageQueryResults } from "@/sanity/types"
 import { PageContainer } from "@/components/PageContainer"
 import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
 import { CtaButtons } from "@/components/CtaButtons"
-import { TabAccordionClient } from "@/components/tabAccordionClient/TabAccordionClient"
 
-export default async function ServicesPage() {
+export default async function OurWorkPage() {
   const query = (await client.fetch(
-    servicesPageQuery,
-  )) as ServicesPageQueryResult
+    contactPageQuery,
+  )) as ContactPageQueryResults
 
   return (
     <>
@@ -31,7 +30,6 @@ export default async function ServicesPage() {
               />
             )}
           </div>
-          <TabAccordionClient items={query?.services ?? []} />
 
           {query?.buttons && (
             <div className="md:pl-2">

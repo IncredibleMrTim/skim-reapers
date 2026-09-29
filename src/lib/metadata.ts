@@ -31,6 +31,36 @@ const pageMetadata: Record<string, PageMetadata> = {
     title: "Services",
     description: "Services offered by Skim Reapers.",
   },
+  commercial: {
+    title: "Services",
+    description: "Commercial Services offered by Skim Reapers.",
+  },
+  domestic: {
+    title: "Domestic",
+    description: "Domestic Services offered by Skim Reapers.",
+  },
+  ourWork: {
+    title: "Our Work",
+    description: "View our work.",
+  },
+  reviews: {
+    title: "Our Work",
+    description: "Read reviews from our customer.",
+  },
+  qa: {
+    title: "Questions & Answers",
+    description: "Questions and Answers from some of our customers.",
+  },
+  contact: {
+    title: "Contact Us",
+    description:
+      "Contact us for a quote or further information about Skim Reapers.",
+  },
+  workWithUs: {
+    title: "Work With Us",
+    description:
+      "Interested in joining the team.  Get in touch and lets have a chat",
+  },
 }
 
 export function createPageMetadata(page: keyof typeof pageMetadata): Metadata {
