@@ -45,7 +45,7 @@ export const Header = ({
           color: "var(--foreground)",
         }}
       >
-        <div className="w-full">
+        <div className="w-full max-md:h-20">
           <Navbar />
         </div>
 
@@ -69,7 +69,7 @@ export const Header = ({
       {floating && (
         <Image
           fill
-          className="pointer-events-none object-cover object-center md:object-left-top opacity-40 md:opacity-15 z-9 [--mask-pos:center_top] md:[--mask-pos:top_left]"
+          className="pointer-events-none object-cover md:object-top-left opacity-30 z-9 [--mask-pos:center_top] md:[--mask-pos:top_left]"
           style={{
             maskImage:
               "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",
