@@ -66,7 +66,7 @@ export function Navbar() {
   const router = useRouter()
 
   return (
-    <header className="flex justify-self-end h-20 light relative w-full xl:w-[78%] 2xl:w-[80%]  lg:pl-10 border-border text-foreground bg-linear-to-r from-brand-background md:from-transparent from-0% md:from-0% via-brand-background via-30% md:via-10% to-100% to-transparent md:to-brand-background pr-4">
+    <header className="flex justify-self-end h-20 light w-full max-md:fixed max-md:top-0 max-md:inset-x-0 max-md:z-50 md:relative xl:w-[78%] 2xl:w-[80%]  lg:pl-10 border-border text-foreground bg-linear-to-br md:bg-linear-to-r from-white md:from-transparent from-0% md:from-0% via-white/90 via-70% md:via-10% md:via-brand-background to-100% to-white/60 md:to-brand-background pr-4 shadow-md shadow-brand-foreground/20 md:shadow-none">
       <div className=" flex w-full max-w-[1920px] items-center justify-between h-full">
         {/* Tagline */}
         <div className="flex flex-col justify-center items-center border-r border-border border-none ml-5">
@@ -150,7 +150,7 @@ export function Navbar() {
               />
             }
           >
-            <MenuIcon className="size-6" />
+            <MenuIcon className="size-6 text-black" />
           </SheetTrigger>
           <SheetContent side="right" className="flex flex-col">
             <SheetHeader>

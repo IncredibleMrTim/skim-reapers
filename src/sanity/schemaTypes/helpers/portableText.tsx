@@ -26,6 +26,7 @@ import {
   renderDecoratorMark,
 } from "@/components/portableText/marks"
 import { BLOCK_STYLES } from "@/sanity/schemaTypes/blockStyles"
+import { BrandSwatchColorInput } from "@/sanity/schemaTypes/helpers/BrandSwatchColorInput"
 
 function decoratorComponent(props: BlockDecoratorProps) {
   return <>{renderDecoratorMark(props.value, props.children)}</>
@@ -226,7 +227,9 @@ export const portableTextSchema = ({
                   title: "Color",
                   // Brand tokens from `src/app/globals.css`'s `:root`, so
                   // editors pick from the same palette the rest of the site
-                  // uses instead of an arbitrary freehand color.
+                  // uses instead of an arbitrary freehand color. The labeled
+                  // swatch buttons below the picker (`BrandSwatchColorInput`)
+                  // select from the same list with one click.
                   options: {
                     colorList: [
                       "#af7c3c", // --accent
@@ -235,6 +238,7 @@ export const portableTextSchema = ({
                       "#e5484d", // --destructive
                     ],
                   },
+                  components: { input: BrandSwatchColorInput },
                 }),
               ],
             }),

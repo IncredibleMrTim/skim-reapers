@@ -43,7 +43,7 @@ export const BeliefBar = ({ queryResult }: BeliefBarProps) => {
             key={b._key}
             icon={icon}
             text={b.heading}
-            className={`${idx < queryResult.length ? "h-full shrink-0 border-r border-brand-content/25" : ""}`}
+            className={`${idx < queryResult.length - 1 ? "h-full shrink-0 border-r border-brand-content/25" : ""}`}
           />
         )
       })}

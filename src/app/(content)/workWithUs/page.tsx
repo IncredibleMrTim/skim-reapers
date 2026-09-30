@@ -1,16 +1,16 @@
 import { PortableText } from "@portabletext/react"
 import { Header } from "@/components/header/Header"
 import { client } from "@/sanity/client"
-import { contactPageQuery } from "@/sanity/queries"
-import type { ContactPage as ContactPageQueryResults } from "@/sanity/types"
+import { workWithUsPageQuery } from "@/sanity/queries"
+import type { WorkWithUsPage as WorkWithUsPageQueryResults } from "@/sanity/types"
 import { PageContainer } from "@/components/PageContainer"
 import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
 import { CtaButtons } from "@/components/CtaButtons"
 
 export default async function OurWorkPage() {
   const query = (await client.fetch(
-    contactPageQuery,
-  )) as ContactPageQueryResults
+    workWithUsPageQuery,
+  )) as WorkWithUsPageQueryResults
 
   return (
     <>
@@ -20,9 +20,9 @@ export default async function OurWorkPage() {
         showHeroTextOnMobile={false}
         floating
       />
-      <PageContainer floatingHero>
-        <div className="flex flex-col gap-4 md:gap-8 w-full font-inter">
-          <div>
+      <PageContainer floatingHero fillHeight>
+        <div className="flex flex-col gap-4 md:gap-8 w-full md:flex-1 md:min-h-0 font-inter">
+          <div className="md:overflow-y-auto md:flex-1 md:min-h-0">
             {query?.content && (
               <PortableText
                 value={query.content}
@@ -32,7 +32,7 @@ export default async function OurWorkPage() {
           </div>
 
           {query?.buttons && (
-            <div className="md:pl-2">
+            <div>
               <CtaButtons buttons={query.buttons} />
             </div>
           )}
