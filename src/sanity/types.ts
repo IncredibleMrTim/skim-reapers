@@ -64,6 +64,20 @@ export type Image1 = {
   _type: "image";
 };
 
+export type ColorPalette = {
+  _id: string;
+  _type: "colorPalette";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  swatches?: Array<{
+    label?: string;
+    hex: string;
+    _type: "swatch";
+    _key: string;
+  }>;
+};
+
 export type WorkWithUsPage = {
   _id: string;
   _type: "workWithUsPage";
@@ -1118,6 +1132,7 @@ export type AllSanitySchemaTypes =
   | Icon
   | CardIcon
   | Image1
+  | ColorPalette
   | WorkWithUsPage
   | SanityImageCrop
   | SanityImageHotspot
