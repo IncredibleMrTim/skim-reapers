@@ -2,6 +2,8 @@
 
 Content is managed in [Sanity](https://sanity.io), not in this repo. Edit it at `/admin` (locally: `http://localhost:3000/admin`).
 
+See [`../src/sanity/README.md`](../src/sanity/README.md) for the `src/sanity/` folder layout, and [`../src/sanity/live/README.md`](../src/sanity/live/README.md) for the live-content feature — publish updates and editor draft previews on the public site with no rebuild.
+
 ## Environment variables
 
 Required in `.env.local` for local dev:

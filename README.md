@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-Copy `.env.local` with your Sanity project details (see [`docs/sanity.md`](docs/sanity.md#environment-variables)), then run the development server:
+Copy `.env.local` with your Sanity project details (see [`src/sanity/README.md`](src/sanity/README.md#environment-variables)), then run the development server:
 
 ```bash
 pnpm dev
@@ -14,7 +14,7 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 ## Content
 
-Content is managed in [Sanity](https://sanity.io), not in this repo — see [`docs/sanity.md`](docs/sanity.md) for environment setup, type generation, Studio navigation, and how to wire up new pages/sections.
+Content is managed in [Sanity](https://sanity.io), not in this repo — see [`src/sanity/README.md`](src/sanity/README.md) for the folder layout and environment setup, and [`docs/sanity.md`](docs/sanity.md) for type generation, Studio navigation, and how to wire up new pages/sections.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
