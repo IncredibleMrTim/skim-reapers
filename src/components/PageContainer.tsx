@@ -35,18 +35,18 @@ export const PageContainer = ({
 }: TPageContainerProps) => {
   const floatingHero = !hero?.floating
   return (
-    <div className="flex flex-col gap-4 md:gap-8 w-full md:flex-1 md:min-h-0 font-inter px-8 md:px-0 md:pr-8">
+    <div className="flex flex-col gap-4 md:gap-8 w-full md:flex-1 md:min-h-0 font-inter px-4 md:px-0 md:pr-8 py-8">
       <div className={cn(fillHeight && "flex flex-col md:flex-1 md:min-h-0")}>
         {floatingHero ? (
           <section
             className={cn(
-              "relative flex flex-1 pt-20 md:pt-20 w-full",
+              "relative flex flex-col flex-1 pt-20 md:pt-20 w-full md:pl-8",
               fillHeight && "md:min-h-0",
             )}
           >
             <div
               className={cn(
-                "flex relative z-10 px-0 md:pl-8 w-full max-w-[1920px] mx-auto md:ml-(--hero-content-width) md:w-[calc(100%-var(--hero-content-width))] border-none md:border-l border-l-white/10",
+                "flex flex-col relative z-10 px-0 md:pl-8 w-full max-w-[1920px] mx-auto md:ml-(--hero-content-width) md:w-[calc(100%-var(--hero-content-width))] border-none md:border-l border-l-white/10",
                 fillHeight && "md:min-h-0",
               )}
             >

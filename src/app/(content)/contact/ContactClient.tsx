@@ -17,7 +17,11 @@ export const ContactClient = ({ initialData }: ContactClientProps) => {
   const query = useLiveSanityData(contactPageQuery, initialData)
   return (
     <>
-      <Header hero={query?.hero ?? undefined} showHeroImageOnMobile={false} />
+      <Header
+        hero={query?.hero ?? undefined}
+        showHeroImageOnMobile={false}
+        showHeroTextOnMobile={false}
+      />
       <PageContainer hero={query?.hero ?? undefined} fillHeight>
         <div className="md:overflow-y-auto md:flex-1 md:min-h-0 no-scrollbar">
           {query?.content && (
