@@ -34,7 +34,7 @@ export default async function AboutPage() {
               />
             ))}
           </div>
-          <div className="order-1 md:order-2 md:pt-8 [&_strong]:font-heading font-inter">
+          <div className="order-1 md:order-2 md:pt-8 font-inter">
             {query?.about && (
               <PortableText
                 value={query.about}
