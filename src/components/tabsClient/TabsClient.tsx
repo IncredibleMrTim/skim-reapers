@@ -54,7 +54,7 @@ export function TabsClient({ items }: { items: TabItem[] }) {
           <TabsTrigger
             key={s._key}
             value={s._key}
-            className="w-full border-b-0 rounded md:rounded-none md:border-b border-b-brand-accent m-1 md:m-0  p-4 mb:p-2 text-sm md:text-lg font-sans aria-selected:bg-white/20 group-data-vertical/tabs:flex-none group-data-vertical/tabs:h-auto"
+            className="w-full border-b-0 rounded md:rounded-none md:border-b border-b-white/10 aria-selected:border-b-brand-accent m-1 md:m-0  p-4 mb:p-2 text-sm md:text-lg font-sans aria-selected:bg-white/20 group-data-vertical/tabs:flex-none group-data-vertical/tabs:h-auto"
           >
             {s.heading}
           </TabsTrigger>
@@ -65,7 +65,7 @@ export function TabsClient({ items }: { items: TabItem[] }) {
         <TabsContent
           key={s._key}
           value={s._key}
-          className=" p-4 md:bg-black/30 border-t border-t-brand-accent/30"
+          className="p-4 md:bg-black/30 border-t border-t-brand-accent/30"
         >
           <div className="font-inter">
             <h1 className="text-2xl font-inter font-bold text-brand-content pb-2">
