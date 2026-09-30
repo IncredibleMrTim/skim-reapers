@@ -56,6 +56,33 @@ export const hero = defineType({
       initialValue: true,
     }),
     defineField({
+      name: "floating",
+      title: "Enable full hero layout",
+      description: (
+        <>
+          <p>Defined the layout of the Hero.</p>
+          <ul
+            style={{
+              margin: "0.5em 0 0",
+              paddingLeft: "1.25em",
+              listStyleType: "disc",
+            }}
+          >
+            <li>
+              Enabled: Displays the Hero the full with of the browser with page
+              content below.
+            </li>
+            <li>
+              Disabled: Displays the Hero to the left of the screen with page
+              content to the right.
+            </li>
+          </ul>
+        </>
+      ),
+      type: "boolean",
+      initialValue: true,
+    }),
+    defineField({
       name: "background",
       title: "Background Image",
       description: "The large background image displayed on the Hero banner.",
@@ -195,8 +222,10 @@ export const hero = defineType({
             The hero text column&apos;s width is controlled by the{" "}
             <code>--hero-content-width</code> CSS variable (default{" "}
             <code>40%</code>). Set it on <code>:root</code> — e.g.{" "}
-            <code>:root {"{"} --hero-content-width: 28%; {"}"}</code> —
-            rather than setting <code>width</code> directly on the hero
+            <code>
+              :root {"{"} --hero-content-width: 28%; {"}"}
+            </code>{" "}
+            — rather than setting <code>width</code> directly on the hero
             column: page content placed next to the hero on the page itself
             (e.g. the Services page tabs) reads the same variable and
             automatically fills whatever width is left over, but only if the

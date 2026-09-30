@@ -19,8 +19,6 @@ type HeroProps = {
   showHeroImageOnMobile?: boolean
   showHeroTextOnMobile?: boolean
   customComp?: ComponentType
-  /** See Header's `floating` prop — Hero mirrors it so its own sizing matches. */
-  floating?: boolean
 }
 
 export const Hero = ({
@@ -28,7 +26,6 @@ export const Hero = ({
   showHeroImageOnMobile = true,
   showHeroTextOnMobile = true,
   customComp: CustomComp,
-  floating = false,
 }: HeroProps) => {
   const customCss = sanitizeCustomCss(hero?.customCss?.code)
 
@@ -77,7 +74,10 @@ export const Hero = ({
 
   return (
     <div
-      className={cn("relative px-4 min-h-100", floating && "h-full")}
+      className={cn(
+        "relative px-4 min-h-120 md:min-h-150",
+        !hero?.floating && "h-full",
+      )}
       data-slot="hero-container"
     >
       {customCss && <style>{customCss}</style>}
@@ -129,7 +129,7 @@ export const Hero = ({
             data-slot="hero-content-container"
             className={cn(
               "relative flex flex-col gap-1 justify-start w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0",
-              floating ? "mt-60 md:mt-0 md:pt-60" : "pt-60 pb-8",
+              !hero?.floating ? "mt-60 md:mt-0 md:pt-60" : "pt-60 pb-8",
               showHeroTextOnMobile ? "" : "max-md:hidden",
             )}
           >
@@ -142,7 +142,7 @@ export const Hero = ({
           data-slot="hero-content-container"
           className={cn(
             "relative justify-start w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 md:w-[var(--hero-content-width)]",
-            floating ? "mt-60 md:mt-0 md:pt-60" : "pt-60 pb-8",
+            !hero?.floating ? "mt-60 md:mt-0 md:pt-60" : "pt-60 pb-8",
             showHeroTextOnMobile ? "" : "max-md:hidden",
           )}
         >

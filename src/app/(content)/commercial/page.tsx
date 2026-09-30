@@ -18,25 +18,22 @@ export default async function CommercialPage() {
         hero={query?.hero ?? undefined}
         showHeroImageOnMobile={false}
         showHeroTextOnMobile={false}
-        floating
       />
-      <PageContainer floatingHero fillHeight>
-        <div className="flex flex-col gap-4 md:gap-8 w-full md:flex-1 md:min-h-0 font-inter">
-          <div className="md:overflow-y-auto md:flex-1 md:min-h-0 w-full">
-            {query?.content && (
-              <PortableText
-                value={query.content}
-                components={PORTABLE_TEXT_COMPONENTS}
-              />
-            )}
-          </div>
-
-          {query?.buttons && (
-            <div>
-              <CtaButtons buttons={query.buttons} />
-            </div>
+      <PageContainer hero={query?.hero ?? undefined} fillHeight>
+        <div className="md:overflow-y-auto md:flex-1 md:min-h-0 w-full no-scrollbar">
+          {query?.content && (
+            <PortableText
+              value={query.content}
+              components={PORTABLE_TEXT_COMPONENTS}
+            />
           )}
         </div>
+
+        {query?.buttons && (
+          <div>
+            <CtaButtons buttons={query.buttons} />
+          </div>
+        )}
       </PageContainer>
     </>
   )

@@ -17,6 +17,7 @@
   --color-brand-muted: var(--muted);
   --color-brand-muted-foreground: var(--muted-foreground);
   --color-brand-accent: var(--accent);
+  --color-brand-accent-light: var(--accent-light);
   --color-brand-accent-foreground: var(--accent-foreground);
   --color-brand-border: var(--border);
   --color-brand-ring: var(--ring);
@@ -87,7 +88,7 @@
   --muted: #1a1a1a;
   --muted-foreground: #6b6460;
   --accent: #af7c3c;
-  --accent-light: #af7c3c;
+  --accent-light: #E2A85C;
   --accent-foreground: #0a0a0a;
   --destructive: #e5484d;
   --border: #2a2a2a;
@@ -182,11 +183,25 @@ html, body, #root {
   box-sizing: border-box;
 }
 
-/* Hide scrollbar while keeping scroll */
+/* Thin branded scrollbar for normal page scrolling. */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--background); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+
+/*
+ * Fully hides the scrollbar while keeping the element scrollable — for the
+ * pinned-header/pinned-footer content pages (see `(content)/layout.tsx`),
+ * where the middle panel scrolls internally and a visible scrollbar there
+ * would look like a stray UI chrome element rather than page content.
+ */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 @layer base {
   * {

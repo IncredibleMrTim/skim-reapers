@@ -1,11 +1,19 @@
-import { hero } from "@/sanity/schemaTypes/hero"
-import { Header } from "./header/Header"
 import type { Hero as HeroData } from "@/sanity/types"
 import { ReactNode } from "react"
 import { cn } from "@/lib/utils"
 
 type TPageContainerProps = {
-  floatingHero?: boolean
+  /**
+   * The page's hero data. Drives the same `floating` field `Header` reads
+   * (see `Header`'s `hero` prop): when disabled, the hero is pinned to the
+   * left as a fixed column and this container reserves space via
+   * `--hero-content-width` for content to sit beside it; when enabled, the
+   * hero sizes to its own content and this container renders full-width
+   * with content flowing below. Keep this in sync with the `hero` passed
+   * to the page's `Header` — a mismatch between the two produces a hero
+   * and content area that assume different layouts.
+   */
+  hero?: HeroData | null
   /**
    * Stretch the container to fill the height left over between the header
    * and the footer, instead of shrink-wrapping to content. Requires the
@@ -21,38 +29,36 @@ type TPageContainerProps = {
 }
 
 export const PageContainer = ({
-  floatingHero = false,
+  hero,
   fillHeight = false,
   children,
 }: TPageContainerProps) => {
+  const floatingHero = !hero?.floating
   return (
-    <div
-      className={cn(
-        floatingHero && "p-10",
-        fillHeight && "flex flex-col md:flex-1 md:min-h-0",
-      )}
-    >
-      {floatingHero ? (
-        <section
-          className={cn(
-            "relative flex flex-1 pt-20 md:pt-20 w-full",
-            fillHeight && "md:min-h-0",
-          )}
-        >
-          <div
+    <div className="flex flex-col gap-4 md:gap-8 w-full md:flex-1 md:min-h-0 font-inter px-8 md:px-0 md:pr-8">
+      <div className={cn(fillHeight && "flex flex-col md:flex-1 md:min-h-0")}>
+        {floatingHero ? (
+          <section
             className={cn(
-              "flex relative z-10 px-0 md:pl-8 w-full max-w-[1920px] mx-auto md:ml-(--hero-content-width) md:w-[calc(100%-var(--hero-content-width))] border-none md:border-l border-l-white/10",
+              "relative flex flex-1 pt-20 md:pt-20 w-full",
               fillHeight && "md:min-h-0",
             )}
           >
-            {children}
-          </div>
-        </section>
-      ) : (
-        <section className="w-full mx-auto">
-          <div className="mx-auto">{children}</div>
-        </section>
-      )}
+            <div
+              className={cn(
+                "flex relative z-10 px-0 md:pl-8 w-full max-w-[1920px] mx-auto md:ml-(--hero-content-width) md:w-[calc(100%-var(--hero-content-width))] border-none md:border-l border-l-white/10",
+                fillHeight && "md:min-h-0",
+              )}
+            >
+              {children}
+            </div>
+          </section>
+        ) : (
+          <section className="w-full mx-auto">
+            <div className="mx-auto">{children}</div>
+          </section>
+        )}
+      </div>
     </div>
   )
 }
