@@ -82,7 +82,7 @@ export function Heading4Mark({ children }: MarkProps) {
  * marks that the bundled editor would normally provide for free.
  */
 export function StrongMark({ children }: MarkProps) {
-  return <strong className="font-bold font-inter!">{children}</strong>
+  return <strong className="font-bold">{children}</strong>
 }
 
 export function EmMark({ children }: MarkProps) {
