@@ -3,17 +3,13 @@ import Link from "next/link"
 import { client } from "@/sanity/client"
 
 import { homePageQuery } from "@/sanity/queries"
-import { WhatWeDo } from "@/components/home/whatWeDo/WhatWeDo"
-import { BeliefBar } from "@/components/home/beliefBar/BeliefBar"
-import { ExperienceBar } from "@/components/home/experienceBar/experienceBar"
-import { Header } from "@/components/header/Header"
 import { HomePageQueryResult } from "@/sanity/types"
-import { PageContainer } from "@/components/PageContainer"
+import { HomeClient } from "@/app/(pages)/(home)/HomeClient"
 
 export default async function Home() {
-  const query = (await client.fetch(homePageQuery)) as HomePageQueryResult
+  const homePage = (await client.fetch(homePageQuery)) as HomePageQueryResult
 
-  if (!query) {
+  if (!homePage) {
     return (
       <div className="flex flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
         <p className="max-w-md text-center text-lg text-zinc-600 dark:text-zinc-400">
@@ -30,16 +26,5 @@ export default async function Home() {
     )
   }
 
-  return (
-    <>
-      <Header hero={query.hero ?? undefined} />
-      <PageContainer>
-        <div className="hidden md:block w-full">
-          <BeliefBar queryResult={query.belief ?? []} />
-        </div>
-        {query.whatWeDo && <WhatWeDo queryResult={query.whatWeDo} />}
-        <ExperienceBar />
-      </PageContainer>
-    </>
-  )
+  return <HomeClient initialHomePage={homePage} />
 }
