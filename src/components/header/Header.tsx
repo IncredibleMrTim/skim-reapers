@@ -11,14 +11,6 @@ type HeaderProps = {
   showHeroImageOnMobile?: boolean
   showHeroTextOnMobile?: boolean
   customComp?: ComponentType
-  /**
-   * Float the header absolutely over whatever the page renders below it,
-   * clipped to a fixed height, instead of the default behavior of sizing
-   * to the hero content and pushing the rest of the page down. Used by
-   * pages (e.g. About) that deliberately layer their own content under
-   * the hero rather than stacking below it.
-   */
-  floating?: boolean
 }
 
 export const Header = ({
@@ -28,7 +20,6 @@ export const Header = ({
   showHeroImageOnMobile = true,
   showHeroTextOnMobile = true,
   customComp,
-  floating = false,
 }: HeaderProps) => {
   return (
     <div>
@@ -36,7 +27,7 @@ export const Header = ({
         id="home"
         className={cn(
           "flex w-full flex-col bg-brand-background text-brand-background mx-auto",
-          floating
+          !hero?.floating
             ? "absolute min-h-190 md:min-h-100 overflow-x-clip"
             : "relative overflow-x-clip",
         )}
@@ -52,7 +43,7 @@ export const Header = ({
         {showHero && (
           <div
             className={cn(
-              floating && "flex-1 min-h-0",
+              !hero?.floating && "flex-1 min-h-0",
               showHeroOnMobile ? "" : "hidden md:block",
             )}
           >
@@ -61,12 +52,11 @@ export const Header = ({
               customComp={customComp}
               showHeroImageOnMobile={showHeroImageOnMobile}
               showHeroTextOnMobile={showHeroTextOnMobile}
-              floating={floating}
             />
           </div>
         )}
       </section>
-      {floating && (
+      {!hero?.floating && (
         <Image
           fill
           className="pointer-events-none object-cover md:object-top-left opacity-30 z-9 [--mask-pos:center_top] md:[--mask-pos:top_left]"
