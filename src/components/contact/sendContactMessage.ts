@@ -16,6 +16,7 @@ const GENERIC_ERROR_MESSAGE =
   "Something went wrong sending your message. Please try again or call us directly."
 
 const CONFIRMATION_TEMPLATE_PATH = "/emailTemplate.html"
+const NOTIFICATION_TEMPLATE_PATH = "/notificationEmailTemplate.html"
 
 const emailJsServiceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
 const emailJsNotificationTemplateId =
@@ -33,27 +34,28 @@ function escapeHtml(value: string): string {
 }
 
 /**
- * Renders /public/emailTemplate.html for the confirmation email — fetched
- * at send time so the template file (editable and previewable directly in
- * a browser) stays the single source of truth instead of a copy pasted
- * into the EmailJS dashboard. {{base_url}} resolves to the current origin
- * so the same file works in dev, the dev site, and production.
+ * Fetches a template from /public and fills in its {{token}} placeholders —
+ * fetched at send time so the template files (editable and previewable
+ * directly in a browser) stay the single source of truth instead of a copy
+ * pasted into the EmailJS dashboard. {{base_url}} resolves to the current
+ * origin so the same file works in dev, the dev site, and production.
  */
-async function buildConfirmationEmailHtml(
-  name: string,
-  message: string,
+async function renderEmailTemplate(
+  templatePath: string,
+  tokens: Record<string, string>,
 ): Promise<string> {
-  const response = await fetch(CONFIRMATION_TEMPLATE_PATH)
+  const response = await fetch(templatePath)
   if (!response.ok) {
     throw new Error(
-      `buildConfirmationEmailHtml: failed to fetch ${CONFIRMATION_TEMPLATE_PATH} (${response.status})`,
+      `renderEmailTemplate: failed to fetch ${templatePath} (${response.status})`,
     )
   }
   const templateHtml = await response.text()
-  return templateHtml
-    .replaceAll("{{base_url}}", window.location.origin)
-    .replaceAll("{{name}}", escapeHtml(name))
-    .replaceAll("{{message}}", escapeHtml(message))
+  return Object.entries({ base_url: window.location.origin, ...tokens }).reduce(
+    (html, [token, value]) =>
+      html.replaceAll(`{{${token}}}`, escapeHtml(value)),
+    templateHtml,
+  )
 }
 
 /**
@@ -93,10 +95,14 @@ export async function sendContactMessage(
   const { name, email, business, phone, message } = parsedFormValues.data
 
   try {
+    const notificationHtml = await renderEmailTemplate(
+      NOTIFICATION_TEMPLATE_PATH,
+      { name, email, business, phone, message },
+    )
     await emailjs.send(
       emailJsServiceId,
       emailJsNotificationTemplateId,
-      { name, email, business, phone, message },
+      { email, html: notificationHtml },
       { publicKey: emailJsPublicKey },
     )
   } catch (error) {
@@ -105,7 +111,10 @@ export async function sendContactMessage(
   }
 
   try {
-    const confirmationHtml = await buildConfirmationEmailHtml(name, message)
+    const confirmationHtml = await renderEmailTemplate(
+      CONFIRMATION_TEMPLATE_PATH,
+      { name, message },
+    )
     await emailjs.send(
       emailJsServiceId,
       emailJsConfirmationTemplateId,
