@@ -19,7 +19,7 @@ export function HomeClient({ initialHomePage }: HomeClientProps) {
   return (
     <>
       <Header hero={homePage?.hero ?? undefined} />
-      <PageContainer>
+      <PageContainer hero={homePage?.hero ?? undefined}>
         <div className="hidden md:block w-full">
           <BeliefBar queryResult={homePage?.belief ?? []} />
         </div>

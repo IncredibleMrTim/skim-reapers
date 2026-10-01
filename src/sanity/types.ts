@@ -15,6 +15,11 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type CustomDimensions = {
+  width?: number;
+  height?: number;
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -118,6 +123,10 @@ export type WorkWithUsPage = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "small" | "medium" | "large";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "left" | "center" | "right";
         _type: "image";
         _key: string;
@@ -178,6 +187,7 @@ export type Color = {
 export type Hero = {
   _type: "hero";
   showSmoke?: boolean;
+  floating?: boolean;
   background?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -221,6 +231,7 @@ export type Hero = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "small" | "medium" | "large";
+        customDimensions?: CustomDimensions;
         alignment?: "left" | "center" | "right";
         _type: "image";
         _key: string;
@@ -279,6 +290,10 @@ export type ContactPage = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "small" | "medium" | "large";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "left" | "center" | "right";
         _type: "image";
         _key: string;
@@ -351,6 +366,10 @@ export type QaPage = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "small" | "medium" | "large";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "left" | "center" | "right";
         _type: "image";
         _key: string;
@@ -423,6 +442,10 @@ export type ReviewsPage = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "small" | "medium" | "large";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "left" | "center" | "right";
         _type: "image";
         _key: string;
@@ -495,6 +518,10 @@ export type OurWorkPage = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "small" | "medium" | "large";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "left" | "center" | "right";
         _type: "image";
         _key: string;
@@ -567,6 +594,10 @@ export type DomesticPage = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "small" | "medium" | "large";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "left" | "center" | "right";
         _type: "image";
         _key: string;
@@ -639,6 +670,10 @@ export type CommercialPage = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "small" | "medium" | "large";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "left" | "center" | "right";
         _type: "image";
         _key: string;
@@ -711,6 +746,10 @@ export type ServicesPage = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "small" | "medium" | "large";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "left" | "center" | "right";
         _type: "image";
         _key: string;
@@ -752,6 +791,10 @@ export type ServicesPage = {
           crop?: SanityImageCrop;
           alt: string;
           size?: "small" | "medium" | "large";
+          customDimensions?: {
+            width?: number;
+            height?: number;
+          };
           alignment?: "left" | "center" | "right";
           _type: "image";
           _key: string;
@@ -860,6 +903,10 @@ export type AboutPage = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "small" | "medium" | "large";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "left" | "center" | "right";
         _type: "image";
         _key: string;
@@ -1125,6 +1172,7 @@ export type Slug = {
 };
 
 export type AllSanitySchemaTypes =
+  | CustomDimensions
   | SanityImageAssetReference
   | ImageIcon
   | ReactIcon
@@ -1250,6 +1298,10 @@ export type AboutPageQueryResult = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "large" | "medium" | "small";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "center" | "left" | "right";
         _type: "image";
         _key: string;
@@ -1295,6 +1347,10 @@ export type ServicesPageQueryResult = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "large" | "medium" | "small";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "center" | "left" | "right";
         _type: "image";
         _key: string;
@@ -1336,6 +1392,10 @@ export type ServicesPageQueryResult = {
           crop?: SanityImageCrop;
           alt: string;
           size?: "large" | "medium" | "small";
+          customDimensions?: {
+            width?: number;
+            height?: number;
+          };
           alignment?: "center" | "left" | "right";
           _type: "image";
           _key: string;
@@ -1434,6 +1494,10 @@ export type CommercialPageQueryResult = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "large" | "medium" | "small";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "center" | "left" | "right";
         _type: "image";
         _key: string;
@@ -1504,6 +1568,10 @@ export type DomesticPageQueryResult = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "large" | "medium" | "small";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "center" | "left" | "right";
         _type: "image";
         _key: string;
@@ -1574,6 +1642,10 @@ export type OurWorkPageQueryResult = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "large" | "medium" | "small";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "center" | "left" | "right";
         _type: "image";
         _key: string;
@@ -1644,6 +1716,10 @@ export type ReviewsPageQueryResult = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "large" | "medium" | "small";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "center" | "left" | "right";
         _type: "image";
         _key: string;
@@ -1714,6 +1790,10 @@ export type QaPageQueryResult = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "large" | "medium" | "small";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "center" | "left" | "right";
         _type: "image";
         _key: string;
@@ -1784,6 +1864,10 @@ export type ContactPageQueryResult = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "large" | "medium" | "small";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "center" | "left" | "right";
         _type: "image";
         _key: string;
@@ -1854,6 +1938,10 @@ export type WorkWithUsPageQueryResult = {
         crop?: SanityImageCrop;
         alt: string;
         size?: "large" | "medium" | "small";
+        customDimensions?: {
+          width?: number;
+          height?: number;
+        };
         alignment?: "center" | "left" | "right";
         _type: "image";
         _key: string;

@@ -44,7 +44,13 @@ function decoratorComponent(props: BlockDecoratorProps) {
  */
 function annotationComponent(props: BlockAnnotationProps) {
   return (
-    <>{renderAnnotationMark(props.schemaType.name, props.value, props.textElement)}</>
+    <>
+      {renderAnnotationMark(
+        props.schemaType.name,
+        props.value,
+        props.textElement,
+      )}
+    </>
   )
 }
 
@@ -66,9 +72,28 @@ const IMAGE_EDITOR_MARGIN: Record<string, string> = {
 
 function imageBlockPreviewComponent(props: BlockProps) {
   const value = props.value as
-    | { size?: string; alignment?: string }
+    | {
+        size?: string
+        alignment?: string
+        customDimensions?: {
+          width?: number
+          height?: number
+          unit?: "px" | "%"
+        }
+      }
     | undefined
-  const width = IMAGE_EDITOR_WIDTH[value?.size ?? "large"]
+  // Matches `PortableTextImage` in `components/portableText/marks.tsx`:
+  // custom dimensions are an explicit width/height override, not another
+  // size preset, so they take precedence over `size` here too.
+  const {
+    width: customWidth,
+    height: customHeight,
+    unit = "px",
+  } = value?.customDimensions ?? {}
+  const width =
+    customWidth && customHeight
+      ? `${customWidth}${unit}`
+      : IMAGE_EDITOR_WIDTH[value?.size ?? "large"]
   const margin = IMAGE_EDITOR_MARGIN[value?.alignment ?? "center"]
   return <div style={{ width, margin }}>{props.renderDefault(props)}</div>
 }
@@ -250,6 +275,25 @@ export const portableTextSchema = ({
         type: "image",
         options: { hotspot: true },
         components: { block: imageBlockPreviewComponent },
+        preview: {
+          select: {
+            media: "asset",
+            size: "size",
+            width: "customDimensions.width",
+            height: "customDimensions.height",
+            unit: "customDimensions.unit",
+          },
+          prepare({ media, size, width, height, unit }) {
+            const u = unit ?? "px"
+            return {
+              media,
+              title:
+                width && height
+                  ? `${width}${u} × ${height}${u}`
+                  : (size ?? "large"),
+            }
+          },
+        },
         fields: [
           defineField({
             name: "alt",
@@ -272,6 +316,32 @@ export const portableTextSchema = ({
               layout: "radio",
             },
             initialValue: "large",
+          }),
+          defineField({
+            name: "customDimensions",
+            title: "Custom Dimensions",
+            description:
+              "Overrides Size above with an exact width/height, in pixels or as a percentage of the image's normal width.",
+            type: "object",
+            options: { columns: 3 },
+            fields: [
+              defineField({ name: "width", title: "Width", type: "number" }),
+              defineField({ name: "height", title: "Height", type: "number" }),
+              defineField({
+                name: "unit",
+                title: "Unit",
+                type: "string",
+                options: {
+                  list: [
+                    { title: "px", value: "px" },
+                    { title: "%", value: "%" },
+                  ],
+                  layout: "radio",
+                  direction: "horizontal",
+                },
+                initialValue: "px",
+              }),
+            ],
           }),
           defineField({
             name: "alignment",

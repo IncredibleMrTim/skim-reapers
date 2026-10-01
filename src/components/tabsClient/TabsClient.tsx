@@ -44,11 +44,11 @@ export function TabsClient({ items }: { items: TabItem[] }) {
   return (
     <Tabs
       orientation={isMobile ? "horizontal" : "vertical"}
-      className="bg-transparent w-full h-auto md:h-full gap-6 md:gap-2 border md:border-none border-white/20 p-2 rounded"
+      className="bg-transparent w-full h-auto md:h-full gap-6 md:gap-2 border md:border-none border-white/20 rounded"
       defaultValue={activeKey}
     >
       <TabsList
-        className={`bg-transparent md:bg-black/30 rounded w-full group-data-vertical/tabs:h-full group-data-vertical/tabs:w-auto group-data-vertical/tabs:justify-start group-data-vertical/tabs:min-h-140 ${isMobile ? "flex-col flex-1" : ""}`}
+        className={`bg-transparent md:bg-black/30 rounded w-full group-data-vertical/tabs:h-auto! group-data-vertical/tabs:w-auto group-data-vertical/tabs:justify-start group-data-vertical/tabs:min-h-140 group-data-vertical/tabs:self-stretch ${isMobile ? "flex-col flex-1" : ""}`}
       >
         {items.map((s) => (
           <TabsTrigger

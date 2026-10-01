@@ -2,7 +2,7 @@ import type { ElementType, ReactNode } from "react"
 import type { PortableTextComponents } from "@portabletext/react"
 import NextImage from "next/image"
 import type { Image as SanityImage } from "sanity"
-import { urlForImage } from "@/sanity/image"
+import { getImageDimensions, urlForImage } from "@/sanity/image"
 
 /**
  * Single source of truth for how each custom Portable Text mark renders.
@@ -198,29 +198,64 @@ const IMAGE_SIZE_CLASSES: Record<string, string> = {
 
 /** Margin class for each `image.alignment` option — matches the Studio's radio options. */
 const IMAGE_ALIGNMENT_CLASSES: Record<string, string> = {
-  left: "mr-auto",
-  center: "mx-auto",
-  right: "ml-auto",
+  left: "justify-start",
+  center: "justify-center",
+  right: "justify-end",
 }
 
 /** Renders an `image` array member dropped into a Portable Text field. */
 export function PortableTextImage({
   value,
 }: {
-  value: SanityImage & { alt?: string; size?: string; alignment?: string }
+  value: SanityImage & {
+    alt?: string
+    size?: string
+    alignment?: string
+    customDimensions?: { width?: number; height?: number; unit?: "px" | "%" }
+  }
 }) {
   if (!value?.asset) return null
-  const widthClass = IMAGE_SIZE_CLASSES[value.size ?? "large"]
   const alignmentClass = IMAGE_ALIGNMENT_CLASSES[value.alignment ?? "center"]
+  const dimensions = getImageDimensions(value.asset._ref)
+  const {
+    width: customWidth,
+    height: customHeight,
+    unit = "px",
+  } = value.customDimensions ?? {}
+  // Custom dimensions are an explicit override, not another preset —
+  // rendering them through `w-full` would just stretch the image back out
+  // to the size class's width, silently discarding the override. The
+  // `width`/`height` props stay tied to the asset's real aspect ratio (for
+  // the pre-load CLS placeholder); the actual displayed box is set via
+  // `style` so both `px` and `%` units work the same way.
+  const hasCustomDimensions = Boolean(customWidth && customHeight)
+  // The figure stays full-width and flex-positions the image via
+  // `justify-*` instead of shrink-wrapping + `margin: auto` — the latter
+  // depends on the figure being exactly as wide as the image, which broke
+  // under some ancestor layouts.
+  const widthClass = hasCustomDimensions
+    ? ""
+    : IMAGE_SIZE_CLASSES[value.size ?? "large"]
   return (
-    <figure
-      className={`relative my-4 aspect-video overflow-hidden rounded-[8px] ${widthClass} ${alignmentClass}`}
-    >
+    <figure className={`flex my-4 min-w-0 ${widthClass} ${alignmentClass}`}>
       <NextImage
         src={urlForImage(value).width(1600).url()}
         alt={value.alt ?? ""}
-        fill
-        className="object-cover"
+        width={dimensions?.width ?? 1600}
+        height={dimensions?.height ?? 900}
+        style={
+          hasCustomDimensions
+            ? {
+                width: `${customWidth}${unit}`,
+                height: `${customHeight}${unit}`,
+              }
+            : undefined
+        }
+        className={
+          hasCustomDimensions
+            ? "min-w-0 rounded-[8px]"
+            : "w-full h-auto rounded-[8px]"
+        }
       />
     </figure>
   )
