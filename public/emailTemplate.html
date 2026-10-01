@@ -1,72 +1,60 @@
 <html>
 <head>
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  @media only screen and (max-width: 480px) {
+    .sr-footer-td { display: block !important; width: 100% !important; text-align: center !important; padding: 6px 0 !important; }
+  }
+</style>
 </head>
 <body>
-  <div style="width: 100%; padding: 10px; color: white; background: black; font-family: arial;">
-    <div style="max-height: 0; position: relative; opacity: 0.999;">
-      <!--[if mso]>
-      <v:rect xmlns:v="urn:schemas-microsoft-com:vml" stroked="false" style="mso-width-percent:500; height:900px; position:absolute; top:0px; left:0px;">
-      <v:fill type="frame" src="{{base_url}}/smoke_bg.webp" opacity="0.2" color="#000000" />
-      </v:rect>
-      <v:rect xmlns:v="urn:schemas-microsoft-com:vml" stroked="false" filled="false" style="mso-width-percent:500; position:absolute; top:0px; left:0px;">
-      <v:textbox inset="0,0,0,0">
-      <![endif]-->
-      <div style="display: inline-block; padding: 18px; box-sizing: border-box;">
-        <div style="width: 100%; text-align: center; margin-top: 20px;">
-          <img src="{{base_url}}/logo_extracted1.png" alt="Skim Reapers" width="160" />
-        </div>
-        <h1 style="font-size: 18px;">Hi {{name}},</h1>
-        <p>Thanks for getting in touch with Skim Reapers — We received your message and will come back to you as soon as possible to discuss your project.</p>
-        <br />
-        <div style="border: 1px solid; border-radius: 4px; border-color: #AF7C3C; ">
-          <h2 style="font-size: 18px; border-bottom: 1px solid rgba(0, 0, 0, 0.1); background: #AF7C3C; margin:0; padding: 10px;">Your Message:</h2>
-          <p style="padding: 10px;">{{message}}</p>
-        </div>
-        <br />
-        <h2 style="font-size: 18px;">What happens next?</h2>
-        <p>Our team will review your project and get back to you as soon as possible to help build your quote.</p>
-        <br />
-        <hr style="color: white; opacity: 0.2; border-color: #AF7C3C;" />
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; padding-top: 10px;">
-          <tr>
-            <td align="left" style="color: white;">
-              <a href="tel:+447914025843" style="color: white; text-decoration: none;">
-                <img src="{{base_url}}/icons/social/phone.png" alt="" width="16" height="16" style="vertical-align: middle; margin-right: 6px; background: transparent;" />
-                <span style="vertical-align: middle;">07914 025 843</span>
-              </a>
-            </td>
-            <td align="left" style="color: white;">
-              <a href="mailto:info@skimreapers.co.uk" style="color: white; text-decoration: none;">
-                <img src="{{base_url}}/icons/social/email.png" alt="" width="16" height="16" style="vertical-align: middle; margin-right: 6px; background: transparent;" />
-                <span style="vertical-align: middle;">info@skimreapers.co.uk</span>
-              </a>
-            </td>
-            <td align="right">
-              <a href="https://www.facebook.com/SkimReapers" style="display: inline-block; margin: 0 6px; background: transparent; text-decoration: none;">
-                <img src="{{base_url}}/icons/social/facebook.png" alt="Facebook" width="24" height="24" style="background: transparent;" />
-              </a>
-              <a href="https://www.instagram.com/skim.reapers/" style="display: inline-block; margin: 0 6px; background: transparent; text-decoration: none;">
-                <img src="{{base_url}}/icons/social/instagram.png" alt="Instagram" width="24" height="24" style="background: transparent;" />
-              </a>
-              <a href="https://wa.me/447914025843?text=Hi%20Skim%20Reapers%2C%20I%27d%20like%20to%20get%20in%20touch%20about%20a%20quote." style="display: inline-block; margin: 0 6px; background: transparent; text-decoration: none;">
-                <img src="{{base_url}}/icons/social/whatsapp.png" alt="WhatsApp" width="24" height="24" style="background: transparent;" />
-              </a>
-              <a href="#" style="display: inline-block; margin: 0 6px; background: transparent; text-decoration: none;">
-                <img src="{{base_url}}/icons/social/google.png" alt="Google Reviews" width="24" height="24" style="background: transparent;" />
-              </a>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <!--[if mso]>
-      </v:textbox>
-      </v:rect>
-      <![endif]-->
+  <div style="width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; box-sizing: border-box; color: #1a1a1a; background: #ffffff; font-family: arial;">
+    <div style="width: 100%; text-align: center; margin-top: 20px;">
+      <img src="{{base_url}}/logo_extracted1_dark.png" alt="Skim Reapers" width="160" />
     </div>
-    <!--[if !mso]><!-->
-    <img src="{{base_url}}/smoke_bg.webp" alt="" width="600" style="width: 100%; display: block; opacity: 0.2; pointer-events: none;" />
-    <!--<![endif]-->
+    <h1 style="font-size: 18px;">Hi {{name}},</h1>
+    <p>Thanks for getting in touch with Skim Reapers — We received your message and will come back to you as soon as possible to discuss your project.</p>
+    <br />
+    <div style="border: 1px solid #e5e5e5; border-radius: 4px;">
+      <h2 style="font-size: 18px; border-bottom: 1px solid #e5e5e5; background: #AF7C3C; color: #ffffff; margin: 0; padding: 10px;">Your Message:</h2>
+      <p style="padding: 10px;">{{message}}</p>
+    </div>
+    <br />
+    <h2 style="font-size: 18px;">What happens next?</h2>
+    <p>Our team will review your project and get back to you as soon as possible to help build your quote.</p>
+    <br />
+    <hr style="border: none; border-top: 1px solid #e5e5e5;" />
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; padding-top: 10px;">
+      <tr>
+        <td class="sr-footer-td" align="left" style="color: #1a1a1a;">
+          <a href="tel:+447914025843" style="color: #1a1a1a; text-decoration: none;">
+            <img src="{{base_url}}/icons/social/phone.png" alt="" width="16" height="16" style="vertical-align: middle; margin-right: 6px;" />
+            <span style="vertical-align: middle;">07914 025 843</span>
+          </a>
+        </td>
+        <td class="sr-footer-td" align="left" style="color: #1a1a1a;">
+          <a href="mailto:info@skimreapers.co.uk" style="color: #1a1a1a; text-decoration: none;">
+            <img src="{{base_url}}/icons/social/email.png" alt="" width="16" height="16" style="vertical-align: middle; margin-right: 6px;" />
+            <span style="vertical-align: middle;">info@skimreapers.co.uk</span>
+          </a>
+        </td>
+        <td class="sr-footer-td" align="right">
+          <a href="https://www.facebook.com/SkimReapers" style="display: inline-block; margin: 0 6px; text-decoration: none;">
+            <img src="{{base_url}}/icons/social/facebook.png" alt="Facebook" width="24" height="24" />
+          </a>
+          <a href="https://www.instagram.com/skim.reapers/" style="display: inline-block; margin: 0 6px; text-decoration: none;">
+            <img src="{{base_url}}/icons/social/instagram.png" alt="Instagram" width="24" height="24" />
+          </a>
+          <a href="https://wa.me/447914025843?text=Hi%20Skim%20Reapers%2C%20I%27d%20like%20to%20get%20in%20touch%20about%20a%20quote." style="display: inline-block; margin: 0 6px; text-decoration: none;">
+            <img src="{{base_url}}/icons/social/whatsapp.png" alt="WhatsApp" width="24" height="24" />
+          </a>
+          <a href="#" style="display: inline-block; margin: 0 6px; text-decoration: none;">
+            <img src="{{base_url}}/icons/social/google.png" alt="Google Reviews" width="24" height="24" />
+          </a>
+        </td>
+      </tr>
+    </table>
   </div>
 </body>
 </html>
