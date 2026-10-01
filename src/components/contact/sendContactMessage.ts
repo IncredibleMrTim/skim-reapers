@@ -20,12 +20,19 @@ const NOTIFICATION_TO_EMAIL = "info@skimreapers.co.uk"
 const mailProxyUrl = process.env.NEXT_PUBLIC_MAIL_PROXY_URL
 const mailProxySecret = process.env.NEXT_PUBLIC_MAIL_PROXY_SECRET
 
-function escapeHtml(value: string): string {
+/**
+ * Escapes a value for safe HTML insertion, then converts line breaks to
+ * <br /> — CSS white-space: pre-line isn't reliably honoured by Outlook's
+ * Word-based rendering engine, but every email client respects a literal
+ * <br /> tag.
+ */
+function escapeHtmlPreservingLineBreaks(value: string): string {
   return value
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
+    .replaceAll("\n", "<br />")
 }
 
 /**
@@ -48,7 +55,7 @@ async function renderEmailTemplate(
   const templateHtml = await response.text()
   return Object.entries({ base_url: window.location.origin, ...tokens }).reduce(
     (html, [token, value]) =>
-      html.replaceAll(`{{${token}}}`, escapeHtml(value)),
+      html.replaceAll(`{{${token}}}`, escapeHtmlPreservingLineBreaks(value)),
     templateHtml,
   )
 }
