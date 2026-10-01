@@ -2,6 +2,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  @media only screen and (max-width: 480px) {
+    .sr-footer-td { display: block !important; width: 100% !important; text-align: center !important; padding: 6px 0 !important; }
+  }
+</style>
 </head>
 <body>
   <div style="width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; box-sizing: border-box; color: #1a1a1a; background: #ffffff; font-family: arial;">
@@ -34,10 +39,42 @@
     <br />
     <div style="border: 1px solid #e5e5e5; border-radius: 4px;">
       <h2 style="font-size: 18px; border-bottom: 1px solid #e5e5e5; background: #AF7C3C; color: #ffffff; margin: 0; padding: 10px;">Message</h2>
-      <p style="padding: 10px; white-space: pre-line;">{{message}}</p>
+      <p style="padding: 10px;">{{message}}</p>
     </div>
     <br />
     <p style="color: #6b6460; font-size: 13px;">Reply directly to this email to respond to {{name}}.</p>
+    <br />
+    <hr style="border: none; border-top: 1px solid #e5e5e5;" />
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; padding-top: 10px;">
+      <tr>
+        <td class="sr-footer-td" align="left" style="color: #1a1a1a;">
+          <a href="tel:+447914025843" style="color: #1a1a1a; text-decoration: none;">
+            <img src="{{base_url}}/icons/social/phone.png" alt="" width="16" height="16" style="vertical-align: middle; margin-right: 6px;" />
+            <span style="vertical-align: middle;">07914 025 843</span>
+          </a>
+        </td>
+        <td class="sr-footer-td" align="left" style="color: #1a1a1a;">
+          <a href="mailto:info@skimreapers.co.uk" style="color: #1a1a1a; text-decoration: none;">
+            <img src="{{base_url}}/icons/social/email.png" alt="" width="16" height="16" style="vertical-align: middle; margin-right: 6px;" />
+            <span style="vertical-align: middle;">info@skimreapers.co.uk</span>
+          </a>
+        </td>
+        <td class="sr-footer-td" align="right">
+          <a href="https://www.facebook.com/SkimReapers" style="display: inline-block; margin: 0 6px; text-decoration: none;">
+            <img src="{{base_url}}/icons/social/facebook.png" alt="Facebook" width="24" height="24" />
+          </a>
+          <a href="https://www.instagram.com/skim.reapers/" style="display: inline-block; margin: 0 6px; text-decoration: none;">
+            <img src="{{base_url}}/icons/social/instagram.png" alt="Instagram" width="24" height="24" />
+          </a>
+          <a href="https://wa.me/447914025843?text=Hi%20Skim%20Reapers%2C%20I%27d%20like%20to%20get%20in%20touch%20about%20a%20quote." style="display: inline-block; margin: 0 6px; text-decoration: none;">
+            <img src="{{base_url}}/icons/social/whatsapp.png" alt="WhatsApp" width="24" height="24" />
+          </a>
+          <a href="#" style="display: inline-block; margin: 0 6px; text-decoration: none;">
+            <img src="{{base_url}}/icons/social/google.png" alt="Google Reviews" width="24" height="24" />
+          </a>
+        </td>
+      </tr>
+    </table>
   </div>
 </body>
 </html>
