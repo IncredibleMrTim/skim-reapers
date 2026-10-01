@@ -1,7 +1,5 @@
 "use client"
 
-import emailjs from "@emailjs/browser"
-
 import {
   contactFormSchema,
   type IContactFormValues,
@@ -17,13 +15,10 @@ const GENERIC_ERROR_MESSAGE =
 
 const CONFIRMATION_TEMPLATE_PATH = "/emailTemplate.html"
 const NOTIFICATION_TEMPLATE_PATH = "/notificationEmailTemplate.html"
+const NOTIFICATION_TO_EMAIL = "info@skimreapers.co.uk"
 
-const emailJsServiceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
-const emailJsNotificationTemplateId =
-  process.env.NEXT_PUBLIC_EMAILJS_NOTIFICATION_TEMPLATE_ID
-const emailJsConfirmationTemplateId =
-  process.env.NEXT_PUBLIC_EMAILJS_CONFIRMATION_TEMPLATE_ID
-const emailJsPublicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+const mailProxyUrl = process.env.NEXT_PUBLIC_MAIL_PROXY_URL
+const mailProxySecret = process.env.NEXT_PUBLIC_MAIL_PROXY_SECRET
 
 function escapeHtml(value: string): string {
   return value
@@ -36,9 +31,9 @@ function escapeHtml(value: string): string {
 /**
  * Fetches a template from /public and fills in its {{token}} placeholders —
  * fetched at send time so the template files (editable and previewable
- * directly in a browser) stay the single source of truth instead of a copy
- * pasted into the EmailJS dashboard. {{base_url}} resolves to the current
- * origin so the same file works in dev, the dev site, and production.
+ * directly in a browser) stay the single source of truth. {{base_url}}
+ * resolves to the current origin so the same file works in dev, the dev
+ * site, and production.
  */
 async function renderEmailTemplate(
   templatePath: string,
@@ -59,9 +54,36 @@ async function renderEmailTemplate(
 }
 
 /**
+ * Sends one email through the Resend-backed proxy (a small Vercel function
+ * in the separate skim-reapers-mail-proxy project) — this static export has
+ * no server runtime to hold a Resend API key, so the key lives only in that
+ * proxy's environment, never in this bundle.
+ */
+async function sendViaProxy(email: {
+  to: string
+  subject: string
+  html: string
+  replyTo?: string
+}): Promise<void> {
+  if (!mailProxyUrl) {
+    throw new Error("sendViaProxy: missing NEXT_PUBLIC_MAIL_PROXY_URL env var")
+  }
+  const response = await fetch(mailProxyUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(mailProxySecret ? { "X-Proxy-Secret": mailProxySecret } : {}),
+    },
+    body: JSON.stringify(email),
+  })
+  if (!response.ok) {
+    throw new Error(`sendViaProxy: proxy responded ${response.status}`)
+  }
+}
+
+/**
  * Sends the quote-request notification to Skim Reapers and a confirmation
- * email back to the enquirer, both via EmailJS (client-side — this is a
- * static export with no server runtime to hold SMTP credentials).
+ * email back to the enquirer.
  */
 export async function sendContactMessage(
   formValues: IContactFormValues,
@@ -80,15 +102,8 @@ export async function sendContactMessage(
     }
   }
 
-  if (
-    !emailJsServiceId ||
-    !emailJsNotificationTemplateId ||
-    !emailJsConfirmationTemplateId ||
-    !emailJsPublicKey
-  ) {
-    console.error(
-      "sendContactMessage: missing NEXT_PUBLIC_EMAILJS_SERVICE_ID, NEXT_PUBLIC_EMAILJS_NOTIFICATION_TEMPLATE_ID, NEXT_PUBLIC_EMAILJS_CONFIRMATION_TEMPLATE_ID, or NEXT_PUBLIC_EMAILJS_PUBLIC_KEY env vars",
-    )
+  if (!mailProxyUrl) {
+    console.error("sendContactMessage: missing NEXT_PUBLIC_MAIL_PROXY_URL env var")
     return { isSuccess: false, errorMessage: GENERIC_ERROR_MESSAGE }
   }
 
@@ -99,12 +114,12 @@ export async function sendContactMessage(
       NOTIFICATION_TEMPLATE_PATH,
       { name, email, business, phone, message },
     )
-    await emailjs.send(
-      emailJsServiceId,
-      emailJsNotificationTemplateId,
-      { email, html: notificationHtml },
-      { publicKey: emailJsPublicKey },
-    )
+    await sendViaProxy({
+      to: NOTIFICATION_TO_EMAIL,
+      subject: `New quote request from ${name}`,
+      html: notificationHtml,
+      replyTo: email,
+    })
   } catch (error) {
     console.error("sendContactMessage:", error)
     return { isSuccess: false, errorMessage: GENERIC_ERROR_MESSAGE }
@@ -115,12 +130,12 @@ export async function sendContactMessage(
       CONFIRMATION_TEMPLATE_PATH,
       { name, message },
     )
-    await emailjs.send(
-      emailJsServiceId,
-      emailJsConfirmationTemplateId,
-      { to_email: email, html: confirmationHtml },
-      { publicKey: emailJsPublicKey },
-    )
+    await sendViaProxy({
+      to: email,
+      subject: "We've received your message — Skim Reapers",
+      html: confirmationHtml,
+      replyTo: NOTIFICATION_TO_EMAIL,
+    })
   } catch (error) {
     console.error("sendContactMessage: confirmation email failed:", error)
   }

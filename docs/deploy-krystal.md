@@ -115,22 +115,31 @@ variables), not at the repo level:
 | Environment `dev` | `NEXT_PUBLIC_SANITY_DATASET` | `development` |
 | Environment `production` | `NEXT_PUBLIC_SANITY_DATASET` | `production` |
 
-The contact form's EmailJS values are repo-level too — one EmailJS
-account/service serves both environments, unlike Sanity's two separate
-datasets:
+The contact form sends through a separate project,
+[`skim-reapers-mail-proxy`](../../skim-reapers-mail-proxy) (a sibling
+directory, its own git repo, deployed independently to Vercel — **not**
+part of this repo's GitHub Actions workflow). That project holds the
+actual Resend API key server-side; this site has no server runtime of
+its own to keep a secret like that in, so it only ever talks to the
+proxy's public URL:
 
-| Scope | Variable |
-|---|---|
-| Repo | `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY` |
-| Repo | `NEXT_PUBLIC_EMAILJS_SERVICE_ID` |
-| Repo | `NEXT_PUBLIC_EMAILJS_NOTIFICATION_TEMPLATE_ID` |
-| Repo | `NEXT_PUBLIC_EMAILJS_CONFIRMATION_TEMPLATE_ID` |
+| Scope | Variable | Secret? |
+|---|---|---|
+| Repo | `NEXT_PUBLIC_MAIL_PROXY_URL` | No — public endpoint |
+| Repo | `MAIL_PROXY_SECRET` (→ `NEXT_PUBLIC_MAIL_PROXY_SECRET`) | Stored as a GitHub secret, but still ships in the client bundle — see note below |
 
-None of these are secret in EmailJS's own model (the public key is
-designed to ship in a browser bundle), but they're still only wired up
-as GitHub Actions `vars`, not hardcoded — see `.env.local` for the
-values to copy in, and `src/components/contact/sendContactMessage.ts`
-for how they're used.
+One repo-level value is one GitHub var (the proxy's URL isn't
+secret), the other a GitHub **secret** even though it ends up in the
+public JS bundle anyway — every request to the proxy originates
+client-side, so there's no way to keep it truly hidden. It's a light
+abuse deterrent (paired with the proxy's own CORS origin allowlist),
+not a real security boundary. See `.env.local` for the values to copy
+in, and `src/components/contact/sendContactMessage.ts` for how
+they're used.
+
+The proxy's own Resend domain (`mail.skimreapers.co.uk`) needs SPF/DKIM
+DNS records verified in Resend's dashboard before sending actually
+works — a one-time setup step, independent of any of the above.
 
 The workflow tags all four jobs (`build-dev`, `build-prod`,
 `deploy-dev`, `deploy-production`) with GitHub Environments
