@@ -1,10 +1,9 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { sendContactMessage } from "@/app/actions/contact"
+import { sendContactMessage } from "@/components/contact/sendContactMessage"
 
-import { contactFormSchema } from "@/lib/contactFormSchema"
-import { IContactFormValues } from "@/app/actions/contact"
+import { contactFormSchema, type IContactFormValues } from "@/lib/contactFormSchema"
 import { Button } from "../ui/button"
 import { Separator } from "../ui/separator"
 

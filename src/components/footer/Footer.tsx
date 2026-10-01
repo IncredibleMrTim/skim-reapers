@@ -27,7 +27,7 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row w-fit mx-auto md:mx-0 md:w-1/3 md:justify-between gap-1 md:gap-0 text-sm items-start">
           <div className="grid grid-cols-[30px_1fr]">
             <HiPhone className="text-brand-accent shrink-0" size={20} />
-            <p>07963 438 199</p>
+            <p>07914 025 843</p>
           </div>
           <div className="grid grid-cols-[30px_1fr]">
             <HiMail className="text-brand-accent shrink-0" size={20} />
@@ -78,13 +78,36 @@ export const Footer = () => {
             <div className="flex flex-col md:flex-row gap-2 md:gap-8 w-full md:w-1/2 items-center md:justify-end md:self-stretch md:flex-1">
               <div className="flex">FOLLOW US</div>
               <div className="flex gap-2">
-                <FacebookIcon
-                  size={22}
-                  className="border border-brand-content rounded-full p-1"
-                />
-                <InstagramIcon size={24} />
-                <WhatsappIcon size={24} />
-                <GoogleIcon size={24} />
+                <a
+                  href="https://www.facebook.com/SkimReapers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Skim Reapers on Facebook"
+                >
+                  <FacebookIcon
+                    size={22}
+                    className="border border-brand-content rounded-full p-1"
+                  />
+                </a>
+                <a
+                  href="https://www.instagram.com/skim.reapers/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Skim Reapers on Instagram"
+                >
+                  <InstagramIcon size={24} />
+                </a>
+                <a
+                  href="https://wa.me/447914025843?text=Hi%20Skim%20Reapers%2C%20I%27d%20like%20to%20get%20in%20touch%20about%20a%20quote."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Message Skim Reapers on WhatsApp"
+                >
+                  <WhatsappIcon size={24} />
+                </a>
+                <a href="#" aria-label="Skim Reapers on Google Reviews">
+                  <GoogleIcon size={24} />
+                </a>
               </div>
             </div>
             <Separator
