@@ -115,6 +115,23 @@ variables), not at the repo level:
 | Environment `dev` | `NEXT_PUBLIC_SANITY_DATASET` | `development` |
 | Environment `production` | `NEXT_PUBLIC_SANITY_DATASET` | `production` |
 
+The contact form's EmailJS values are repo-level too — one EmailJS
+account/service serves both environments, unlike Sanity's two separate
+datasets:
+
+| Scope | Variable |
+|---|---|
+| Repo | `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY` |
+| Repo | `NEXT_PUBLIC_EMAILJS_SERVICE_ID` |
+| Repo | `NEXT_PUBLIC_EMAILJS_NOTIFICATION_TEMPLATE_ID` |
+| Repo | `NEXT_PUBLIC_EMAILJS_CONFIRMATION_TEMPLATE_ID` |
+
+None of these are secret in EmailJS's own model (the public key is
+designed to ship in a browser bundle), but they're still only wired up
+as GitHub Actions `vars`, not hardcoded — see `.env.local` for the
+values to copy in, and `src/components/contact/sendContactMessage.ts`
+for how they're used.
+
 The workflow tags all four jobs (`build-dev`, `build-prod`,
 `deploy-dev`, `deploy-production`) with GitHub Environments
 (`dev`/`production`) — created automatically on first run. Optionally
