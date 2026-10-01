@@ -120,9 +120,9 @@ Dev and production are **separate Sanity datasets** (`development` / `production
 
 ## Browser Automation
 
-Ask before using Claude in Chrome (`mcp__claude-in-chrome__*` tools) on this project — confirm with the user first rather than opening/navigating a browser tab automatically.
+**Default to the Playwright MCP tools** (`mcp__plugin_playwright_playwright__*`) for any browser automation on this project — checking a page renders, clicking through a flow, reading console/network output, screenshots, etc. Playwright's snapshot-based tools are cheaper (text, not screenshots) and don't require per-use confirmation.
 
-Always close the Claude in Chrome tab group (`tabs_close_mcp` on any tabs you opened) once you're done with it — don't leave it open past the task that needed it.
+Only reach for Claude in Chrome (`mcp__claude-in-chrome__*`) when the task specifically needs the user's logged-in Chrome session (e.g. an authenticated cPanel or Sanity session already open in their browser) — and ask before using it, confirming with the user first rather than opening/navigating a browser tab automatically. Always close the Claude in Chrome tab group (`tabs_close_mcp` on any tabs you opened) once you're done with it — don't leave it open past the task that needed it.
 
 ## Commands
 
