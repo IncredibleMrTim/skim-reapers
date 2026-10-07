@@ -21,6 +21,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -107,14 +108,24 @@ export function Navbar() {
     <header className="flex justify-self-end h-20 light w-full max-md:fixed max-md:top-0 max-md:inset-x-0 max-md:z-50 md:relative xl:w-[78%] 2xl:w-[80%]  lg:pl-10 border-border text-foreground bg-linear-to-br md:bg-linear-to-r from-white md:from-transparent from-0% md:from-0% via-white/90 via-70% md:via-10% md:via-brand-background to-100% to-white/60 md:to-brand-background pr-4 shadow-md shadow-brand-foreground/20 md:shadow-none">
       <div className=" flex w-full max-w-[1920px] items-center justify-between h-full">
         {/* Tagline */}
-        <div className="flex flex-col justify-center items-center border-r border-border border-none ml-5">
-          <p className="text-xs font-bold uppercase w-full tracking-wider">
-            Professional Plastering
-            <br />& Dry-Lining Contractors
-          </p>
-          <p className="text-xs font-semibold tracking-wider text-brand-primary uppercase w-full">
-            Commercial & Domestic
-          </p>
+        <div className="flex items-center justify-start border-r border-border border-none ml-5 gap-14 w-full md:w-auto md:flex-col md:gap-0">
+          <Image
+            src="/logo_extracted1_dark.png"
+            alt="Skim Reapers Ltd"
+            width={80}
+            height={80}
+            className="md:hidden"
+          />
+          {/* Above md the lines sit directly in the column, as before the logo. */}
+          <div className="md:contents">
+            <p className="text-xs font-bold uppercase w-full tracking-wider">
+              Professional Plastering
+              <br />& Dry-Lining Contractors
+            </p>
+            <p className="text-xs font-semibold tracking-wider text-brand-primary uppercase w-full">
+              Commercial & Domestic
+            </p>
+          </div>
         </div>
         {/* Links */}
         <NavigationMenu className="z-20 hidden max-w-none flex-1 lg:flex h-8 my-auto">
