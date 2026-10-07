@@ -38,7 +38,14 @@ function parseIconNode(rawIconNode?: string): IconNode | undefined {
   try {
     const parsed: unknown = JSON.parse(rawIconNode)
     if (!Array.isArray(parsed)) return undefined
-    return (parsed as IconNode).filter(([tag]) => ALLOWED_ELEMENTS.has(tag))
+    // `Icon` renders these as a list and expects a `key` on each; the picker
+    // reads the nodes back from the DOM, where keys don't exist.
+    return (parsed as IconNode)
+      .filter(([tag]) => ALLOWED_ELEMENTS.has(tag))
+      .map(([tag, attributes], index) => [
+        tag,
+        { ...attributes, key: `${tag}-${index}` },
+      ])
   } catch {
     return undefined
   }
