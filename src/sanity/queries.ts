@@ -53,16 +53,7 @@ export const ourWorkPageQuery = defineQuery(`*[_type == "ourWorkPage"][0]{
   showHeading,
   pageDescription,
   content,
-  galleries[]{
-    ...,
-    _type == "videoGallery" => {
-      videos[]{
-        ...,
-        videoFile{ asset->{ url } },
-        posterImage
-      }
-    }
-  },
+  galleries,
   buttons
 }`)
 

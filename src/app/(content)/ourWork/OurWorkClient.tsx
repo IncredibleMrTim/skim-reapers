@@ -5,6 +5,7 @@ import { Header } from "@/components/header/Header"
 import { useLiveSanityData } from "@/sanity/live"
 import { ourWorkPageQuery } from "@/sanity/queries"
 import type { OurWorkPageQueryResult } from "@/sanity/types"
+import { urlForFile } from "@/sanity/image"
 import { PageContainer } from "@/components/PageContainer"
 import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
 import { CtaButtons } from "@/components/CtaButtons"
@@ -22,7 +23,7 @@ export const OurWorkClient = ({ initialData }: OurWorkClientProps) => {
   // a separator would be left beside an empty gap.
   const visibleGalleries = (query?.galleries ?? []).filter((item) =>
     item._type === "videoGallery"
-      ? item.videos?.some((video) => video.videoFile?.asset?.url)
+      ? item.videos?.some((video) => urlForFile(video.videoFile?.asset?._ref))
       : item.gallery?.images?.some((image) => image.imageFile?.asset),
   )
 

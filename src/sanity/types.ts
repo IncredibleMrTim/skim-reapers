@@ -3043,7 +3043,7 @@ export type DomesticPageQueryResult = {
 
 // Source: src/sanity/queries.ts
 // Variable: ourWorkPageQuery
-// Query: *[_type == "ourWorkPage"][0]{  hero,  heading,  showHeading,  pageDescription,  content,  galleries[]{    ...,    _type == "videoGallery" => {      videos[]{        ...,        videoFile{ asset->{ url } },        posterImage      }    }  },  buttons}
+// Query: *[_type == "ourWorkPage"][0]{  hero,  heading,  showHeading,  pageDescription,  content,  galleries,  buttons}
 export type OurWorkPageQueryResult = {
   hero: Hero | null
   heading: string | null
@@ -3329,23 +3329,23 @@ export type OurWorkPageQueryResult = {
               _key: string
             }
         >
-        videos: Array<{
+        videos?: Array<{
           videoName: string
           videoFile: {
-            asset: {
-              url: string
-            } | null
+            asset?: SanityFileAssetReference
+            media?: unknown
+            _type: "file"
           }
-          posterImage: {
+          posterImage?: {
             asset?: SanityImageAssetReference
             media?: unknown
             hotspot?: SanityImageHotspot
             crop?: SanityImageCrop
             _type: "image"
-          } | null
+          }
           _type: "galleryVideo"
           _key: string
-        }> | null
+        }>
         _type: "videoGallery"
         _key: string
       }
@@ -3945,7 +3945,7 @@ declare global {
     '*[_type == "servicesPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  services,\n  buttons\n}': ServicesPageQueryResult
     '*[_type == "commercialPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': CommercialPageQueryResult
     '*[_type == "domesticPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': DomesticPageQueryResult
-    '*[_type == "ourWorkPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  galleries[]{\n    ...,\n    _type == "videoGallery" => {\n      videos[]{\n        ...,\n        videoFile{ asset->{ url } },\n        posterImage\n      }\n    }\n  },\n  buttons\n}': OurWorkPageQueryResult
+    '*[_type == "ourWorkPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  galleries,\n  buttons\n}': OurWorkPageQueryResult
     '*[_type == "reviewsPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': ReviewsPageQueryResult
     '*[_type == "qaPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': QaPageQueryResult
     '*[_type == "contactPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': ContactPageQueryResult

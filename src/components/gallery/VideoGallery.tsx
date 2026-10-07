@@ -1,6 +1,17 @@
+"use client"
+
+import { useCallback, useRef } from "react"
 import { PortableText } from "@portabletext/react"
+import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../ui/carousel"
 import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
-import { urlForImage } from "@/sanity/image"
+import { urlForFile, urlForImage } from "@/sanity/image"
 import type { OurWorkPageQueryResult, Background } from "@/sanity/types"
 
 type VideoGalleryItem = Extract<
@@ -21,40 +32,88 @@ export const VideoGallery = ({
   showHeading,
   videos,
 }: VideoGalleryProps) => {
-  if (!videos?.length) return null
+  const carouselRef = useRef<HTMLDivElement>(null)
+
+  // A video left playing on a slide that has scrolled out of view would keep
+  // making noise with nothing on screen to stop it.
+  const handleSetApi = useCallback((api: CarouselApi) => {
+    api?.on("select", () => {
+      carouselRef.current
+        ?.querySelectorAll("video")
+        .forEach((video) => video.pause())
+    })
+  }, [])
+
+  const playableVideos = videos
+    ?.map((video) => ({
+      ...video,
+      videoUrl: urlForFile(video.videoFile?.asset?._ref),
+    }))
+    .filter((video) => video.videoUrl)
+
+  if (!playableVideos?.length) return null
 
   return (
     <div className="flex flex-col gap-4">
-      {showHeading && heading && <p className="text-lg font-bold">{heading}</p>}
+      {showHeading && heading && (
+        <p className="text-lg font-bold text-brand-accent">{heading}</p>
+      )}
       {description && (
         <PortableText
           value={description}
           components={PORTABLE_TEXT_COMPONENTS}
         />
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {videos.map((video) => {
-          const videoUrl = video.videoFile?.asset?.url
-          if (!videoUrl) return null
+      <div ref={carouselRef} className="flex flex-col w-full px-8">
+        <Carousel
+          className="mx-auto w-full"
+          setApi={handleSetApi}
+          // Dragging on a video is its scrub/volume bar, not a swipe; the
+          // arrows and the caption area still move the carousel.
+          opts={{
+            watchDrag: (_api, event) =>
+              !(event.target instanceof HTMLVideoElement),
+          }}
+        >
+          <div className="border border-white/10 rounded p-1">
+            <CarouselContent>
+              {playableVideos.map((video) => (
+                <CarouselItem key={video._key} className="md:basis-1/2">
+                  <figure className="flex flex-col gap-2">
+                    <video
+                      controls
+                      preload="metadata"
+                      poster={
+                        video.posterImage?.asset
+                          ? urlForImage(video.posterImage).url()
+                          : undefined
+                      }
+                      className="w-full rounded"
+                    >
+                      <source src={video.videoUrl} />
+                    </video>
+                    <figcaption className="text-sm">
+                      {video.videoName}
+                    </figcaption>
+                  </figure>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </div>
 
-          return (
-            <figure key={video._key} className="flex flex-col gap-2">
-              <video
-                controls
-                preload="metadata"
-                poster={
-                  video.posterImage?.asset
-                    ? urlForImage(video.posterImage).url()
-                    : undefined
-                }
-                className="w-full rounded border border-white/10"
-              >
-                <source src={videoUrl} />
-              </video>
-              <figcaption className="text-sm">{video.videoName}</figcaption>
-            </figure>
-          )
-        })}
+          {/* Shown on mobile too (unlike the image gallery): swiping on a
+              video is disabled, so the arrows are the way to navigate. */}
+          <CarouselPrevious
+            variant="ghost"
+            size="icon-sm"
+            className="-left-8 bg-brand-accent/50 hover:bg-brand-accent/80 rounded-[4px]"
+          />
+          <CarouselNext
+            variant="ghost"
+            size="icon-sm"
+            className="-right-8 bg-brand-accent/50 hover:bg-brand-accent/80 rounded-[4px]"
+          />
+        </Carousel>
       </div>
     </div>
   )
