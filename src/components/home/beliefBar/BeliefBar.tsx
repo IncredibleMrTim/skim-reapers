@@ -29,9 +29,9 @@ export const BeliefBar = ({ queryResult }: BeliefBarProps) => {
           icon = (
             <div className="relative flex-1 min-w-12 max-md:w-full aspect-48/48">
               <Image
-                src={urlForImage(b.image).url()}
+                src={urlForImage(b.image.imageFile).url()}
                 fill
-                alt={b.heading}
+                alt={b.image.imageAlt ?? b.heading}
                 className="object-cover"
               />
             </div>

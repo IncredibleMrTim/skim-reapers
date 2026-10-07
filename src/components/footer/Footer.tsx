@@ -120,7 +120,8 @@ export const Footer = () => {
                 src="/logo_text.svg"
                 alt="Skim Reapers logo"
                 width={180}
-                height={100}
+                height={50}
+                className="h-auto w-45"
               />
               <p>PROFESSIONAL CONTRACTORS</p>
             </div>

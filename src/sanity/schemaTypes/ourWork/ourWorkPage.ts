@@ -1,6 +1,7 @@
 import { defineField, defineType } from "sanity"
 import { portableTextSchema } from "../helpers/portableText"
 import { buttonsSchema } from "../helpers/buttons"
+import { gallerySchema } from "../gallerySchema"
 
 export const ourWorkPage = defineType({
   name: "ourWorkPage",
@@ -22,6 +23,7 @@ export const ourWorkPage = defineType({
       group: "hero",
     }),
     portableTextSchema({ name: "content", title: "Content", group: "content" }),
+    gallerySchema({ group: "content" }),
     buttonsSchema({
       name: "buttons",
       title: "Our Work Page Buttons",

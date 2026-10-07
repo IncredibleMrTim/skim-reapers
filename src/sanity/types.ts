@@ -15,9 +15,10 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
-export type CustomDimensions = {
-  width?: number;
-  height?: number;
+export type Background = {
+  imageName: string;
+  imageAlt?: string;
+  imageFile: ImageFile;
 };
 
 export type SanityImageAssetReference = {
@@ -25,6 +26,20 @@ export type SanityImageAssetReference = {
   _type: "reference";
   _weak?: boolean;
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
+export type ImageFile = {
+  asset?: SanityImageAssetReference;
+  media?: unknown; // Unable to locate the referenced type "media" in schema
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  _type: "image";
+};
+
+export type CustomDimensions = {
+  width?: number;
+  height?: number;
+  unit?: "px" | "%";
 };
 
 export type ImageIcon = {
@@ -41,11 +56,9 @@ export type ReactIcon = {
 };
 
 export type CardImage = {
-  asset?: SanityImageAssetReference;
-  media?: unknown; // Unable to locate the referenced type "card.image.media" in schema
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
-  _type: "image";
+  imageName: string;
+  imageAlt?: string;
+  imageFile: ImageFile;
 };
 
 export type Icon = {
@@ -62,11 +75,9 @@ export type CardIcon = {
 };
 
 export type Image1 = {
-  asset?: SanityImageAssetReference;
-  media?: unknown; // Unable to locate the referenced type "media1" in schema
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
-  _type: "image";
+  imageName: string;
+  imageAlt?: string;
+  imageFile: ImageFile;
 };
 
 export type ColorPalette = {
@@ -126,6 +137,7 @@ export type WorkWithUsPage = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "px" | "%";
         };
         alignment?: "left" | "center" | "right";
         _type: "image";
@@ -188,13 +200,7 @@ export type Hero = {
   _type: "hero";
   showSmoke?: boolean;
   floating?: boolean;
-  background?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
+  background?: Background;
   eyebrow?: string;
   heading?: string;
   subheading?: string;
@@ -293,6 +299,7 @@ export type ContactPage = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "px" | "%";
         };
         alignment?: "left" | "center" | "right";
         _type: "image";
@@ -369,6 +376,7 @@ export type QaPage = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "px" | "%";
         };
         alignment?: "left" | "center" | "right";
         _type: "image";
@@ -445,6 +453,7 @@ export type ReviewsPage = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "px" | "%";
         };
         alignment?: "left" | "center" | "right";
         _type: "image";
@@ -521,12 +530,27 @@ export type OurWorkPage = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "px" | "%";
         };
         alignment?: "left" | "center" | "right";
         _type: "image";
         _key: string;
       }
   >;
+  galleries?: Array<{
+    title: string;
+    gallery?: {
+      images?: Array<{
+        imageName: string;
+        imageAlt?: string;
+        imageFile: ImageFile;
+        _type: "galleryImage";
+        _key: string;
+      }>;
+    };
+    _type: "gallery";
+    _key: string;
+  }>;
   buttons?: Array<{
     label: string;
     path: string;
@@ -597,6 +621,7 @@ export type DomesticPage = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "px" | "%";
         };
         alignment?: "left" | "center" | "right";
         _type: "image";
@@ -673,6 +698,7 @@ export type CommercialPage = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "px" | "%";
         };
         alignment?: "left" | "center" | "right";
         _type: "image";
@@ -749,6 +775,7 @@ export type ServicesPage = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "px" | "%";
         };
         alignment?: "left" | "center" | "right";
         _type: "image";
@@ -794,6 +821,7 @@ export type ServicesPage = {
           customDimensions?: {
             width?: number;
             height?: number;
+            unit?: "px" | "%";
           };
           alignment?: "left" | "center" | "right";
           _type: "image";
@@ -863,11 +891,10 @@ export type AboutPage = {
   _rev: string;
   hero?: Hero;
   images?: Array<{
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
+    imageName: string;
+    imageAlt?: string;
+    imageFile: ImageFile;
+    _type: "galleryImage";
     _key: string;
   }>;
   about?: Array<
@@ -906,6 +933,7 @@ export type AboutPage = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "px" | "%";
         };
         alignment?: "left" | "center" | "right";
         _type: "image";
@@ -1023,11 +1051,9 @@ export type HomePage = {
     _key: string;
   }>;
   image?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
+    imageName: string;
+    imageAlt?: string;
+    imageFile: ImageFile;
   };
   video?: {
     asset?: SanityFileAssetReference;
@@ -1172,8 +1198,10 @@ export type Slug = {
 };
 
 export type AllSanitySchemaTypes =
-  | CustomDimensions
+  | Background
   | SanityImageAssetReference
+  | ImageFile
+  | CustomDimensions
   | ImageIcon
   | ReactIcon
   | CardImage
@@ -1239,11 +1267,9 @@ export type HomePageQueryResult = {
     _key: string;
   }> | null;
   image: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
+    imageName: string;
+    imageAlt?: string;
+    imageFile: ImageFile;
   } | null;
   video: {
     asset: {
@@ -1258,11 +1284,10 @@ export type HomePageQueryResult = {
 export type AboutPageQueryResult = {
   hero: Hero | null;
   images: Array<{
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
+    imageName: string;
+    imageAlt?: string;
+    imageFile: ImageFile;
+    _type: "galleryImage";
     _key: string;
   }> | null;
   about: Array<
@@ -1301,6 +1326,7 @@ export type AboutPageQueryResult = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "%" | "px";
         };
         alignment?: "center" | "left" | "right";
         _type: "image";
@@ -1350,6 +1376,7 @@ export type ServicesPageQueryResult = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "%" | "px";
         };
         alignment?: "center" | "left" | "right";
         _type: "image";
@@ -1395,6 +1422,7 @@ export type ServicesPageQueryResult = {
           customDimensions?: {
             width?: number;
             height?: number;
+            unit?: "%" | "px";
           };
           alignment?: "center" | "left" | "right";
           _type: "image";
@@ -1497,6 +1525,7 @@ export type CommercialPageQueryResult = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "%" | "px";
         };
         alignment?: "center" | "left" | "right";
         _type: "image";
@@ -1571,6 +1600,7 @@ export type DomesticPageQueryResult = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "%" | "px";
         };
         alignment?: "center" | "left" | "right";
         _type: "image";
@@ -1606,7 +1636,7 @@ export type DomesticPageQueryResult = {
 
 // Source: src/sanity/queries.ts
 // Variable: ourWorkPageQuery
-// Query: *[_type == "ourWorkPage"][0]{  hero,  content,  buttons}
+// Query: *[_type == "ourWorkPage"][0]{  hero,  content,  galleries,  buttons}
 export type OurWorkPageQueryResult = {
   hero: Hero | null;
   content: Array<
@@ -1645,12 +1675,27 @@ export type OurWorkPageQueryResult = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "%" | "px";
         };
         alignment?: "center" | "left" | "right";
         _type: "image";
         _key: string;
       }
   > | null;
+  galleries: Array<{
+    title: string;
+    gallery?: {
+      images?: Array<{
+        imageName: string;
+        imageAlt?: string;
+        imageFile: ImageFile;
+        _type: "galleryImage";
+        _key: string;
+      }>;
+    };
+    _type: "gallery";
+    _key: string;
+  }> | null;
   buttons: Array<{
     label: string;
     path: string;
@@ -1719,6 +1764,7 @@ export type ReviewsPageQueryResult = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "%" | "px";
         };
         alignment?: "center" | "left" | "right";
         _type: "image";
@@ -1793,6 +1839,7 @@ export type QaPageQueryResult = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "%" | "px";
         };
         alignment?: "center" | "left" | "right";
         _type: "image";
@@ -1867,6 +1914,7 @@ export type ContactPageQueryResult = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "%" | "px";
         };
         alignment?: "center" | "left" | "right";
         _type: "image";
@@ -1941,6 +1989,7 @@ export type WorkWithUsPageQueryResult = {
         customDimensions?: {
           width?: number;
           height?: number;
+          unit?: "%" | "px";
         };
         alignment?: "center" | "left" | "right";
         _type: "image";
@@ -1982,7 +2031,7 @@ declare global {
     '*[_type == "servicesPage"][0]{\n  hero,\n  content,\n  services,\n  buttons\n}': ServicesPageQueryResult;
     '*[_type == "commercialPage"][0]{\n  hero,\n  content,\n  buttons\n}': CommercialPageQueryResult;
     '*[_type == "domesticPage"][0]{\n  hero,\n  content,\n  buttons\n}': DomesticPageQueryResult;
-    '*[_type == "ourWorkPage"][0]{\n  hero,\n  content,\n  buttons\n}': OurWorkPageQueryResult;
+    '*[_type == "ourWorkPage"][0]{\n  hero,\n  content,\n  galleries,\n  buttons\n}': OurWorkPageQueryResult;
     '*[_type == "reviewsPage"][0]{\n  hero,\n  content,\n  buttons\n}': ReviewsPageQueryResult;
     '*[_type == "qaPage"][0]{\n  hero,\n  content,\n  buttons\n}': QaPageQueryResult;
     '*[_type == "contactPage"][0]{\n  hero,\n  content,\n  buttons\n}': ContactPageQueryResult;

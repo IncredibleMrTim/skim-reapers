@@ -95,7 +95,7 @@ const imageUrl = homePage.image;
 - Write comments for **WHY**, not **WHAT**
 - Document business logic and non-obvious decisions
 - No commented-out code in commits - use git history instead
-- Add TODO comments with context — this project has no ticket system, so `// TODO: <description>` rather than a ticket reference
+- Add TODO comments with context — `// TODO: <description>`. Tasks are tracked on Trello (see Design & Planning), but card links go in commit bodies, not in code comments, since cards get renamed and archived
 
 ## Structure
 
@@ -156,4 +156,22 @@ Because pushing to `dev` or `main` auto-deploys (see Deployment above), a push i
 - Types: `feature`, `fix`, `chore`, `docs`, `style`, `refactor`, `test`
 - Keep commits atomic and focused
 - commit messages should always been in lower case except scope
-- Reference ticket numbers in commit body if applicable
+- Reference the Trello card in the commit body when the work belongs to one, using its short link (e.g. `https://trello.com/c/2FsMUfiY`)
+
+## Design & Planning
+
+### Figma / FigJam
+
+The site map and page content live in a FigJam board: https://www.figma.com/board/KGKqZOZSafHcnOEBdl4Brn/Untitled (file key `KGKqZOZSafHcnOEBdl4Brn`). It has the navigation, the copy and layout notes for each page, and the "Price Brakdown" section showing what's in the Pro Plan versus paid extras. Read it with `mcp__figma__get_figjam` (node `0:1` is the whole board) before building or changing a page, and check the price breakdown before building anything marked as an extra (multi-gallery Our Work, Reviews, Application, Policy & T&Cs).
+
+### Trello
+
+Tasks are tracked on the **SkimReapers** Trello board (https://trello.com/b/FqCurGAM/skimreapers), board id `6aa2cf1d13b7f10e2d061e9c`. Lists: Backlog, Queued, In Progress, In Review, Done, Blocked. New cards go in Backlog.
+
+Card titles follow `[Page Name or Task Category] Task description`, with the task in sentence case:
+
+- `[Our Work] Build page layout and route`
+- `[Our Work] Category filter`
+- `[CMS] Add Sanity schema for reviews`
+
+Use the page name when the card belongs to one page, otherwise a task category such as `[CMS]`, `[Content]` or `[Deploy]`. Put the detail in the card description (FigJam notes, pricing caveats, open questions), not the title.

@@ -52,7 +52,7 @@ export const WhatWeDo = ({ queryResult }: WhatWeDoProps) => {
           .map((c) => (
             <Card
               key={c._key}
-              image={c.image ? urlForImage(c.image).url() : undefined}
+              image={c.image ? urlForImage(c.image.imageFile).url() : undefined}
               title={c?.heading ?? undefined}
               text={c?.text ?? undefined}
               buttons={c?.buttons}
