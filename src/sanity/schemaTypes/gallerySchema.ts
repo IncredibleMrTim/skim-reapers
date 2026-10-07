@@ -1,5 +1,7 @@
 import { defineField } from "sanity"
 import { imagesSchema } from "./imagesSchema"
+import { portableTextSchema } from "./helpers/portableText"
+import { videoGalleryMember } from "./videoGallerySchema"
 import { TSanitySchema } from "./types"
 
 export const gallerySchema = ({
@@ -25,11 +27,27 @@ export const gallerySchema = ({
             validation: (rule) => rule.required(),
           }),
           defineField({
+            type: "boolean",
+            name: "showTitle",
+            title: "Show Title",
+            description: "Show or hide the title for this Gallery.",
+            initialValue: true,
+          }),
+          portableTextSchema({
+            name: "description",
+            title: "Gallery Description",
+          }),
+          defineField({
             name: "gallery",
             type: "object",
-            fields: [imagesSchema()],
+            fields: [
+              imagesSchema({
+                description: "The images to display in this gallery.",
+              }),
+            ],
           }),
         ],
       }),
+      videoGalleryMember,
     ],
   })

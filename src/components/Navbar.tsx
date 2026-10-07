@@ -21,13 +21,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Commercial", href: "/commercial" },
   { label: "Domestic", href: "/domestic" },
-  { label: "Our Work", href: "ourWork" },
+  { label: "Our Work", href: "/ourWork" },
   { label: "Reviews", href: "/reviews" },
   { label: "Q&A", href: "/qa" },
   { label: "Contact", href: "/contact" },
@@ -59,7 +60,45 @@ const SERVICE_LINKS = [
 ]
 
 const navLinkClassName =
-  "flex h-full items-center px-3 text-xs font-semibold tracking-[0.08em] text-foreground uppercase no-underline transition-colors hover:text-brand-primary"
+  "flex h-full items-center px-3 text-xs font-semibold tracking-[0.08em] uppercase no-underline transition-colors hover:text-brand-primary"
+
+// Colour is set per state rather than layered: both are `text-*` utilities,
+// so whichever the stylesheet declares last would win regardless of order.
+const inactiveLinkClassName = "text-foreground"
+const activeLinkClassName =
+  "text-brand-primary after:absolute after:bottom-0 after:inset-x-3 after:h-0.5 after:bg-brand-primary"
+
+/**
+ * Compares paths ignoring leading/trailing slashes and any query string, so
+ * "/about/" and "about" both match the "/about" link.
+ */
+function isActivePath(pathname: string, href: string): boolean {
+  const normalisePath = (path: string) =>
+    `/${path.split("?")[0].replace(/^\/+|\/+$/g, "")}`
+  return normalisePath(pathname) === normalisePath(href)
+}
+
+interface DesktopNavLinkProps {
+  link: (typeof NAV_LINKS)[number]
+  pathname: string
+}
+
+function DesktopNavLink({ link, pathname }: DesktopNavLinkProps) {
+  const isActive = isActivePath(pathname, link.href)
+  return (
+    <NavigationMenuItem>
+      <a
+        href={link.href}
+        aria-current={isActive ? "page" : undefined}
+        className={`${navLinkClassName} z-20 relative ${
+          isActive ? activeLinkClassName : inactiveLinkClassName
+        }`}
+      >
+        {link.label}
+      </a>
+    </NavigationMenuItem>
+  )
+}
 
 export function Navbar() {
   const pathname = usePathname()
@@ -69,39 +108,40 @@ export function Navbar() {
     <header className="flex justify-self-end h-20 light w-full max-md:fixed max-md:top-0 max-md:inset-x-0 max-md:z-50 md:relative xl:w-[78%] 2xl:w-[80%]  lg:pl-10 border-border text-foreground bg-linear-to-br md:bg-linear-to-r from-white md:from-transparent from-0% md:from-0% via-white/90 via-70% md:via-10% md:via-brand-background to-100% to-white/60 md:to-brand-background pr-4 shadow-md shadow-brand-foreground/20 md:shadow-none">
       <div className=" flex w-full max-w-[1920px] items-center justify-between h-full">
         {/* Tagline */}
-        <div className="flex flex-col justify-center items-center border-r border-border border-none ml-5">
-          <p className="text-xs font-bold uppercase w-full tracking-wider">
-            Professional Plastering
-            <br />& Dry-Lining Contractors
-          </p>
-          <p className="text-xs font-semibold tracking-wider text-brand-primary uppercase w-full">
-            Commercial & Domestic
-          </p>
+        <div className="flex items-center justify-start border-r border-border border-none ml-5 gap-14 w-full md:w-auto md:flex-col md:gap-0">
+          <Image
+            src="/logo_extracted1_dark.png"
+            alt="Skim Reapers Ltd"
+            width={80}
+            height={80}
+            className="md:hidden"
+          />
+          {/* Above md the lines sit directly in the column, as before the logo. */}
+          <div className="md:contents">
+            <p className="text-xs font-bold uppercase w-full tracking-wider">
+              Professional Plastering
+              <br />& Dry-Lining Contractors
+            </p>
+            <p className="text-xs font-semibold tracking-wider text-brand-primary uppercase w-full">
+              Commercial & Domestic
+            </p>
+          </div>
         </div>
         {/* Links */}
         <NavigationMenu className="z-20 hidden max-w-none flex-1 lg:flex h-8 my-auto">
           <NavigationMenuList className="h-full items-stretch justify-end gap-1">
-            {NAV_LINKS.slice(0, 2).map((link) => {
-              const isActive = pathname === link.href
-              return (
-                <NavigationMenuItem key={link.href}>
-                  <a
-                    href={link.href}
-                    aria-current={isActive ? "page" : undefined}
-                    className={`${navLinkClassName} z-20 relative ${
-                      isActive
-                        ? "after:absolute after:bottom-0 after:left-3 after:h-0.5 after:w-8 after:bg-brand-primary"
-                        : ""
-                    }`}
-                  >
-                    {link.label}
-                  </a>
-                </NavigationMenuItem>
-              )
-            })}
+            {NAV_LINKS.slice(0, 2).map((link) => (
+              <DesktopNavLink key={link.href} link={link} pathname={pathname} />
+            ))}
 
             <NavigationMenuItem>
-              <NavigationMenuTrigger className=" h-full rounded-none px-3 text-xs font-semibold tracking-[0.08em] text-foreground uppercase hover:bg-transparent hover:text-brand-primary data-open:bg-transparent">
+              <NavigationMenuTrigger
+                className={`relative h-full rounded-none px-3 text-xs font-semibold tracking-[0.08em] uppercase hover:bg-transparent hover:text-brand-primary data-open:bg-transparent ${
+                  isActivePath(pathname, "/services")
+                    ? activeLinkClassName
+                    : inactiveLinkClassName
+                }`}
+              >
                 Services
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -121,11 +161,7 @@ export function Navbar() {
             </NavigationMenuItem>
 
             {NAV_LINKS.slice(2).map((link) => (
-              <NavigationMenuItem key={link.href}>
-                <a href={link.href} className={navLinkClassName}>
-                  {link.label}
-                </a>
-              </NavigationMenuItem>
+              <DesktopNavLink key={link.href} link={link} pathname={pathname} />
             ))}
           </NavigationMenuList>
         </NavigationMenu>
@@ -162,7 +198,9 @@ export function Navbar() {
                   key={link.href}
                   nativeButton={false}
                   render={<a href={link.href} />}
-                  aria-current={pathname === link.href ? "page" : undefined}
+                  aria-current={
+                    isActivePath(pathname, link.href) ? "page" : undefined
+                  }
                   className="rounded-md px-3 py-2 text-sm font-semibold tracking-[0.08em] text-foreground uppercase no-underline transition-colors hover:bg-muted hover:text-brand-primary aria-[current=page]:text-brand-primary"
                 >
                   {link.label}
@@ -189,7 +227,10 @@ export function Navbar() {
                     key={link.href}
                     nativeButton={false}
                     render={<a href={link.href} />}
-                    className="block rounded-md px-3 py-2 text-sm font-semibold tracking-[0.08em] text-foreground uppercase no-underline transition-colors hover:bg-muted hover:text-brand-primary"
+                    aria-current={
+                      isActivePath(pathname, link.href) ? "page" : undefined
+                    }
+                    className="block rounded-md px-3 py-2 text-sm font-semibold tracking-[0.08em] text-foreground uppercase no-underline transition-colors hover:bg-muted hover:text-brand-primary aria-[current=page]:text-brand-primary"
                   >
                     {link.label}
                   </SheetClose>

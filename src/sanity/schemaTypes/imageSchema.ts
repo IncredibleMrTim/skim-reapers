@@ -1,5 +1,6 @@
 import { defineField } from "sanity"
 import { TSanitySchema } from "./types"
+import { portableTextSchema } from "./helpers/portableText"
 
 // Exported separately so array schemas can reuse the same fields as an
 // array member without nesting an object inside another object.
@@ -16,6 +17,11 @@ export const imageFields = [
     description:
       "Describe the image for screen readers. Although this is optional, it helps with Search Engine Optimisation (SEO).",
     type: "string",
+  }),
+  portableTextSchema({
+    name: "imageDesc",
+    title: "Image Description",
+    description: "Optional text to be displayed with the image.",
   }),
   defineField({
     name: "imageFile",

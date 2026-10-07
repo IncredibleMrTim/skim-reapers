@@ -87,11 +87,6 @@ export const hero = defineType({
       type: "boolean",
       initialValue: true,
     }),
-    imageSchema({
-      name: "background",
-      title: "Background Image",
-      description: "The large background image displayed on the Hero banner.",
-    }),
     defineField({
       name: "eyebrow",
       title: "Eyebrow",
@@ -109,6 +104,11 @@ export const hero = defineType({
       type: "string",
     }),
     portableTextSchema({ name: "content", title: "Content" }),
+    imageSchema({
+      name: "background",
+      title: "Background Image",
+      description: "The large background image displayed on the Hero banner.",
+    }),
 
     defineField({
       name: "buttons",

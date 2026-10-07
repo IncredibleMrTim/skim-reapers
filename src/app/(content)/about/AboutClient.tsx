@@ -24,9 +24,15 @@ export const AboutClient = ({ initialData }: AboutClientProps) => {
         showHeroTextOnMobile={false}
       />
 
-      <PageContainer hero={query?.hero ?? undefined} fillHeight>
-        <div className="grid grid-rows-[auto_1fr] md:grid-cols-[auto_1fr] w-full md:flex-1 md:min-h-0 md:overflow-y-auto no-scrollbar">
-          <div className="order-2 md:order-1 p-10 flex flex-col gap-4">
+      <PageContainer
+        hero={query?.hero ?? undefined}
+        fillHeight
+        heading={query?.heading}
+        showHeading={query?.showHeading}
+        pageDescription={query?.pageDescription}
+      >
+        <div className="grid grid-rows-[auto_1fr] md:grid-cols-[auto_1fr] w-full">
+          <div className="order-2 md:order-1 py-10 pr-10 flex flex-col gap-4">
             {query?.images?.map(({ _key, imageFile, imageAlt }) => (
               <Image
                 key={_key}

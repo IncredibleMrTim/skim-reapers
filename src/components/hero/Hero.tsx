@@ -94,7 +94,7 @@ export const Hero = ({
         className={`hidden md:flex justify-end z-1 absolute top-0 right-0 w-2/3 h-full ${showHeroImageOnMobile ? "" : "max-md:hidden"}`}
       >
         <div className="w-full h-full absolute top-0 right-0 bg-linear-to-r from-brand-background from-10% via-transparent via-40% to-transparent z-1" />
-        {hero?.background && (
+        {hero?.background?.imageFile && (
           <Image
             src={urlForImage(hero.background.imageFile).url()}
             alt={hero.background.imageAlt ?? "Skim Reapers Ltd"}

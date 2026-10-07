@@ -1,6 +1,7 @@
 import { defineField, defineType } from "sanity"
 import { portableTextSchema } from "../helpers/portableText"
 import { buttonsSchema } from "../helpers/buttons"
+import { headingFields } from "../helpers/heading"
 
 export const commercialPage = defineType({
   name: "commercialPage",
@@ -16,6 +17,7 @@ export const commercialPage = defineType({
     { name: "hero", title: "Hero" },
   ],
   fields: [
+    ...headingFields({ group: "content" }),
     defineField({
       name: "hero",
       type: "hero",
@@ -24,9 +26,9 @@ export const commercialPage = defineType({
     portableTextSchema({ name: "content", title: "Content", group: "content" }),
     buttonsSchema({
       name: "buttons",
-      title: "Commercial Page Buttons",
+      title: "Buttons",
       group: "content",
-      description: "Buttons for the main Commercial page.",
+      description: "Buttons shown at the bottom of the page.",
     }),
   ],
 })

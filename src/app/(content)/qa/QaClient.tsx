@@ -22,20 +22,19 @@ export const QaClient = ({ initialData }: QaClientProps) => {
         showHeroImageOnMobile={false}
         showHeroTextOnMobile={false}
       />
-      <PageContainer hero={query?.hero ?? undefined} fillHeight>
-        <div className="md:overflow-y-auto md:flex-1 md:min-h-0 no-scrollbar">
-          {query?.content && (
-            <PortableText
-              value={query.content}
-              components={PORTABLE_TEXT_COMPONENTS}
-            />
-          )}
-        </div>
-
-        {query?.buttons && (
-          <div>
-            <CtaButtons buttons={query.buttons} />
-          </div>
+      <PageContainer
+        hero={query?.hero ?? undefined}
+        fillHeight
+        heading={query?.heading}
+        showHeading={query?.showHeading}
+        pageDescription={query?.pageDescription}
+        footer={query?.buttons && <CtaButtons buttons={query.buttons} />}
+      >
+        {query?.content && (
+          <PortableText
+            value={query.content}
+            components={PORTABLE_TEXT_COMPONENTS}
+          />
         )}
       </PageContainer>
     </>

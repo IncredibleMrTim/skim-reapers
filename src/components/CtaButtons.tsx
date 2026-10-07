@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { urlForImage } from "@/sanity/image"
 import { DynamicReactIcon } from "@/lib/reactIcons"
+import { cn } from "@/lib/utils"
 
 export type CtaButton = {
   _key: string
@@ -64,7 +65,7 @@ export const CtaButtons = ({
             key={b._key}
             variant={b?.variant || variant || "default"}
             size={b.size || size || "default"}
-            className={className}
+            className={cn("w-full md:w-auto", className)}
             onClick={(e) => {
               e.stopPropagation()
               router.push(b.path)

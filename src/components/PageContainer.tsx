@@ -1,8 +1,9 @@
 import type { Hero as HeroData } from "@/sanity/types"
 import { ReactNode } from "react"
 import { cn } from "@/lib/utils"
+import { PageHeading, type PageHeadingProps } from "./PageHeading"
 
-type TPageContainerProps = {
+type TPageContainerProps = PageHeadingProps & {
   /**
    * The page's hero data. Drives the same `floating` field `Header` reads
    * (see `Header`'s `hero` prop): when disabled, the hero is pinned to the
@@ -25,6 +26,11 @@ type TPageContainerProps = {
    * why).
    */
   fillHeight?: boolean
+  /**
+   * Rendered below the scroll area so it stays pinned (e.g. page buttons)
+   * rather than scrolling away with the content.
+   */
+  footer?: ReactNode
   children: ReactNode
 }
 
@@ -32,30 +38,56 @@ export const PageContainer = ({
   hero,
   fillHeight = false,
   children,
+  footer,
+  heading,
+  showHeading,
+  pageDescription,
 }: TPageContainerProps) => {
   const floatingHero = !hero?.floating
+  // Heading scrolls with the page content, so it goes inside the scroll area.
+  // Deliberately a plain block container, not `flex flex-col`: portable text
+  // blocks (`min-h-[1lh]`) are direct children here, and as flex items they
+  // shrink below their content height and overlap each other.
+  const scrollContent = (
+    <div
+      className={cn(
+        fillHeight && "md:overflow-y-auto md:flex-1 md:min-h-0 no-scrollbar",
+      )}
+    >
+      <PageHeading
+        heading={heading}
+        showHeading={showHeading}
+        pageDescription={pageDescription}
+      />
+      {children}
+    </div>
+  )
   return (
-    <div className="flex flex-col gap-4 md:gap-8 w-full md:flex-1 md:min-h-0 font-inter px-4 md:px-0 md:pr-8 py-8">
+    <div className="flex flex-col gap-4 md:gap-8 w-full md:flex-1 md:min-h-0 font-inter px-4 md:px-4 md:pr-8 py-8">
       <div className={cn(fillHeight && "flex flex-col md:flex-1 md:min-h-0")}>
         {floatingHero ? (
           <section
             className={cn(
-              "relative flex flex-col flex-1 pt-20 md:pt-20 w-full md:pl-8",
+              "relative flex flex-col flex-1 pt-20 md:pt-20 w-full md:pl-8 gap-4",
               fillHeight && "md:min-h-0",
             )}
           >
             <div
               className={cn(
-                "flex flex-col relative z-10 px-0 md:pl-8 w-full max-w-[1920px] mx-auto md:ml-(--hero-content-width) md:w-[calc(100%-var(--hero-content-width))] border-none md:border-l border-l-white/10",
+                "flex flex-col gap-2 relative z-10 px-0 md:pl-8 w-full max-w-[1920px] mx-auto md:ml-(--hero-content-width) md:w-[calc(100%-var(--hero-content-width))] border-none md:border-l border-l-white/10",
                 fillHeight && "md:min-h-0",
               )}
             >
-              {children}
+              {scrollContent}
+              {footer}
             </div>
           </section>
         ) : (
           <section className="w-full mx-auto">
-            <div className="mx-auto">{children}</div>
+            <div className="mx-auto">
+              {scrollContent}
+              {footer}
+            </div>
           </section>
         )}
       </div>

@@ -12,12 +12,18 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
 
 export const aboutPageQuery = defineQuery(`*[_type == "aboutPage"][0]{
   hero,
+  heading,
+  showHeading,
+  pageDescription,
   images,
   about
 }`)
 
 export const servicesPageQuery = defineQuery(`*[_type == "servicesPage"][0]{
   hero,
+  heading,
+  showHeading,
+  pageDescription,
   content,
   services,
   buttons
@@ -25,18 +31,27 @@ export const servicesPageQuery = defineQuery(`*[_type == "servicesPage"][0]{
 
 export const commercialPageQuery = defineQuery(`*[_type == "commercialPage"][0]{
   hero,
+  heading,
+  showHeading,
+  pageDescription,
   content,
   buttons
 }`)
 
 export const domesticPageQuery = defineQuery(`*[_type == "domesticPage"][0]{
   hero,
+  heading,
+  showHeading,
+  pageDescription,
   content,
   buttons
 }`)
 
 export const ourWorkPageQuery = defineQuery(`*[_type == "ourWorkPage"][0]{
   hero,
+  heading,
+  showHeading,
+  pageDescription,
   content,
   galleries,
   buttons
@@ -44,24 +59,36 @@ export const ourWorkPageQuery = defineQuery(`*[_type == "ourWorkPage"][0]{
 
 export const reviewsPageQuery = defineQuery(`*[_type == "reviewsPage"][0]{
   hero,
+  heading,
+  showHeading,
+  pageDescription,
   content,
   buttons
 }`)
 
 export const qaPageQuery = defineQuery(`*[_type == "qaPage"][0]{
   hero,
+  heading,
+  showHeading,
+  pageDescription,
   content,
   buttons
 }`)
 
 export const contactPageQuery = defineQuery(`*[_type == "contactPage"][0]{
   hero,
+  heading,
+  showHeading,
+  pageDescription,
   content,
   buttons
 }`)
 
 export const workWithUsPageQuery = defineQuery(`*[_type == "workWithUsPage"][0]{
   hero,
+  heading,
+  showHeading,
+  pageDescription,
   content,
   buttons
 }`)

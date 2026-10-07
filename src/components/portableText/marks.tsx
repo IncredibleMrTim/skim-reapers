@@ -3,6 +3,7 @@ import type { PortableTextComponents } from "@portabletext/react"
 import NextImage from "next/image"
 import type { Image as SanityImage } from "sanity"
 import { getImageDimensions, urlForImage } from "@/sanity/image"
+import { InlineIcon } from "./InlineIcon"
 
 /**
  * Single source of truth for how each custom Portable Text mark renders.
@@ -327,6 +328,15 @@ export function renderAnnotationMark(
 export const PORTABLE_TEXT_COMPONENTS: PortableTextComponents = {
   types: {
     image: ({ value }) => <PortableTextImage value={value} />,
+    // Inline object: `@portabletext/react` resolves inline types through
+    // `types` too, so this renders within the surrounding line of text.
+    lucideIcon: ({ value }) => (
+      <InlineIcon
+        iconNode={value?.iconNode}
+        hex={value?.swatch?.hex}
+        size={value?.size}
+      />
+    ),
   },
   block: {
     normal: ({ children }) => renderBlock("normal", children),

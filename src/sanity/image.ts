@@ -21,3 +21,15 @@ export function getImageDimensions(
   if (!match) return null;
   return { width: Number(match[1]), height: Number(match[2]) };
 }
+
+/**
+ * Builds a file asset's CDN URL from its ref (`file-<id>-<ext>`), so it works
+ * without a GROQ `asset->` dereference. Live updates arrive through
+ * `client.listen()`, whose results don't resolve references, so a URL taken
+ * from a dereference would vanish after the first edit.
+ */
+export function urlForFile(ref?: string): string | undefined {
+  const match = ref?.match(/^file-(.+)-([a-z0-9]+)$/i);
+  if (!match) return undefined;
+  return `https://cdn.sanity.io/files/${projectId}/${dataset}/${match[1]}.${match[2]}`;
+}
