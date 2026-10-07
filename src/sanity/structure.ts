@@ -1,62 +1,40 @@
 import type { StructureResolver } from "sanity/structure"
 
-// Present Home Page and About Page as singletons (a single editable
-// document each, not a list of documents) since there's exactly one of each.
+import { ContentListPane, type ContentListItem } from "./ContentListPane"
+
+// Each entry is a singleton (a single editable document, not a list of
+// documents) since there's exactly one of each. Add a `description` to show
+// a short line under the title in the Content list.
+const CONTENT_ITEMS: ContentListItem[] = [
+  { id: "homePage", title: "Home Page", schemaType: "homePage" },
+  { id: "aboutPage", title: "About Page", schemaType: "aboutPage" },
+  { id: "servicesPage", title: "Services Page", schemaType: "servicesPage" },
+  {
+    id: "commercialPage",
+    title: "Commercial Page",
+    schemaType: "commercialPage",
+  },
+  { id: "domesticPage", title: "Domestic Page", schemaType: "domesticPage" },
+  { id: "ourWorkPage", title: "Our Work Page", schemaType: "ourWorkPage" },
+  { id: "reviewsPage", title: "Reviews Page", schemaType: "reviewsPage" },
+  { id: "qaPage", title: "Q&A Page", schemaType: "qaPage" },
+  { id: "contactPage", title: "Contact Page", schemaType: "contactPage" },
+  {
+    id: "workWithUsPage",
+    title: "Work With Us Page",
+    schemaType: "workWithUsPage",
+  },
+  { id: "colorPalette", title: "Custom Colors", schemaType: "colorPalette" },
+]
+
 export const structure: StructureResolver = (S) =>
-  S.list()
+  S.component(ContentListPane)
+    .id("content")
     .title("Content")
-    .items([
-      S.listItem()
-        .title("Home Page")
-        .child(S.document().schemaType("homePage").documentId("homePage")),
-      S.listItem()
-        .title("About Page")
-        .child(S.document().schemaType("aboutPage").documentId("aboutPage")),
-      S.listItem()
-        .title("Services Page")
-        .child(
-          S.document().schemaType("servicesPage").documentId("servicesPage"),
-        ),
-      S.listItem()
-        .title("Commercial Page")
-        .child(
-          S.document()
-            .schemaType("commercialPage")
-            .documentId("commercialPage"),
-        ),
-      S.listItem()
-        .title("Domestic Page")
-        .child(
-          S.document().schemaType("domesticPage").documentId("domesticPage"),
-        ),
-      S.listItem()
-        .title("Our Work Page")
-        .child(
-          S.document().schemaType("ourWorkPage").documentId("ourWorkPage"),
-        ),
-      S.listItem()
-        .title("Reviews Page")
-        .child(
-          S.document().schemaType("reviewsPage").documentId("reviewsPage"),
-        ),
-      S.listItem()
-        .title("Q&A Page")
-        .child(S.document().schemaType("qaPage").documentId("qaPage")),
-      S.listItem()
-        .title("Contact Page")
-        .child(
-          S.document().schemaType("contactPage").documentId("contactPage"),
-        ),
-      S.listItem()
-        .title("Work With Us Page")
-        .child(
-          S.document()
-            .schemaType("workWithUsPage")
-            .documentId("workWithUsPage"),
-        ),
-      S.listItem()
-        .title("Custom Colors")
-        .child(
-          S.document().schemaType("colorPalette").documentId("colorPalette"),
-        ),
-    ])
+    .options({ items: CONTENT_ITEMS })
+    .child((childId) => {
+      const item = CONTENT_ITEMS.find(({ id }) => id === childId)
+      return S.document()
+        .schemaType(item?.schemaType ?? childId)
+        .documentId(childId)
+    })
