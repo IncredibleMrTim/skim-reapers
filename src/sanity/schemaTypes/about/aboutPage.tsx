@@ -1,4 +1,5 @@
-import { defineArrayMember, defineField, defineType } from "sanity"
+import { defineField, defineType } from "sanity"
+import { imagesSchema } from "../imagesSchema"
 import { portableTextSchema } from "../helpers/portableText"
 import { buttonsSchema } from "../helpers/buttons"
 
@@ -21,12 +22,10 @@ export const aboutPage = defineType({
       type: "hero",
       group: "hero",
     }),
-    defineField({
+    imagesSchema({
       name: "images",
       title: "About page images",
       group: "content",
-      type: "array",
-      of: [defineArrayMember({ type: "image", options: { hotspot: true } })],
     }),
     portableTextSchema({ name: "about", title: "About", group: "content" }),
     buttonsSchema({

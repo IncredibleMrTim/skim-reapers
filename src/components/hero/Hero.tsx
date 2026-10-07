@@ -96,8 +96,8 @@ export const Hero = ({
         <div className="w-full h-full absolute top-0 right-0 bg-linear-to-r from-brand-background from-10% via-transparent via-40% to-transparent z-1" />
         {hero?.background && (
           <Image
-            src={urlForImage(hero.background).url()}
-            alt="Skim Reapers Ltd"
+            src={urlForImage(hero.background.imageFile).url()}
+            alt={hero.background.imageAlt ?? "Skim Reapers Ltd"}
             width={200}
             height={200}
             className="object-cover h-full w-full repeat-0"

@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity"
+import { imageSchema } from "../imageSchema"
 
 export const homePage = defineType({
   name: "homePage",
@@ -44,13 +45,7 @@ export const homePage = defineType({
       of: [{ type: "block" }],
       group: "content",
     }),
-    defineField({
-      name: "image",
-      title: "Image",
-      type: "image",
-      options: { hotspot: true },
-      group: "content",
-    }),
+    imageSchema({ name: "image", title: "Image", group: "content" }),
     defineField({
       name: "video",
       title: "Video",

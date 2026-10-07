@@ -1,5 +1,6 @@
 import { defineType, defineField, defineArrayMember } from "sanity"
 import { toPlainText } from "@/lib/sanity"
+import { imageSchema } from "../imageSchema"
 
 export const whatWeDo = defineType({
   name: "whatWeDo",
@@ -21,7 +22,7 @@ export const whatWeDo = defineType({
               heading: "heading",
               subtitle: "subHeading",
               text: "text",
-              media: "image",
+              media: "image.imageFile",
             },
             prepare({ customTitle, heading, subtitle, text, media }) {
               const fallbackSubtitle = subtitle ? subtitle : toPlainText(text)
@@ -52,11 +53,9 @@ export const whatWeDo = defineType({
             }),
             defineField({ name: "heading", title: "Heading", type: "string" }),
             defineField({ name: "subHeading", type: "string" }),
-            defineField({
+            imageSchema({
               name: "image",
               title: "Icon",
-              type: "image",
-              options: { hotspot: true },
               description: "The image that is displayed in the card.",
             }),
             defineField({

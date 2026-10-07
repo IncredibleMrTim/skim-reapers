@@ -38,6 +38,7 @@ export const domesticPageQuery = defineQuery(`*[_type == "domesticPage"][0]{
 export const ourWorkPageQuery = defineQuery(`*[_type == "ourWorkPage"][0]{
   hero,
   content,
+  galleries,
   buttons
 }`)
 

@@ -1,5 +1,6 @@
 import { toPlainText } from "@/lib/sanity"
 import { defineArrayMember, defineField, defineType } from "sanity"
+import { imageSchema } from "../imageSchema"
 
 export const belief = defineType({
   name: "belief",
@@ -66,13 +67,11 @@ export const belief = defineType({
             }),
           ],
         }),
-        defineField({
+        imageSchema({
           name: "image",
-          title: "image",
+          title: "Image",
           description: "An image to be displayed next to the text.",
-          type: "image",
           fieldset: "imageFieldset",
-          options: { hotspot: true },
         }),
       ],
     }),
