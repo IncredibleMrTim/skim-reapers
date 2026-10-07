@@ -22,25 +22,29 @@ export const ServicesClient = ({ initialData }: ServicesClientProps) => {
         showHeroImageOnMobile={false}
         showHeroTextOnMobile={false}
       />
-      <PageContainer hero={query?.hero ?? undefined} fillHeight>
-        <div className="md:overflow-y-auto md:flex-1 md:min-h-0 w-full no-scrollbar">
-          <div>
-            {query?.content && (
-              <PortableText
-                value={query.content}
-                components={PORTABLE_TEXT_COMPONENTS}
-              />
-            )}
-          </div>
-          <div className="py-4 md:py-8">
-            <TabAccordionClient items={query?.services ?? []} />
-          </div>
-          {query?.buttons && (
-            <div>
-              <CtaButtons buttons={query.buttons} />
-            </div>
+      <PageContainer
+        hero={query?.hero ?? undefined}
+        fillHeight
+        heading={query?.heading}
+        showHeading={query?.showHeading}
+        pageDescription={query?.pageDescription}
+      >
+        <div>
+          {query?.content && (
+            <PortableText
+              value={query.content}
+              components={PORTABLE_TEXT_COMPONENTS}
+            />
           )}
         </div>
+        <div className="py-4 md:py-8">
+          <TabAccordionClient items={query?.services ?? []} />
+        </div>
+        {query?.buttons && (
+          <div>
+            <CtaButtons buttons={query.buttons} />
+          </div>
+        )}
       </PageContainer>
     </>
   )

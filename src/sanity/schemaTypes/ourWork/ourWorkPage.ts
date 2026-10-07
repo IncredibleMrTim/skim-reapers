@@ -2,6 +2,7 @@ import { defineField, defineType } from "sanity"
 import { portableTextSchema } from "../helpers/portableText"
 import { buttonsSchema } from "../helpers/buttons"
 import { gallerySchema } from "../gallerySchema"
+import { headingFields } from "../helpers/heading"
 
 export const ourWorkPage = defineType({
   name: "ourWorkPage",
@@ -17,6 +18,7 @@ export const ourWorkPage = defineType({
     { name: "hero", title: "Hero" },
   ],
   fields: [
+    ...headingFields({ group: "content" }),
     defineField({
       name: "hero",
       type: "hero",
@@ -26,9 +28,9 @@ export const ourWorkPage = defineType({
     gallerySchema({ group: "content" }),
     buttonsSchema({
       name: "buttons",
-      title: "Our Work Page Buttons",
+      title: "Buttons",
       group: "content",
-      description: "Buttons for the main Our Work page.",
+      description: "Buttons shown at the bottom of the page.",
     }),
   ],
 })

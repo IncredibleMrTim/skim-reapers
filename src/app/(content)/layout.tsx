@@ -28,7 +28,7 @@ export default function ContentLayout({
       <div className="relative flex flex-col md:flex-1 md:min-h-0 md:overflow-hidden">
         {children}
       </div>
-      <div className="shrink-0">
+      <div className="relative z-10 shrink-0">
         <Footer />
       </div>
     </div>
