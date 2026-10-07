@@ -18,6 +18,7 @@ import {
   Italic,
   Link as LinkIcon,
   Palette,
+  Smile,
   Strikethrough,
   Underline,
 } from "lucide-react"
@@ -26,6 +27,8 @@ import {
   renderDecoratorMark,
 } from "@/components/portableText/marks"
 import { BLOCK_STYLES } from "@/sanity/schemaTypes/blockStyles"
+import { ICON_SIZES, InlineIcon } from "@/components/portableText/InlineIcon"
+import { LucideIconInput } from "@/sanity/schemaTypes/helpers/LucideIconInput"
 import { BrandSwatchColorInput } from "@/sanity/schemaTypes/helpers/BrandSwatchColorInput"
 
 function decoratorComponent(props: BlockDecoratorProps) {
@@ -70,6 +73,40 @@ const IMAGE_EDITOR_MARGIN: Record<string, string> = {
   right: "0 0 0 auto",
 }
 
+interface LucideIconValue {
+  name?: string
+  iconNode?: string
+  swatch?: { hex?: string }
+  size?: string
+}
+
+/**
+ * Draws the chosen icon inside the editor text, so editors see the icon (and
+ * its color) rather than a generic inline-object chip. Only the preview is
+ * swapped: `renderDefault` keeps Sanity's own inline wrapper, which opens the
+ * Edit / Delete popover on click and the edit dialog beyond that.
+ */
+function lucideIconInlineComponent(props: BlockProps) {
+  const value = props.value as LucideIconValue | undefined
+
+  return props.renderDefault({
+    ...props,
+    renderPreview: () => (
+      <span title={value?.name} style={{ display: "inline-flex" }}>
+        {value?.iconNode ? (
+          <InlineIcon
+            iconNode={value.iconNode}
+            hex={value.swatch?.hex}
+            size={value.size}
+          />
+        ) : (
+          "Icon?"
+        )}
+      </span>
+    ),
+  })
+}
+
 function imageBlockPreviewComponent(props: BlockProps) {
   const value = props.value as
     | {
@@ -98,20 +135,48 @@ function imageBlockPreviewComponent(props: BlockProps) {
   return <div style={{ width, margin }}>{props.renderDefault(props)}</div>
 }
 
+/**
+ * Shared by the Text Color annotation and the inline icon so both pick from
+ * the same brand palette.
+ */
+const brandSwatchField = () =>
+  defineField({
+    name: "swatch",
+    type: "color",
+    title: "Color",
+    // Brand tokens from `src/app/globals.css`'s `:root`, so
+    // editors pick from the same palette the rest of the site
+    // uses instead of an arbitrary freehand color. The labeled
+    // swatch buttons below the picker (`BrandSwatchColorInput`)
+    // select from the same list with one click.
+    options: {
+      colorList: [
+        "#af7c3c", // --accent
+        "#ece9e4", // --foreground
+        "#6b6460", // --muted-foreground
+        "#e5484d", // --destructive
+      ],
+    },
+    components: { input: BrandSwatchColorInput },
+  })
+
 type TPortableTextSchema = {
   name?: string
   title?: string
   group?: string
+  description?: string
 }
 
 export const portableTextSchema = ({
   name,
   title,
+  description,
   group,
 }: TPortableTextSchema = {}) =>
   defineField({
     name: name ?? "portableText",
     title: title ?? "Portable Text Editor",
+    description,
     group,
     type: "array",
     of: [
@@ -119,6 +184,59 @@ export const portableTextSchema = ({
         name: "block",
         type: "block",
         styles: BLOCK_STYLES,
+        // Inline objects sit within a line of text, unlike the block-level
+        // image member below, which takes up its own row.
+        of: [
+          defineArrayMember({
+            name: "lucideIcon",
+            type: "object",
+            title: "Icon",
+            icon: Smile,
+            components: {
+              input: LucideIconInput,
+              inlineBlock: lucideIconInlineComponent,
+            },
+            // Both values are set together by the picker, never typed.
+            fields: [
+              defineField({ name: "name", type: "string", hidden: true }),
+              defineField({ name: "iconNode", type: "string", hidden: true }),
+              brandSwatchField(),
+              defineField({
+                name: "size",
+                title: "Size",
+                description: "Relative to the surrounding text.",
+                type: "string",
+                options: {
+                  list: Object.entries(ICON_SIZES).map(
+                    ([value, { title }]) => ({
+                      title,
+                      value,
+                    }),
+                  ),
+                  layout: "radio",
+                },
+                initialValue: "default",
+              }),
+            ],
+            validation: (Rule) =>
+              Rule.custom((value) =>
+                (value as { name?: string } | undefined)?.name
+                  ? true
+                  : "Pick an icon.",
+              ),
+            preview: {
+              select: { name: "name", iconNode: "iconNode", hex: "swatch.hex" },
+              prepare({ name, iconNode, hex }) {
+                return {
+                  title: name ?? "Choose an icon",
+                  media: iconNode ? (
+                    <InlineIcon iconNode={iconNode} hex={hex} />
+                  ) : undefined,
+                }
+              },
+            },
+          }),
+        ],
         marks: {
           decorators: [
             {
@@ -245,27 +363,7 @@ export const portableTextSchema = ({
               title: "Text Color",
               icon: Palette,
               components: { annotation: annotationComponent },
-              fields: [
-                defineField({
-                  name: "swatch",
-                  type: "color",
-                  title: "Color",
-                  // Brand tokens from `src/app/globals.css`'s `:root`, so
-                  // editors pick from the same palette the rest of the site
-                  // uses instead of an arbitrary freehand color. The labeled
-                  // swatch buttons below the picker (`BrandSwatchColorInput`)
-                  // select from the same list with one click.
-                  options: {
-                    colorList: [
-                      "#af7c3c", // --accent
-                      "#ece9e4", // --foreground
-                      "#6b6460", // --muted-foreground
-                      "#e5484d", // --destructive
-                    ],
-                  },
-                  components: { input: BrandSwatchColorInput },
-                }),
-              ],
+              fields: [brandSwatchField()],
             }),
           ],
         },
