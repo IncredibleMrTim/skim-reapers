@@ -1,0 +1,8 @@
+.next
+out
+node_modules
+pnpm-lock.yaml
+sanity-admin-template
+src/sanity/types.ts
+schema.json
+.playwright-mcp
