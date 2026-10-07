@@ -33,6 +33,36 @@ interface GalleryProps {
 // Fallback for assets whose ref doesn't encode dimensions.
 const FALLBACK_DIMENSIONS = { width: 1200, height: 800 }
 
+// Thumbnails are cropped by Sanity's image CDN on request, so nothing extra is
+// stored at upload time. Sized at 2x the largest carousel tile (256x200) so
+// they stay sharp on high-density screens.
+const THUMBNAIL_DIMENSIONS = { width: 512, height: 400 }
+const FULL_IMAGE_MAX_WIDTH = 2000
+
+/** Cropped carousel tile; `fit("crop")` follows the image's hotspot. */
+function getThumbnailUrl(image: ImageFile): string {
+  return urlForImage(image)
+    .width(THUMBNAIL_DIMENSIONS.width)
+    .height(THUMBNAIL_DIMENSIONS.height)
+    .fit("crop")
+    .auto("format")
+    .quality(80)
+    .url()
+}
+
+/**
+ * Full image for the dialog, capped so a multi-megabyte original isn't
+ * downloaded. `fit("max")` shrinks to the width without ever upscaling a
+ * smaller image (`maxWidth`'s `max-w` param was ignored by the CDN).
+ */
+function getFullImageUrl(image: ImageFile): string {
+  return urlForImage(image)
+    .width(FULL_IMAGE_MAX_WIDTH)
+    .fit("max")
+    .auto("format")
+    .url()
+}
+
 export const Gallery = ({
   images: allImages,
   heading,
@@ -49,9 +79,17 @@ export const Gallery = ({
   if (!images?.length) return null
 
   const selectedImage = images.find((img) => img._key === selectedImageKey)
-  const selectedDimensions =
+  const originalDimensions =
     getImageDimensions(selectedImage?.imageFile.asset?._ref) ??
     FALLBACK_DIMENSIONS
+  const fullImageScale = Math.min(
+    1,
+    FULL_IMAGE_MAX_WIDTH / originalDimensions.width,
+  )
+  const selectedDimensions = {
+    width: Math.round(originalDimensions.width * fullImageScale),
+    height: Math.round(originalDimensions.height * fullImageScale),
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -68,40 +106,34 @@ export const Gallery = ({
         <Carousel className="mx-auto  w-full">
           <div className="border border-white/10 rounded p-1">
             <CarouselContent>
-              {images.map((img) => {
-                const { width, height } =
-                  getImageDimensions(img.imageFile.asset?._ref) ??
-                  FALLBACK_DIMENSIONS
-
-                return (
-                  <CarouselItem
-                    key={img._key}
-                    className="h-40 md:h-50 max-w-45 md:max-w-3xs"
-                  >
-                    <Image
-                      src={urlForImage(img.imageFile).url()}
-                      alt={img.imageAlt ?? img.imageName}
-                      width={width}
-                      height={height}
-                      draggable={false}
-                      className="h-full w-full object-cover"
-                      onClick={() => setSelectedImageKey(img._key)}
-                    />
-                  </CarouselItem>
-                )
-              })}
+              {images.map((img) => (
+                <CarouselItem
+                  key={img._key}
+                  className="h-40 md:h-50 max-w-45 md:max-w-3xs"
+                >
+                  <Image
+                    src={getThumbnailUrl(img.imageFile)}
+                    alt={img.imageAlt ?? img.imageName}
+                    width={THUMBNAIL_DIMENSIONS.width}
+                    height={THUMBNAIL_DIMENSIONS.height}
+                    draggable={false}
+                    className="h-full w-full object-cover"
+                    onClick={() => setSelectedImageKey(img._key)}
+                  />
+                </CarouselItem>
+              ))}
             </CarouselContent>
           </div>
 
           <CarouselPrevious
             variant="ghost"
-            size="icon-lg"
-            className="hidden md:flex w-0 md:w-auto md:-left-8 bg-brand-accent/50 hover:bg-brand-accent/80 rounded-[4px]"
+            size="icon-sm"
+            className="-left-8 bg-brand-accent/50 hover:bg-brand-accent/80 rounded-[4px]"
           />
           <CarouselNext
             variant="ghost"
-            size="icon-lg"
-            className="hidden md:flex w-0 md:w-auto md:-right-8 bg-brand-accent/50 hover:bg-brand-accent/80 rounded-[4px] "
+            size="icon-sm"
+            className="-right-8 bg-brand-accent/50 hover:bg-brand-accent/80 rounded-[4px]"
           />
         </Carousel>
 
@@ -125,7 +157,7 @@ export const Gallery = ({
                 </div>
               )}
               <Image
-                src={urlForImage(selectedImage.imageFile).url()}
+                src={getFullImageUrl(selectedImage.imageFile)}
                 alt={selectedImage.imageAlt ?? selectedImage.imageName}
                 width={selectedDimensions.width}
                 height={selectedDimensions.height}
