@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { defineType, defineField, defineArrayMember } from "sanity"
 import { portableTextSchema } from "./helpers/portableText"
+import { imageSchema } from "./imageSchema"
+import { HeroLayoutInput } from "./helpers/HeroLayoutInput"
 
 const HERO_DATA_SLOTS: { slot: string; description?: string }[] = [
   { slot: "hero-container", description: "outer wrapper" },
@@ -47,6 +49,7 @@ export const hero = defineType({
   name: "hero",
   title: "Hero",
   type: "object",
+  components: { input: HeroLayoutInput },
   fields: [
     defineField({
       name: "showSmoke",
@@ -74,7 +77,9 @@ export const hero = defineType({
             </li>
             <li>
               Disabled: Displays the Hero to the left of the screen with page
-              content to the right.
+              content to the right. This also adds a{" "}
+              <code>--hero-content-width</code> rule to the Custom CSS below
+              (removed again when enabled).
             </li>
           </ul>
         </>
@@ -82,12 +87,10 @@ export const hero = defineType({
       type: "boolean",
       initialValue: true,
     }),
-    defineField({
+    imageSchema({
       name: "background",
       title: "Background Image",
       description: "The large background image displayed on the Hero banner.",
-      type: "image",
-      options: { hotspot: true },
     }),
     defineField({
       name: "eyebrow",
@@ -156,8 +159,7 @@ export const hero = defineType({
               validation: (rule) =>
                 rule.custom((value, context) => {
                   const parent = context.parent as
-                    | { reactIcon?: { name?: string } }
-                    | undefined
+                    { reactIcon?: { name?: string } } | undefined
                   if (value && parent?.reactIcon?.name) {
                     return "Only one of Image Icon or React Icon can be set."
                   }
@@ -185,8 +187,7 @@ export const hero = defineType({
               validation: (rule) =>
                 rule.custom((value, context) => {
                   const parent = context.parent as
-                    | { imageIcon?: { asset?: unknown } }
-                    | undefined
+                    { imageIcon?: { asset?: unknown } } | undefined
                   if (value?.name && parent?.imageIcon?.asset) {
                     return "Only one of Image Icon or React Icon can be set."
                   }
