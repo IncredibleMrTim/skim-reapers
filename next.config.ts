@@ -6,7 +6,10 @@ const nextConfig: NextConfig = {
   // server at all (see docs/deploy-krystal.md), which also sidesteps
   // the account's Next.js compiler memory limits since the build only
   // ever runs in CI.
-  output: "export",
+  // Dev-only opt-out: with export on, the dev server 500s on any /admin
+  // deep link (e.g. a refresh inside Studio) because only /admin is
+  // enumerated in generateStaticParams. Production still exports.
+  output: process.env.NODE_ENV === "production" ? "export" : undefined,
   images: { unoptimized: true },
   // Lets the dev server hydrate client components when loaded from a phone
   // on the same wifi network (e.g. http://192.168.4.29:3000) instead of
