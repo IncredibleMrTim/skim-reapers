@@ -128,7 +128,7 @@ export const Hero = ({
           <div
             data-slot="hero-content-container"
             className={cn(
-              "relative flex flex-col gap-1 justify-start w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0",
+              "relative flex flex-col gap-1 justify-start w-full md:pl-0 mx-auto md:mx-4 z-10 px-2 md:px-0",
               !hero?.floating ? "mt-60 md:mt-0 md:pt-60" : "pt-60 pb-8",
               showHeroTextOnMobile ? "" : "max-md:hidden",
             )}
@@ -141,7 +141,7 @@ export const Hero = ({
         <div
           data-slot="hero-content-container"
           className={cn(
-            "relative justify-start w-full md:pl-0 mx-auto md:mx-4 z-8 px-2 md:px-0 md:w-[var(--hero-content-width)]",
+            "relative justify-start w-full md:pl-0 mx-auto md:mx-4 z-10 px-2 md:px-0 md:w-[var(--hero-content-width)]",
             !hero?.floating ? "mt-60 md:mt-0 md:pt-60" : "pt-60 pb-8",
             showHeroTextOnMobile ? "" : "max-md:hidden",
           )}
