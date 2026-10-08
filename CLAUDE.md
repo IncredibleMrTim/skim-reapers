@@ -106,6 +106,12 @@ const imageUrl = homePage.image;
 - `sanity-admin-template/` — reusable admin/auth/branding template; excluded from type-checking and lint.
 - `docs/deploy-krystal.md` — full deploy runbook and one-time cPanel/GitHub setup.
 
+## Resources
+
+The project's resource folder is `/Volumes/Tims SSD/Development/TownSquareDigital/Skim Reapers/resources` — outside this repo, one level up. It holds the source brand assets (logos, the Bronco font, hero and service images, the van photo, test videos) and exported marketing images such as the LinkedIn post image. Look there first when a task needs an image, logo, font or video.
+
+**Always put generated resources there** — anything you create that isn't code: images, screenshots, social media graphics, PDFs and proposals, videos, exports. Save them straight into that folder rather than the Desktop, the repo or a temp directory, and tell the user the filename.
+
 ## Environment
 
 Required in `.env.local` for local dev:
