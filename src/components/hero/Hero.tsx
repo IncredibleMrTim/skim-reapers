@@ -86,7 +86,7 @@ export const Hero = ({
         alt="Skim Reapers Ltd"
         width={342}
         height={250}
-        className={`absolute top-0 md:-top-20 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 md:mx-4 my-4 md:my-10 w-70 md:w-90 brightness-110 ${showHeroImageOnMobile ? "" : "max-md:hidden"}`}
+        className={`absolute top-0 md:-top-20 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 md:mx-4 my-4 md:my-10 w-70 md:w-90 brightness-130 ${showHeroImageOnMobile ? "" : "max-md:hidden"}`}
         priority
       />
 
