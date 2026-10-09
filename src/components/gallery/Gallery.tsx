@@ -28,6 +28,7 @@ interface GalleryProps {
   heading?: string
   description?: Background["imageDesc"]
   showHeading?: boolean
+  anchor?: string
 }
 
 // Fallback for assets whose ref doesn't encode dimensions.
@@ -68,6 +69,7 @@ export const Gallery = ({
   heading,
   showHeading,
   description,
+  anchor,
 }: GalleryProps) => {
   // Keyed rather than storing the image object: a stored copy would go stale
   // when Sanity pushes a live update while the dialog is open.
@@ -92,7 +94,7 @@ export const Gallery = ({
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 max-md:scroll-mt-24" id={anchor}>
       {showHeading && heading && (
         <p className="text-lg font-bold text-brand-accent">{heading}</p>
       )}
