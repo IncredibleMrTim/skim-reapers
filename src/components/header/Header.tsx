@@ -60,7 +60,7 @@ export const Header = ({
         <Image
           width={1280}
           height={720}
-          className="pointer-events-none absolute inset-0 size-full object-cover md:object-top-left opacity-30 z-9 [--mask-pos:center_top] md:[--mask-pos:top_left]"
+          className="pointer-events-none absolute inset-0 size-full object-cover md:object-top-left opacity-20 z-9 [--mask-pos:center_top] md:[--mask-pos:top_left]"
           style={{
             maskImage:
               "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",
