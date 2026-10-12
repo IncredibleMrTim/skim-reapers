@@ -61,14 +61,14 @@ export const OurWorkClient = ({ initialData }: OurWorkClientProps) => {
               </p>
             </div>
             <div className="flex gap-2 flex-wrap">
-              {visibleGalleries.map(({ _key, anchor, title }) =>
+              {visibleGalleries.map(({ _key, anchor, heading }) =>
                 anchor ? (
                   <Button
                     key={_key}
                     onClick={() => scrollToAnchor(anchor)}
                     variant="outline"
                   >
-                    {title}
+                    {heading}
                   </Button>
                 ) : null,
               )}
@@ -86,17 +86,17 @@ export const OurWorkClient = ({ initialData }: OurWorkClientProps) => {
               {item._type === "videoGallery" ? (
                 <VideoGallery
                   videos={item.videos}
-                  heading={item.title}
+                  heading={item.heading}
                   description={item.description}
-                  showHeading={item.showTitle}
+                  showHeading={item.showHeading}
                   anchor={item.anchor}
                 />
               ) : (
                 <Gallery
                   images={item.gallery?.images}
-                  heading={item.title}
+                  heading={item.heading}
                   description={item.description}
-                  showHeading={item.showTitle}
+                  showHeading={item.showHeading}
                   anchor={item.anchor}
                 />
               )}

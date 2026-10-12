@@ -22,15 +22,15 @@ export const gallerySchema = ({
         type: "object",
         fields: [
           defineField({
-            name: "title",
+            name: "heading",
             type: "string",
             validation: (rule) => rule.required(),
           }),
           defineField({
             type: "boolean",
-            name: "showTitle",
-            title: "Show Title",
-            description: "Show or hide the title for this Gallery.",
+            name: "showHeading",
+            title: "Show Heading",
+            description: "Show or hide the heading for this Gallery.",
             initialValue: true,
           }),
           defineField({
@@ -54,6 +54,9 @@ export const gallerySchema = ({
             ],
           }),
         ],
+        preview: {
+          select: { title: "heading" },
+        },
       }),
       videoGalleryMember,
     ],

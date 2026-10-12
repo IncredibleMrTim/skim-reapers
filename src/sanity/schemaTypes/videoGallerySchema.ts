@@ -3,22 +3,22 @@ import { portableTextSchema } from "./helpers/portableText"
 
 /**
  * Array member for `gallerySchema`'s list. Mirrors the image gallery's shape
- * (title, show title, description) so editing a video gallery feels the same.
+ * (heading, show heading, description) so editing a video gallery feels the same.
  */
 export const videoGalleryMember = defineArrayMember({
   name: "videoGallery",
   type: "object",
   fields: [
     defineField({
-      name: "title",
+      name: "heading",
       type: "string",
       validation: (rule) => rule.required(),
     }),
     defineField({
       type: "boolean",
-      name: "showTitle",
-      title: "Show Title",
-      description: "Show or hide the title for this video gallery.",
+      name: "showHeading",
+      title: "Show Heading",
+      description: "Show or hide the heading for this video gallery.",
       initialValue: true,
     }),
     defineField({
@@ -42,8 +42,8 @@ export const videoGalleryMember = defineArrayMember({
           type: "object",
           fields: [
             defineField({
-              name: "videoName",
-              title: "Video Title",
+              name: "heading",
+              title: "Video Heading",
               type: "string",
               validation: (rule) => rule.required(),
             }),
@@ -63,10 +63,13 @@ export const videoGalleryMember = defineArrayMember({
             }),
           ],
           preview: {
-            select: { title: "videoName", media: "posterImage" },
+            select: { title: "heading", media: "posterImage" },
           },
         }),
       ],
     }),
   ],
+  preview: {
+    select: { title: "heading" },
+  },
 })
