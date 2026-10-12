@@ -56,7 +56,8 @@
   showHeading,
   pageDescription,
   content,
-  buttons
+  buttons,
+  qaLists
 }`,c=`*[_type == "contactPage"][0]{
   hero,
   heading,
