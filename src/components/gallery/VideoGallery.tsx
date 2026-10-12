@@ -95,7 +95,7 @@ export const VideoGallery = ({
                       <source src={video.videoUrl} />
                     </video>
                     <figcaption className="text-sm">
-                      {video.videoName}
+                      {video.heading}
                     </figcaption>
                   </figure>
                 </CarouselItem>

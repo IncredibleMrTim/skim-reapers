@@ -90,7 +90,7 @@ export const hero = defineType({
     defineField({
       name: "eyebrow",
       title: "Eyebrow",
-      description: "Top most title displayed on the banner.",
+      description: "Top most heading displayed on the banner.",
       type: "string",
     }),
     defineField({

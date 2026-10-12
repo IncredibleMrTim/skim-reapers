@@ -2,6 +2,7 @@
 
 import { AccordionClient } from "@/components/accordionClient/AccordionClient"
 import { CtaButton } from "@/components/CtaButtons"
+import type { QaEntry } from "@/components/qaList/QaList"
 import { TabsClient } from "@/components/tabsClient/TabsClient"
 import { TabAccordionSkeleton } from "@/components/tabAccordionClient/TabAccordionSkeleton"
 import { PortableText } from "@portabletext/react"
@@ -15,6 +16,7 @@ type Item = {
   urlQuery?: string | null
   content?: PortableTextValue
   buttons?: CtaButton[]
+  qaEntries?: QaEntry[] | null
 }
 
 type PortableTextValue = ComponentProps<typeof PortableText>["value"]
