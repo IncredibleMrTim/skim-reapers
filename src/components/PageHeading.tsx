@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import { PortableText, type PortableTextProps } from "@portabletext/react"
 import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
 import { DistressedHeading } from "./DistressedHeading"
@@ -10,6 +11,8 @@ export interface PageHeadingProps {
    */
   showHeading?: boolean | null
   pageDescription?: PortableTextProps["value"] | null
+  /** Rendered directly under the heading, before the description. */
+  belowHeading?: ReactNode
 }
 
 /**
@@ -20,17 +23,19 @@ export const PageHeading = ({
   heading,
   showHeading,
   pageDescription,
+  belowHeading,
 }: PageHeadingProps) => {
   const isHeadingVisible = !!heading && showHeading !== false
-  if (!isHeadingVisible && !pageDescription) return null
+  if (!isHeadingVisible && !pageDescription && !belowHeading) return null
 
   return (
-    <div className="flex flex-col gap-4 mb-4">
+    <div className="flex flex-col gap-4 mb-4 max-md:mt-6">
       {isHeadingVisible && (
         <DistressedHeading className="text-4xl tracking-wider">
           {heading}
         </DistressedHeading>
       )}
+      {belowHeading}
       {pageDescription && (
         <PortableText
           value={pageDescription}
