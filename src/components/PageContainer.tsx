@@ -105,7 +105,7 @@ export const PageContainer = ({
   return (
     <div
       className={cn(
-        "flex flex-col gap-4 md:gap-8 w-full md:flex-1 md:min-h-0 font-inter px-4 md:px-4 md:pr-8 md:py-8",
+        "flex flex-col gap-4 md:gap-8 w-full md:flex-1 md:min-h-0 font-inter px-4 md:px-0 md:py-8",
         isFlushWithHero && "md:pt-0",
       )}
     >
