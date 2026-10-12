@@ -6,8 +6,8 @@ import { DistressedHeading } from "./DistressedHeading"
 export interface PageHeadingProps {
   heading?: string | null
   /**
-   * Treated as shown when unset: existing documents were saved before the
-   * toggle existed, and the schema's default only applies to new documents.
+   * Treated as hidden when unset, matching the unticked box Studio shows for
+   * documents saved before the toggle existed.
    */
   showHeading?: boolean | null
   pageDescription?: PortableTextProps["value"] | null
@@ -25,7 +25,7 @@ export const PageHeading = ({
   pageDescription,
   belowHeading,
 }: PageHeadingProps) => {
-  const isHeadingVisible = !!heading && showHeading !== false
+  const isHeadingVisible = !!heading && showHeading === true
   if (!isHeadingVisible && !pageDescription && !belowHeading) return null
 
   return (

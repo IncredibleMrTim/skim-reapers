@@ -1,6 +1,7 @@
 import { defineField } from "sanity"
 import { portableTextSchema } from "./portableText"
 import { TSanitySchema } from "../types"
+import { UncheckedByDefaultBooleanInput } from "./UncheckedByDefaultBooleanInput"
 
 /**
  * Page heading, a toggle to show or hide it, and an optional page description. Returned as a list so pages can spread it into `fields`.
@@ -19,7 +20,8 @@ export const headingFields = ({ group }: Pick<TSanitySchema, "group"> = {}) => [
     description: "Show or hide the heading on the page.",
     group,
     type: "boolean",
-    initialValue: true,
+    initialValue: false,
+    components: { input: UncheckedByDefaultBooleanInput },
   }),
   portableTextSchema({
     name: "pageDescription",
