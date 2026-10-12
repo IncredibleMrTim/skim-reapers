@@ -182,6 +182,19 @@ Webhooks → Create webhook), one per dataset:
 - Dataset: `production`
 - Payload: `{"event_type": "sanity-publish-prod"}`
 
+### Automatic retry of failed Sanity deploys
+
+`.github/workflows/retry-sanity-deploy.yml` watches the "CI/CD"
+workflow. When a run that was started by a Sanity webhook
+(`repository_dispatch`) fails, it waits a minute and reruns just the
+failed jobs, up to two more times. Failed push and PR runs are not
+retried, since those are real code problems. Like the webhook trigger,
+it only takes effect once it is on `main`.
+
+Each rerun is the same Actions run with a higher attempt number, so the
+Studio "Deployments" tool shows the final result. If all three attempts
+fail, rerun it by hand from the Actions tab, or publish again.
+
 ### Checking deploy status after a publish
 
 The "Deployments" tool in Studio (`/admin`) shows the latest
