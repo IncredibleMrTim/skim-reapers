@@ -74,6 +74,7 @@ export type Background = {
         _key: string
       }
   >
+  anchor?: string
   imageFile: ImageFile
 }
 
@@ -162,6 +163,7 @@ export type CardImage = {
         _key: string
       }
   >
+  anchor?: string
   imageFile: ImageFile
 }
 
@@ -230,6 +232,7 @@ export type Image1 = {
         _key: string
       }
   >
+  anchor?: string
   imageFile: ImageFile
 }
 
@@ -1036,6 +1039,7 @@ export type OurWorkPage = {
     | {
         title: string
         showTitle?: boolean
+        anchor?: string
         description?: Array<
           | {
               children?: Array<
@@ -1143,6 +1147,7 @@ export type OurWorkPage = {
                   _key: string
                 }
             >
+            anchor?: string
             imageFile: ImageFile
             _type: "galleryImage"
             _key: string
@@ -1154,6 +1159,7 @@ export type OurWorkPage = {
     | {
         title: string
         showTitle?: boolean
+        anchor?: string
         description?: Array<
           | {
               children?: Array<
@@ -1932,6 +1938,7 @@ export type AboutPage = {
           _key: string
         }
     >
+    anchor?: string
     imageFile: ImageFile
     _type: "galleryImage"
     _key: string
@@ -2091,6 +2098,7 @@ export type HomePage = {
           _key: string
         }
     >
+    anchor?: string
     imageFile: ImageFile
   }
   video?: {
@@ -2357,6 +2365,7 @@ export type HomePageQueryResult = {
           _key: string
         }
     >
+    anchor?: string
     imageFile: ImageFile
   } | null
   video: {
@@ -2478,6 +2487,7 @@ export type AboutPageQueryResult = {
           _key: string
         }
     >
+    anchor?: string
     imageFile: ImageFile
     _type: "galleryImage"
     _key: string
@@ -3158,6 +3168,7 @@ export type OurWorkPageQueryResult = {
     | {
         title: string
         showTitle?: boolean
+        anchor?: string
         description?: Array<
           | {
               children?: Array<
@@ -3265,6 +3276,7 @@ export type OurWorkPageQueryResult = {
                   _key: string
                 }
             >
+            anchor?: string
             imageFile: ImageFile
             _type: "galleryImage"
             _key: string
@@ -3276,6 +3288,7 @@ export type OurWorkPageQueryResult = {
     | {
         title: string
         showTitle?: boolean
+        anchor?: string
         description?: Array<
           | {
               children?: Array<

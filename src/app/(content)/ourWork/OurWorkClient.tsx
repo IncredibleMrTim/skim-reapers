@@ -12,6 +12,7 @@ import { CtaButtons } from "@/components/CtaButtons"
 import { Gallery } from "@/components/gallery/Gallery"
 import { Separator } from "@/components/ui/separator"
 import { VideoGallery } from "@/components/gallery/VideoGallery"
+import { Button } from "@/components/ui/button"
 
 interface OurWorkClientProps {
   initialData: OurWorkPageQueryResult
@@ -26,6 +27,10 @@ export const OurWorkClient = ({ initialData }: OurWorkClientProps) => {
       ? item.videos?.some((video) => urlForFile(video.videoFile?.asset?._ref))
       : item.gallery?.images?.some((image) => image.imageFile?.asset),
   )
+
+  const scrollToAnchor = (target: string) => {
+    document.getElementById(target)?.scrollIntoView({ behavior: "smooth" })
+  }
 
   return (
     <>
@@ -49,6 +54,27 @@ export const OurWorkClient = ({ initialData }: OurWorkClientProps) => {
               components={PORTABLE_TEXT_COMPONENTS}
             />
           )}
+          <div className="flex flex-col gap-2 bg-brand-accent-foreground/50 rounded p-2 border">
+            <div>
+              <p className="text-brand-accent font font-bold">
+                Jump to Gallery
+              </p>
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              {visibleGalleries.map(({ _key, anchor, title }) =>
+                anchor ? (
+                  <Button
+                    key={_key}
+                    onClick={() => scrollToAnchor(anchor)}
+                    variant="outline"
+                  >
+                    {title}
+                  </Button>
+                ) : null,
+              )}
+            </div>
+          </div>
+
           {visibleGalleries.map((item, index) => (
             <Fragment key={item._key}>
               {index > 0 && (
@@ -63,6 +89,7 @@ export const OurWorkClient = ({ initialData }: OurWorkClientProps) => {
                   heading={item.title}
                   description={item.description}
                   showHeading={item.showTitle}
+                  anchor={item.anchor}
                 />
               ) : (
                 <Gallery
@@ -70,6 +97,7 @@ export const OurWorkClient = ({ initialData }: OurWorkClientProps) => {
                   heading={item.title}
                   description={item.description}
                   showHeading={item.showTitle}
+                  anchor={item.anchor}
                 />
               )}
             </Fragment>

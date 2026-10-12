@@ -21,6 +21,13 @@ export const videoGalleryMember = defineArrayMember({
       description: "Show or hide the title for this video gallery.",
       initialValue: true,
     }),
+    defineField({
+      name: "anchor",
+      title: "Gallery Anchor (Optional)",
+      description:
+        "Adds a gallery anchor that can be used to jump to this gallery on link or button click.",
+      type: "string",
+    }),
     portableTextSchema({
       name: "description",
       title: "Gallery Description",

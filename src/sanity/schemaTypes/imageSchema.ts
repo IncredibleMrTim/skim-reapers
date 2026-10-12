@@ -24,6 +24,13 @@ export const imageFields = [
     description: "Optional text to be displayed with the image.",
   }),
   defineField({
+    name: "anchor",
+    title: "Image Anchor (Optional)",
+    description:
+      "Adds and image anchor that can be used to jump to this image on link or button click.",
+    type: "string",
+  }),
+  defineField({
     name: "imageFile",
     title: "Image",
     type: "image",

@@ -86,7 +86,7 @@ export const Hero = ({
         alt="Skim Reapers Ltd"
         width={342}
         height={250}
-        className={`absolute top-0 md:-top-20 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 md:mx-4 my-4 md:my-10 w-70 md:w-90 brightness-110 ${showHeroImageOnMobile ? "" : "max-md:hidden"}`}
+        className={`absolute top-0 md:-top-20 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 md:mx-4 my-4 md:my-10 w-70 md:w-90 brightness-130 ${showHeroImageOnMobile ? "" : "max-md:hidden"}`}
         priority
       />
 
@@ -112,7 +112,7 @@ export const Hero = ({
           alt="Skim Reapers Ltd"
           width={280}
           height={150}
-          className="absolute -top-20 left-1/2 -translate-x-1/2 md:-left-10 md:translate-x-0 h-180 w-280 max-w-none opacity-60 md:opacity-40 z-9 object-cover [--mask-pos:center_top] md:[--mask-pos:top_left]"
+          className="absolute -top-20 left-1/2 -translate-x-1/2 md:-left-10 md:translate-x-0 h-180 w-280 max-w-none opacity-25 md:opacity-25 z-9 object-cover [--mask-pos:center_top] md:[--mask-pos:top_left]"
           style={{
             maskImage:
               "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",

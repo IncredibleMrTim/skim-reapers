@@ -24,6 +24,7 @@ interface VideoGalleryProps {
   description?: Background["imageDesc"]
   showHeading?: boolean
   videos?: VideoGalleryItem["videos"]
+  anchor?: string
 }
 
 export const VideoGallery = ({
@@ -31,6 +32,7 @@ export const VideoGallery = ({
   description,
   showHeading,
   videos,
+  anchor,
 }: VideoGalleryProps) => {
   const carouselRef = useRef<HTMLDivElement>(null)
 
@@ -54,7 +56,7 @@ export const VideoGallery = ({
   if (!playableVideos?.length) return null
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 max-md:scroll-mt-24" id={anchor}>
       {showHeading && heading && (
         <p className="text-lg font-bold text-brand-accent">{heading}</p>
       )}
