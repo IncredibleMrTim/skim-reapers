@@ -108,7 +108,7 @@ export function Navbar() {
     <header className="flex justify-self-end h-20 light w-full max-md:fixed max-md:top-0 max-md:inset-x-0 max-md:z-50 md:relative xl:w-[78%] 2xl:w-[80%]  lg:pl-10 border-border text-foreground bg-linear-to-br md:bg-linear-to-r from-white md:from-transparent from-0% md:from-0% via-white/90 via-70% md:via-10% md:via-brand-background to-100% to-white/60 md:to-brand-background pr-4 shadow-md shadow-brand-foreground/20 md:shadow-none">
       <div className=" flex w-full max-w-[1920px] items-center justify-between h-full">
         {/* Tagline */}
-        <div className="flex items-center justify-start border-r border-border border-none ml-5 gap-14 w-full md:w-auto md:flex-col md:gap-0">
+        <div className="flex items-center justify-start border-r border-border border-none ml-3 md:ml-5 gap-2 w-full md:w-auto md:flex-col md:gap-0">
           <Image
             src="/logo_extracted1_dark.png"
             alt="Skim Reapers Ltd"
@@ -116,8 +116,12 @@ export function Navbar() {
             height={80}
             className="md:hidden"
           />
-          {/* Above md the lines sit directly in the column, as before the logo. */}
-          <div className="md:contents">
+          {/* Below md the lines are centred on the header itself: the right
+              padding offsets the burger (32px + 16px header padding) taking
+              less room than the logo side (12px margin + 80px logo + 8px
+              gap), which would otherwise push the text right of centre.
+              Above md they sit directly in the column, as before the logo. */}
+          <div className="max-md:flex-1 max-md:pr-12 max-md:text-center md:contents">
             <p className="text-xs font-bold uppercase w-full tracking-wider">
               Professional Plastering
               <br />& Dry-Lining Contractors
@@ -242,6 +246,7 @@ export function Navbar() {
                 nativeButton={false}
                 render={<a href="#contact" />}
                 className="flex gap-2 h-11 items-center justify-center bg-brand-primary text-sm font-bold tracking-[0.08em] text-brand-primary-foreground uppercase no-underline transition-opacity hover:opacity-90 [clip-path:polygon(6%_0,100%_0,94%_100%,0_100%)]"
+                onClick={() => router.push("/contact")}
               >
                 Get a Quote <HiArrowNarrowRight className="mt-0.5" />
               </SheetClose>

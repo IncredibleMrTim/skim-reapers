@@ -2,6 +2,11 @@ import type { Hero as HeroData } from "@/sanity/types"
 import { ReactNode } from "react"
 import { cn } from "@/lib/utils"
 import { PageHeading, type PageHeadingProps } from "./PageHeading"
+import {
+  HeroContent,
+  hasVisibleMobilePart,
+  resolveMobileVisibility,
+} from "./hero/HeroContent"
 
 type TPageContainerProps = PageHeadingProps & {
   /**
@@ -31,6 +36,19 @@ type TPageContainerProps = PageHeadingProps & {
    * rather than scrolling away with the content.
    */
   footer?: ReactNode
+  /**
+   * Repeat the hero text between the heading and the content on mobile.
+   * Turn off for a page whose own Hero already shows that text on mobile
+   * (the home page), or it appears twice.
+   */
+  showMobileHeroContent?: boolean
+  /**
+   * Drop the desktop gap above the content so it butts up against the bottom
+   * of the hero (e.g. the home page's belief bar). Other pages keep the gap
+   * so their heading doesn't sit hard against the hero.
+   */
+  isFlushWithHero?: boolean
+
   children: ReactNode
 }
 
@@ -39,11 +57,32 @@ export const PageContainer = ({
   fillHeight = false,
   children,
   footer,
+  showMobileHeroContent = true,
+  isFlushWithHero = false,
   heading,
   showHeading,
   pageDescription,
+  belowHeading,
 }: TPageContainerProps) => {
   const floatingHero = !hero?.floating
+  // Undefined when there is nothing to show, so `PageHeading` renders no empty
+  // wrapper (its bottom margin would otherwise open a gap under the hero).
+  const mobileVisibility = resolveMobileVisibility(hero)
+  const isMobileHeroShown =
+    showMobileHeroContent && hasVisibleMobilePart(mobileVisibility)
+  const mobileHeroContent =
+    isMobileHeroShown || belowHeading ? (
+      <>
+        {/* The Hero's own text column is hidden on mobile on these pages, so
+            the text is repeated here, between the heading and content. */}
+        {isMobileHeroShown && (
+          <div className="md:hidden">
+            <HeroContent hero={hero} mobileVisibility={mobileVisibility} />
+          </div>
+        )}
+        {belowHeading}
+      </>
+    ) : undefined
   // Heading scrolls with the page content, so it goes inside the scroll area.
   // Deliberately a plain block container, not `flex flex-col`: portable text
   // blocks (`min-h-[1lh]`) are direct children here, and as flex items they
@@ -58,12 +97,18 @@ export const PageContainer = ({
         heading={heading}
         showHeading={showHeading}
         pageDescription={pageDescription}
+        belowHeading={mobileHeroContent}
       />
       {children}
     </div>
   )
   return (
-    <div className="flex flex-col gap-4 md:gap-8 w-full md:flex-1 md:min-h-0 font-inter px-4 md:px-4 md:pr-8 py-8">
+    <div
+      className={cn(
+        "flex flex-col gap-4 md:gap-8 w-full md:flex-1 md:min-h-0 font-inter px-4 md:px-4 md:pr-8 md:py-8",
+        isFlushWithHero && "md:pt-0",
+      )}
+    >
       <div className={cn(fillHeight && "flex flex-col md:flex-1 md:min-h-0")}>
         {floatingHero ? (
           <section

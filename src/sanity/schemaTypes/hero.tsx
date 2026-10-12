@@ -3,6 +3,7 @@ import { defineType, defineField, defineArrayMember } from "sanity"
 import { portableTextSchema } from "./helpers/portableText"
 import { imageSchema } from "./imageSchema"
 import { HeroLayoutInput } from "./helpers/HeroLayoutInput"
+import { UncheckedByDefaultBooleanInput } from "./helpers/UncheckedByDefaultBooleanInput"
 
 const HERO_DATA_SLOTS: { slot: string; description?: string }[] = [
   { slot: "hero-container", description: "outer wrapper" },
@@ -15,6 +16,18 @@ const HERO_DATA_SLOTS: { slot: string; description?: string }[] = [
   { slot: "hero-subheading" },
   { slot: "hero-content", description: "portable text body" },
 ]
+
+/**
+ * Field names double as the keys `HeroContent` reads, so keep them in step
+ * with `HeroMobileVisibility` in `src/components/hero/HeroContent.tsx`.
+ */
+const MOBILE_VISIBILITY_PARTS = [
+  { name: "showEyebrowOnMobile", title: "Eyebrow" },
+  { name: "showHeadingOnMobile", title: "Heading" },
+  { name: "showSubheadingOnMobile", title: "Sub Heading" },
+  { name: "showContentOnMobile", title: "Content" },
+  { name: "showButtonsOnMobile", title: "Buttons" },
+] as const
 
 /** Click-to-copy CSS attribute selector, shown in the customCss field description. */
 function SlotSelectorButton({ slot }: { slot: string }) {
@@ -50,6 +63,15 @@ export const hero = defineType({
   title: "Hero",
   type: "object",
   components: { input: HeroLayoutInput },
+  fieldsets: [
+    {
+      name: "mobileVisibility",
+      title: "Show on mobile",
+      description:
+        "Tick the Hero text to display on mobile; desktop is unaffected. Anything unticked is hidden on mobile.",
+      options: { columns: 3 },
+    },
+  ],
   fields: [
     defineField({
       name: "showSmoke",
@@ -104,6 +126,16 @@ export const hero = defineType({
       type: "string",
     }),
     portableTextSchema({ name: "content", title: "Content" }),
+    ...MOBILE_VISIBILITY_PARTS.map(({ name, title }) =>
+      defineField({
+        name,
+        title,
+        type: "boolean",
+        fieldset: "mobileVisibility",
+        options: { layout: "checkbox" },
+        components: { input: UncheckedByDefaultBooleanInput },
+      }),
+    ),
     imageSchema({
       name: "background",
       title: "Background Image",

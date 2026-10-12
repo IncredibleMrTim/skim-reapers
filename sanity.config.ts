@@ -5,6 +5,7 @@ import { structureTool } from "sanity/structure"
 import { codeInput } from "@sanity/code-input"
 import { colorInput } from "@sanity/color-input"
 import { StatusNavbar } from "./src/sanity/components/StatusNavbar"
+import { WideFormLayout } from "./src/sanity/components/WideFormLayout"
 import { apiVersion, dataset, projectId } from "./src/sanity/env"
 import { schema } from "./src/sanity/schemaTypes"
 import { structure } from "./src/sanity/structure"
@@ -24,7 +25,7 @@ export default defineConfig({
     colorInput(),
   ],
   tools: (prev) => [...prev, deploymentStatusTool(), sanityStatusTool()],
-  studio: { components: { navbar: StatusNavbar } },
+  studio: { components: { navbar: StatusNavbar, layout: WideFormLayout } },
   // Google as the primary sign-in, with Sanity's own email/password as a
   // fallback if Google is unavailable — drops GitHub/Vercel from the
   // default provider list. Only invited project members can actually sign

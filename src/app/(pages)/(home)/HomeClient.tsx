@@ -19,7 +19,11 @@ export function HomeClient({ initialHomePage }: HomeClientProps) {
   return (
     <>
       <Header hero={homePage?.hero ?? undefined} />
-      <PageContainer hero={homePage?.hero ?? undefined}>
+      <PageContainer
+        hero={homePage?.hero ?? undefined}
+        showMobileHeroContent={false}
+        isFlushWithHero
+      >
         <div className="hidden md:block w-full">
           <BeliefBar queryResult={homePage?.belief ?? []} />
         </div>
