@@ -12,6 +12,7 @@ import { domesticPage } from "./domestic/domesticPage"
 import { ourWorkPage } from "./ourWork/ourWorkPage"
 import { reviewsPage } from "./reviews/reviewsPage"
 import { qaPage } from "./qa/qaPage"
+import { qaSchema, qaListSchema } from "./qa/qaSchema"
 import { contactPage } from "./contact/contactPage"
 import { workWithUsPage } from "./workWithUs/workWithUsPage"
 
@@ -22,7 +23,7 @@ const commercialSchemas = [commercialPage]
 const domesticSchemas = [domesticPage]
 const ourWorkSchemas = [ourWorkPage]
 const reviewsSchemas = [reviewsPage]
-const qaSchemas = [qaPage]
+const qaSchemas = [qaPage, qaSchema, qaListSchema]
 const contactSchemas = [contactPage]
 const workWithUsSchemas = [workWithUsPage]
 

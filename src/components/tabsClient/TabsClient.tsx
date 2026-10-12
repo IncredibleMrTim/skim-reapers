@@ -1,6 +1,6 @@
 "use client"
 
-import { PortableText } from "@portabletext/react"
+import { PortableText, type PortableTextComponents } from "@portabletext/react"
 import type { ComponentProps } from "react"
 import { useSearchParams } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -9,6 +9,7 @@ import { useIsMobile } from "@/hooks/useIsMobile"
 import { useIsPrimaryImageLoaded } from "@/hooks/useIsPrimaryImageLoaded"
 import { ContentSkeleton } from "@/components/tabAccordionClient/ContentSkeleton"
 import { CtaButton, CtaButtons } from "../CtaButtons"
+import { QaList, type QaEntry } from "@/components/qaList/QaList"
 
 /**
  * Matches whatever `<PortableText value={...} />` itself accepts, rather
@@ -27,10 +28,34 @@ type PortableTextValue = ComponentProps<typeof PortableText>["value"]
  */
 type TabItem = {
   _key: string
-  heading?: string | null
+  heading?: PortableTextValue | string | null
+  title?: PortableTextValue | string | null
   urlQuery?: string | null
-  content?: PortableTextValue
+  content?: PortableTextValue | string
   buttons?: CtaButton[]
+  qaEntries?: QaEntry[] | null
+}
+
+/**
+ * Block wrapper that renders children unwrapped, so Portable Text can sit
+ * inside a `<button>` or `<h1>` without nesting an invalid `<p>` in them.
+ */
+const INLINE_PORTABLE_TEXT_COMPONENTS: PortableTextComponents = {
+  ...PORTABLE_TEXT_COMPONENTS,
+  block: { normal: ({ children }) => <>{children}</> },
+}
+
+/** Renders a plain string as-is and a Portable Text value as inline rich text. */
+function TextOrPortableText({
+  value,
+}: {
+  value?: PortableTextValue | string | null
+}) {
+  if (!value) return null
+  if (typeof value === "string") return <>{value}</>
+  return (
+    <PortableText value={value} components={INLINE_PORTABLE_TEXT_COMPONENTS} />
+  )
 }
 
 export function TabsClient({ items }: { items: TabItem[] }) {
@@ -39,7 +64,10 @@ export function TabsClient({ items }: { items: TabItem[] }) {
   const activeKey = items.find((s) => s.urlQuery === service)?._key
   const isMobile = useIsMobile()
   const activeItem = items.find((s) => s._key === activeKey) ?? items[0]
-  const isImageLoaded = useIsPrimaryImageLoaded(activeItem?.content)
+  const activeContent = activeItem?.content
+  const isImageLoaded = useIsPrimaryImageLoaded(
+    typeof activeContent === "string" ? undefined : activeContent,
+  )
 
   return (
     <Tabs
@@ -48,7 +76,7 @@ export function TabsClient({ items }: { items: TabItem[] }) {
       defaultValue={activeKey}
     >
       <TabsList
-        className={`bg-transparent md:bg-black/30 rounded w-full group-data-vertical/tabs:h-auto! group-data-vertical/tabs:w-auto group-data-vertical/tabs:justify-start group-data-vertical/tabs:min-h-140 group-data-vertical/tabs:self-stretch ${isMobile ? "flex-col flex-1" : ""}`}
+        className={`bg-transparent md:bg-black/30 rounded w-full group-data-vertical/tabs:h-auto! group-data-vertical/tabs:w-auto group-data-vertical/tabs:min-w-50 group-data-vertical/tabs:justify-start group-data-vertical/tabs:min-h-140 group-data-vertical/tabs:self-stretch ${isMobile ? "flex-col flex-1" : ""}`}
       >
         {items.map((s) => (
           <TabsTrigger
@@ -56,7 +84,7 @@ export function TabsClient({ items }: { items: TabItem[] }) {
             value={s._key}
             className="w-full border-b-0 rounded md:rounded-none md:border-b border-b-white/10 aria-selected:border-b-brand-accent m-1 md:m-0  p-4 mb:p-2 text-sm md:text-lg font-sans aria-selected:bg-white/20 group-data-vertical/tabs:flex-none group-data-vertical/tabs:h-auto"
           >
-            {s.heading}
+            <TextOrPortableText value={s.heading ?? s.title} />
           </TabsTrigger>
         ))}
       </TabsList>
@@ -69,18 +97,23 @@ export function TabsClient({ items }: { items: TabItem[] }) {
         >
           <div className="font-inter">
             <h1 className="text-2xl font-inter font-bold text-brand-content pb-2">
-              {s.heading}
+              <TextOrPortableText value={s.heading} />
             </h1>
+            {s.qaEntries && <QaList entries={s.qaEntries} />}
             {!isImageLoaded ? (
               <ContentSkeleton />
             ) : (
-              s.content && (
+              s.content &&
+              (typeof s.content === "string" ? (
+                <p>{s.content}</p>
+              ) : (
                 <PortableText
                   value={s.content}
                   components={PORTABLE_TEXT_COMPONENTS}
                 />
-              )
+              ))
             )}
+
             {s.buttons && <CtaButtons buttons={s.buttons} />}
           </div>
         </TabsContent>

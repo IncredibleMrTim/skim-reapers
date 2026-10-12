@@ -7,6 +7,7 @@ import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
 import { useIsPrimaryImageLoaded } from "@/hooks/useIsPrimaryImageLoaded"
 import { ContentSkeleton } from "@/components/tabAccordionClient/ContentSkeleton"
 import { CtaButton, CtaButtons } from "../CtaButtons"
+import { QaList, type QaEntry } from "@/components/qaList/QaList"
 import {
   Accordion,
   AccordionContent,
@@ -35,6 +36,7 @@ type AccordionItem = {
   urlQuery?: string | null
   content?: PortableTextValue
   buttons?: CtaButton[]
+  qaEntries?: QaEntry[] | null
 }
 
 export function AccordionClient({ items }: { items: AccordionItem[] }) {
@@ -57,6 +59,7 @@ export function AccordionClient({ items }: { items: AccordionItem[] }) {
               <h1 className="text-2xl font-inter font-bold text-brand-content">
                 {s.heading}
               </h1>
+              {s.qaEntries && <QaList entries={s.qaEntries} />}
               {!isImageLoaded ? (
                 <ContentSkeleton />
               ) : (

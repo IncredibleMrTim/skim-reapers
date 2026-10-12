@@ -16,7 +16,7 @@ export function TabAccordionSkeleton({ itemCount }: { itemCount: number }) {
 
   return (
     <div className="bg-transparent w-full h-auto md:h-full border border-white/20 md:border-none p-2 rounded flex flex-col md:flex-row gap-2">
-      <div className="flex flex-col gap-2 md:gap-1 md:bg-black/30 md:rounded md:w-auto md:min-h-140 md:p-1">
+      <div className="flex flex-col gap-2 md:gap-1 md:bg-black/30 md:rounded md:min-w-100 md:min-h-140 md:p-1">
         {Array.from({ length: rows }).map((_, i) => (
           <Skeleton
             key={i}

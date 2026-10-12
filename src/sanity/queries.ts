@@ -72,7 +72,8 @@ export const qaPageQuery = defineQuery(`*[_type == "qaPage"][0]{
   showHeading,
   pageDescription,
   content,
-  buttons
+  buttons,
+  qaLists
 }`)
 
 export const contactPageQuery = defineQuery(`*[_type == "contactPage"][0]{

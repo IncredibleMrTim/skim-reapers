@@ -236,6 +236,18 @@ export type Image1 = {
   imageFile: ImageFile
 }
 
+export type QuestionImageCustomDimensions = {
+  width?: number
+  height?: number
+  unit?: "px" | "%"
+}
+
+export type AnswerImageCustomDimensions = {
+  width?: number
+  height?: number
+  unit?: "px" | "%"
+}
+
 export type ColorPalette = {
   _id: string
   _type: "colorPalette"
@@ -629,6 +641,118 @@ export type ContactPage = {
   }>
 }
 
+export type QaList = {
+  _type: "qaList"
+  heading?: string
+  items?: Array<
+    {
+      _key: string
+    } & Qa
+  >
+}
+
+export type Qa = {
+  _type: "qa"
+  question?: Array<
+    | {
+        children?: Array<
+          | {
+              marks?: Array<string>
+              text?: string
+              _type: "span"
+              _key: string
+            }
+          | {
+              name?: string
+              iconNode?: string
+              swatch?: Color
+              size?: "small" | "default" | "large" | "xlarge" | "xxlarge"
+              _type: "lucideIcon"
+              _key: string
+            }
+        >
+        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote"
+        listItem?: "bullet" | "number"
+        markDefs?: Array<
+          | {
+              href?: string
+              _type: "link"
+              _key: string
+            }
+          | {
+              swatch?: Color
+              _type: "color"
+              _key: string
+            }
+        >
+        level?: number
+        _type: "block"
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt: string
+        size?: "small" | "medium" | "large"
+        customDimensions?: QuestionImageCustomDimensions
+        alignment?: "left" | "center" | "right"
+        _type: "image"
+        _key: string
+      }
+  >
+  answer?: Array<
+    | {
+        children?: Array<
+          | {
+              marks?: Array<string>
+              text?: string
+              _type: "span"
+              _key: string
+            }
+          | {
+              name?: string
+              iconNode?: string
+              swatch?: Color
+              size?: "small" | "default" | "large" | "xlarge" | "xxlarge"
+              _type: "lucideIcon"
+              _key: string
+            }
+        >
+        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote"
+        listItem?: "bullet" | "number"
+        markDefs?: Array<
+          | {
+              href?: string
+              _type: "link"
+              _key: string
+            }
+          | {
+              swatch?: Color
+              _type: "color"
+              _key: string
+            }
+        >
+        level?: number
+        _type: "block"
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt: string
+        size?: "small" | "medium" | "large"
+        customDimensions?: AnswerImageCustomDimensions
+        alignment?: "left" | "center" | "right"
+        _type: "image"
+        _key: string
+      }
+  >
+}
+
 export type QaPage = {
   _id: string
   _type: "qaPage"
@@ -691,6 +815,12 @@ export type QaPage = {
       }
   >
   hero?: Hero
+  qaListsHeading?: string
+  qaLists?: Array<
+    {
+      _key: string
+    } & QaList
+  >
   content?: Array<
     | {
         children?: Array<
@@ -1037,8 +1167,8 @@ export type OurWorkPage = {
   >
   galleries?: Array<
     | {
-        title: string
-        showTitle?: boolean
+        heading: string
+        showHeading?: boolean
         anchor?: string
         description?: Array<
           | {
@@ -1157,8 +1287,8 @@ export type OurWorkPage = {
         _key: string
       }
     | {
-        title: string
-        showTitle?: boolean
+        heading: string
+        showHeading?: boolean
         anchor?: string
         description?: Array<
           | {
@@ -1214,7 +1344,7 @@ export type OurWorkPage = {
             }
         >
         videos?: Array<{
-          videoName: string
+          heading: string
           videoFile: {
             asset?: SanityFileAssetReference
             media?: unknown
@@ -2255,6 +2385,8 @@ export type AllSanitySchemaTypes =
   | Icon
   | CardIcon
   | Image1
+  | QuestionImageCustomDimensions
+  | AnswerImageCustomDimensions
   | ColorPalette
   | WorkWithUsPage
   | SanityImageCrop
@@ -2262,6 +2394,8 @@ export type AllSanitySchemaTypes =
   | Color
   | Hero
   | ContactPage
+  | QaList
+  | Qa
   | QaPage
   | ReviewsPage
   | SanityFileAssetReference
@@ -3166,8 +3300,8 @@ export type OurWorkPageQueryResult = {
   > | null
   galleries: Array<
     | {
-        title: string
-        showTitle?: boolean
+        heading: string
+        showHeading?: boolean
         anchor?: string
         description?: Array<
           | {
@@ -3286,8 +3420,8 @@ export type OurWorkPageQueryResult = {
         _key: string
       }
     | {
-        title: string
-        showTitle?: boolean
+        heading: string
+        showHeading?: boolean
         anchor?: string
         description?: Array<
           | {
@@ -3343,7 +3477,7 @@ export type OurWorkPageQueryResult = {
             }
         >
         videos?: Array<{
-          videoName: string
+          heading: string
           videoFile: {
             asset?: SanityFileAssetReference
             media?: unknown
@@ -3532,7 +3666,7 @@ export type ReviewsPageQueryResult = {
 
 // Source: src/sanity/queries.ts
 // Variable: qaPageQuery
-// Query: *[_type == "qaPage"][0]{  hero,  heading,  showHeading,  pageDescription,  content,  buttons}
+// Query: *[_type == "qaPage"][0]{  hero,  heading,  showHeading,  pageDescription,  content,  buttons,  qaLists}
 export type QaPageQueryResult = {
   hero: Hero | null
   heading: string | null
@@ -3668,6 +3802,11 @@ export type QaPageQueryResult = {
     _type: "buttons"
     _key: string
   }> | null
+  qaLists: Array<
+    {
+      _key: string
+    } & QaList
+  > | null
 } | null
 
 // Source: src/sanity/queries.ts
@@ -3960,7 +4099,7 @@ declare global {
     '*[_type == "domesticPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': DomesticPageQueryResult
     '*[_type == "ourWorkPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  galleries,\n  buttons\n}': OurWorkPageQueryResult
     '*[_type == "reviewsPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': ReviewsPageQueryResult
-    '*[_type == "qaPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': QaPageQueryResult
+    '*[_type == "qaPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons,\n  qaLists\n}': QaPageQueryResult
     '*[_type == "contactPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': ContactPageQueryResult
     '*[_type == "workWithUsPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': WorkWithUsPageQueryResult
   }
