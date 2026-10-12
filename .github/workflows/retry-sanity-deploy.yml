@@ -1,0 +1,44 @@
+name: Retry failed Sanity deploys
+
+# A Sanity publish triggers the "CI/CD" workflow via repository_dispatch. Those
+# runs fail now and then for reasons that clear up on their own (Sanity's API
+# or CDN blipping, a network hiccup reaching cPanel), and nobody is watching
+# a publish, so the content change silently never goes live. This reruns the
+# failed jobs a couple of times before giving up.
+#
+# Like repository_dispatch, workflow_run only reads its trigger config from
+# the workflow file on the default branch, so this has no effect until it is
+# merged into main.
+on:
+  workflow_run:
+    workflows: ["CI/CD"]
+    types: [completed]
+
+permissions:
+  actions: write
+
+jobs:
+  retry:
+    name: Rerun failed jobs
+    # Only Sanity-triggered runs: a failed push or PR run is a real code
+    # problem that a rerun won't fix, and its author is already watching it.
+    # run_attempt starts at 1, so "< 3" allows the original run plus two
+    # retries (the `env` context isn't available in a job's `if`).
+    if: |
+      github.event.workflow_run.conclusion == 'failure' &&
+      github.event.workflow_run.event == 'repository_dispatch' &&
+      github.event.workflow_run.run_attempt < 3
+    runs-on: ubuntu-latest
+    steps:
+      # Gives a briefly unavailable Sanity or cPanel time to recover.
+      - name: Wait before retrying
+        run: sleep 60
+
+      - name: Rerun the failed jobs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+        run: |
+          echo "Attempt ${ATTEMPT} failed, rerunning run ${RUN_ID}"
+          gh run rerun "$RUN_ID" --failed --repo "${{ github.repository }}"
