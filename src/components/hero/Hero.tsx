@@ -1,15 +1,12 @@
 "use client"
 
 import Image from "next/image"
-import { PortableText } from "@portabletext/react"
-import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
-import { DistressedHeading } from "@/components/DistressedHeading"
 import type { Hero as HeroData } from "@/sanity/types"
 import { urlForImage } from "@/sanity/image"
 import { sanitizeCustomCss } from "@/lib/sanity"
 import type { ComponentType } from "react"
-import { CtaButtons } from "@/components/CtaButtons"
 import { cn } from "@/lib/utils"
+import { HeroContent, resolveMobileVisibility } from "./HeroContent"
 
 const SMOKE_BG_URL = "/smoke_bg.webp"
 const LOGO_URL = "/logo_extracted1.png"
@@ -29,47 +26,10 @@ export const Hero = ({
 }: HeroProps) => {
   const customCss = sanitizeCustomCss(hero?.customCss?.code)
 
+  const mobileVisibility = resolveMobileVisibility(hero)
+
   const heroTextContent = (
-    <div className="flex flex-col gap-1">
-      <DistressedHeading
-        dataSlot="hero-eyebrow"
-        font="font-heading"
-        className="text-lg font-bold opacity-100"
-        color="var(--accent)"
-      >
-        {hero?.eyebrow}
-      </DistressedHeading>
-      <DistressedHeading
-        dataSlot="hero-heading"
-        className="tracking-[-0.01em] text-5xl md:text-5xl xl:text-6xl"
-      >
-        {hero?.heading}
-      </DistressedHeading>
-      <DistressedHeading
-        dataSlot="hero-subheading"
-        font="font-heading"
-        className="text-lg font-bold opacity-100"
-        color="var(--accent)"
-      >
-        {hero?.subheading}
-      </DistressedHeading>
-      <DistressedHeading
-        dataSlot="hero-content"
-        className="text-lg font-bold px-0"
-        font="font-heading"
-        color="var(--content)"
-      >
-        {hero?.content && (
-          <PortableText
-            value={hero.content}
-            components={PORTABLE_TEXT_COMPONENTS}
-          />
-        )}
-      </DistressedHeading>
-      <div className="flex gap-2 mt-4">
-        <CtaButtons buttons={hero?.buttons} size="2xl" />
-      </div>
-    </div>
+    <HeroContent hero={hero} mobileVisibility={mobileVisibility} />
   )
 
   return (
@@ -112,7 +72,7 @@ export const Hero = ({
           alt="Skim Reapers Ltd"
           width={280}
           height={150}
-          className="absolute -top-20 left-1/2 -translate-x-1/2 md:-left-10 md:translate-x-0 h-180 w-280 max-w-none opacity-25 md:opacity-25 z-9 object-cover [--mask-pos:center_top] md:[--mask-pos:top_left]"
+          className="absolute -top-20 left-1/2 -translate-x-1/2 md:-left-10 md:translate-x-0 h-170 w-280 max-w-none opacity-25 md:opacity-25 z-9 object-cover [--mask-pos:center_top] md:[--mask-pos:top_left]"
           style={{
             maskImage:
               "radial-gradient(circle at var(--mask-pos), black 10%, transparent 85%)",

@@ -485,6 +485,11 @@ export type Hero = {
         _key: string
       }
   >
+  showEyebrowOnMobile?: boolean
+  showHeadingOnMobile?: boolean
+  showSubheadingOnMobile?: boolean
+  showContentOnMobile?: boolean
+  showButtonsOnMobile?: boolean
   background?: Background
   buttons?: Array<{
     label: string
