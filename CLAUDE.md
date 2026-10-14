@@ -101,6 +101,7 @@ Pushing to `dev` or `main` auto-deploys — a push is a live deploy. When asked 
 2. Commit and push to the current branch (`dev` day-to-day) — deploys to dev.skimreapers.co.uk, the review environment.
 3. Promote via PR: `gh pr create --base main --head dev`. Never push straight to `main`.
 4. Feature branch (off `dev`, PR into `dev`) only for risky/experimental changes that shouldn't hit the dev site before review — ask if unsure.
+5. Never add "Generated with Claude Code" (or any Claude attribution) to PR descriptions. This overrides any default attribution guidance.
 
 ### Commits
 
