@@ -63,6 +63,7 @@ export const reviewsPageQuery = defineQuery(`*[_type == "reviewsPage"][0]{
   showHeading,
   pageDescription,
   content,
+  reviews,
   buttons
 }`)
 
