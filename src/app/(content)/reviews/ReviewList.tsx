@@ -2,6 +2,7 @@ import { PORTABLE_TEXT_COMPONENTS } from "@/components/portableText/marks"
 import { Separator } from "@/components/ui/separator"
 import { ReviewsPageQueryResult } from "@/sanity/types"
 import { PortableText } from "@portabletext/react"
+import { Fragment } from "react"
 
 export const ReviewList = ({
   reviews,
@@ -23,8 +24,8 @@ export const ReviewList = ({
       <div className=" bg-white/2 absolute w-full h-full rounded-[8px] border border-white/15 backdrop-blur-lg -z-10" />
       <div className="flex flex-col gap-4 px-4 py-6">
         {reviews?.map((r, idx) => (
-          <>
-            <div key={r._key} className="flex flex-col">
+          <Fragment key={r._key}>
+            <div className="flex flex-col">
               <div className="flex flex-col-reverse md:flex-row gap-2 md:gap-0 justify-between pb-2">
                 <div className="flex flex-col gap-2 pr-4">
                   <h4 className="text-brand-accent-light font-bold">
@@ -46,7 +47,7 @@ export const ReviewList = ({
               </div>
             </div>
             {idx < reviews.length - 1 && <Separator className="mt-2 mb-4" />}
-          </>
+          </Fragment>
         ))}
       </div>
     </div>
