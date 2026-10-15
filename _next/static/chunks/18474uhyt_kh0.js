@@ -49,6 +49,7 @@
   showHeading,
   pageDescription,
   content,
+  reviews,
   buttons
 }`,r=`*[_type == "qaPage"][0]{
   hero,
