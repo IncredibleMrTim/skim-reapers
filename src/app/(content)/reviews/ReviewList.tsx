@@ -23,28 +23,30 @@ export const ReviewList = ({
       <div className=" bg-white/2 absolute w-full h-full rounded-[8px] border border-white/15 backdrop-blur-lg -z-10" />
       <div className="flex flex-col gap-4 px-4 py-6">
         {reviews?.map((r, idx) => (
-          <div key={r._key} className="flex flex-col">
-            <div className="flex flex-col md:flex-row justify-between pb-2">
-              <div>
-                <h4 className="text-brand-accent-light font-bold">
-                  {r.heading}
-                </h4>
-              </div>
-              <div className="flex gap-8">
-                <div className="flex gap-1 italic">
-                  <p>{r.source}</p>
-                  {r?.date && r?.source && "-"}
-                  {r?.date && <p>{dateFormat.format(new Date(r.date))}</p>}
+          <>
+            <div key={r._key} className="flex flex-col">
+              <div className="flex flex-col-reverse md:flex-row gap-2 md:gap-0 justify-between pb-2">
+                <div className="flex flex-col gap-2 pr-4">
+                  <h4 className="text-brand-accent-light font-bold">
+                    {r.heading}
+                  </h4>
+                  <PortableText
+                    value={r.description}
+                    components={PORTABLE_TEXT_COMPONENTS}
+                  />
                 </div>
-                {r?.rating && renderStars(r.rating)}
+                <div className="flex flex-col gap-2 items-start md:items-end pr-4">
+                  {r?.rating && renderStars(r.rating)}
+                  <div className="flex gap-1 text-sm border-b md:border-none border-brand-content/30">
+                    <p>{r.source}</p>
+                    {r?.date && r?.source && "-"}
+                    {r?.date && <p>{dateFormat.format(new Date(r.date))}</p>}
+                  </div>
+                </div>
               </div>
             </div>
-            <PortableText
-              value={r.description}
-              components={PORTABLE_TEXT_COMPONENTS}
-            />
             {idx < reviews.length - 1 && <Separator className="mt-2 mb-4" />}
-          </div>
+          </>
         ))}
       </div>
     </div>
