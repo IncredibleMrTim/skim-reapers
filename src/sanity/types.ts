@@ -968,6 +968,68 @@ export type ReviewsPage = {
       }
   >
   hero?: Hero
+  reviews?: Array<{
+    heading?: string
+    reviewer?: string
+    source?: string
+    date?: string
+    rating?: "1" | "2" | "3" | "4" | "5"
+    description?: Array<
+      | {
+          children?: Array<
+            | {
+                marks?: Array<string>
+                text?: string
+                _type: "span"
+                _key: string
+              }
+            | {
+                name?: string
+                iconNode?: string
+                swatch?: Color
+                size?: "small" | "default" | "large" | "xlarge" | "xxlarge"
+                _type: "lucideIcon"
+                _key: string
+              }
+          >
+          style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote"
+          listItem?: "bullet" | "number"
+          markDefs?: Array<
+            | {
+                href?: string
+                _type: "link"
+                _key: string
+              }
+            | {
+                swatch?: Color
+                _type: "color"
+                _key: string
+              }
+          >
+          level?: number
+          _type: "block"
+          _key: string
+        }
+      | {
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt: string
+          size?: "small" | "medium" | "large"
+          customDimensions?: {
+            width?: number
+            height?: number
+            unit?: "px" | "%"
+          }
+          alignment?: "left" | "center" | "right"
+          _type: "image"
+          _key: string
+        }
+    >
+    _type: "review"
+    _key: string
+  }>
   content?: Array<
     | {
         children?: Array<
@@ -3531,7 +3593,7 @@ export type OurWorkPageQueryResult = {
 
 // Source: src/sanity/queries.ts
 // Variable: reviewsPageQuery
-// Query: *[_type == "reviewsPage"][0]{  hero,  heading,  showHeading,  pageDescription,  content,  buttons}
+// Query: *[_type == "reviewsPage"][0]{  hero,  heading,  showHeading,  pageDescription,  content,  reviews,  buttons}
 export type ReviewsPageQueryResult = {
   hero: Hero | null
   heading: string | null
@@ -3642,6 +3704,68 @@ export type ReviewsPageQueryResult = {
         _key: string
       }
   > | null
+  reviews: Array<{
+    heading?: string
+    reviewer?: string
+    source?: string
+    date?: string
+    rating?: "1" | "2" | "3" | "4" | "5"
+    description?: Array<
+      | {
+          children?: Array<
+            | {
+                name?: string
+                iconNode?: string
+                swatch?: Color
+                size?: "default" | "large" | "small" | "xlarge" | "xxlarge"
+                _type: "lucideIcon"
+                _key: string
+              }
+            | {
+                marks?: Array<string>
+                text?: string
+                _type: "span"
+                _key: string
+              }
+          >
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal"
+          listItem?: "bullet" | "number"
+          markDefs?: Array<
+            | {
+                swatch?: Color
+                _type: "color"
+                _key: string
+              }
+            | {
+                href?: string
+                _type: "link"
+                _key: string
+              }
+          >
+          level?: number
+          _type: "block"
+          _key: string
+        }
+      | {
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt: string
+          size?: "large" | "medium" | "small"
+          customDimensions?: {
+            width?: number
+            height?: number
+            unit?: "%" | "px"
+          }
+          alignment?: "center" | "left" | "right"
+          _type: "image"
+          _key: string
+        }
+    >
+    _type: "review"
+    _key: string
+  }> | null
   buttons: Array<{
     label: string
     path: string
@@ -4103,7 +4227,7 @@ declare global {
     '*[_type == "commercialPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': CommercialPageQueryResult
     '*[_type == "domesticPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': DomesticPageQueryResult
     '*[_type == "ourWorkPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  galleries,\n  buttons\n}': OurWorkPageQueryResult
-    '*[_type == "reviewsPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': ReviewsPageQueryResult
+    '*[_type == "reviewsPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  reviews,\n  buttons\n}': ReviewsPageQueryResult
     '*[_type == "qaPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons,\n  qaLists\n}': QaPageQueryResult
     '*[_type == "contactPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': ContactPageQueryResult
     '*[_type == "workWithUsPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': WorkWithUsPageQueryResult

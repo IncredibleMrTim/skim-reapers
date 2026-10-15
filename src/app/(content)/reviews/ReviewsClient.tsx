@@ -7,6 +7,7 @@ import { CtaButtons } from "@/components/CtaButtons"
 import { useLiveSanityData } from "@/sanity/live"
 import { reviewsPageQuery } from "@/sanity/queries"
 import type { ReviewsPageQueryResult } from "@/sanity/types"
+import { ReviewList } from "./ReviewList"
 
 interface ReviewsClientProps {
   initialData: ReviewsPageQueryResult
@@ -30,6 +31,8 @@ export const ReviewsClient = ({ initialData }: ReviewsClientProps) => {
         pageDescription={query?.pageDescription}
         footer={query?.buttons && <CtaButtons buttons={query.buttons} />}
       >
+        <ReviewList reviews={query?.reviews} />
+
         {query?.content && (
           <PortableText
             value={query.content}
