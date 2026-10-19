@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { urlForImage } from "@/sanity/image"
 import { DynamicReactIcon } from "@/lib/reactIcons"
+import { InlineIcon } from "@/components/portableText/InlineIcon"
 import { cn } from "@/lib/utils"
 
 export type CtaButton = {
@@ -17,6 +18,9 @@ export type CtaButton = {
   icon?: SanityImage
   imageIcon?: SanityImage
   reactIcon?: { name?: string; package?: string } | null
+  lucideIcon?: { name?: string; iconNode?: string } | null
+  /** Unset means "right", the position buttons had before this option existed. */
+  iconPosition?: "left" | "right" | null
   size?:
     | "default"
     | "xs"
@@ -59,6 +63,21 @@ export const CtaButtons = ({
     <>
       {buttons?.map((b) => {
         const imageIcon = b.imageIcon ?? b.icon
+        const isIconOnLeft = b.iconPosition === "left"
+        const icon = b.lucideIcon?.iconNode ? (
+          <InlineIcon iconNode={b.lucideIcon.iconNode} />
+        ) : b.reactIcon?.name ? (
+          <DynamicReactIcon icon={b.reactIcon} className="mt-0.5" />
+        ) : imageIcon ? (
+          <Image
+            src={urlForImage(imageIcon).url()}
+            alt={`${b.label} navigation button`}
+            width={24}
+            height={24}
+          />
+        ) : (
+          <HiArrowNarrowRight className="mt-0.5" />
+        )
 
         return (
           <Button
@@ -71,19 +90,9 @@ export const CtaButtons = ({
               router.push(b.path)
             }}
           >
+            {isIconOnLeft && icon}
             {b.label}
-            {b.reactIcon?.name ? (
-              <DynamicReactIcon icon={b.reactIcon} className="mt-0.5" />
-            ) : imageIcon ? (
-              <Image
-                src={urlForImage(imageIcon).url()}
-                alt={`${b.label} navigation button`}
-                width={24}
-                height={24}
-              />
-            ) : (
-              <HiArrowNarrowRight className="mt-0.5" />
-            )}
+            {!isIconOnLeft && icon}
           </Button>
         )
       })}

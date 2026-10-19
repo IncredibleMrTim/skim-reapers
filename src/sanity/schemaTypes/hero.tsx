@@ -1,6 +1,10 @@
 import { useState } from "react"
 import { defineType, defineField, defineArrayMember } from "sanity"
 import { portableTextSchema } from "./helpers/portableText"
+import {
+  buttonIconPositionField,
+  buttonLucideIconField,
+} from "./helpers/buttons"
 import { imageSchema } from "./imageSchema"
 import { HeroLayoutInput } from "./helpers/HeroLayoutInput"
 import { UncheckedByDefaultBooleanInput } from "./helpers/UncheckedByDefaultBooleanInput"
@@ -226,6 +230,8 @@ export const hero = defineType({
                   return true
                 }),
             }),
+            buttonLucideIconField,
+            buttonIconPositionField,
           ],
         }),
       ],

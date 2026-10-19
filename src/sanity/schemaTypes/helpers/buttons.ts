@@ -1,21 +1,75 @@
 import { defineField, defineArrayMember } from "sanity"
+import { LucideIconPopoverInput } from "./LucideIconInput"
+
+/**
+ * Pick a Lucide icon from the searchable list. Stores the icon's name and
+ * drawing data (set together by the picker, never typed), so the site draws it
+ * without bundling the icon library. Shared by every button list, including
+ * the hero's. If another icon is also set, this one wins on the site (see
+ * `CtaButtons`), so there's no validation against setting both.
+ */
+export const buttonLucideIconField = defineField({
+  name: "lucideIcon",
+  title: "Icon Library",
+  description:
+    "Browse the built-in icon library and pick an icon to show on the button in place of the default -> icon. If an image or React icon is also set, this one is shown instead.",
+  type: "object",
+  components: { input: LucideIconPopoverInput },
+  fields: [
+    // Visible but read-only on purpose: Sanity hides an object whose fields
+    // are all hidden, which would remove the picker. The popover input does
+    // not render these fields itself; it just sets them.
+    defineField({
+      name: "name",
+      title: "Selected Icon",
+      type: "string",
+      readOnly: true,
+    }),
+    defineField({ name: "iconNode", type: "string", hidden: true }),
+  ],
+})
+
+/**
+ * Which side of the label the icon sits on. Shared by every button list
+ * (including the hero's) so the option looks and behaves the same everywhere.
+ * An unset value is treated as "right", the original position, so buttons
+ * saved before this field existed don't move.
+ */
+export const buttonIconPositionField = defineField({
+  name: "iconPosition",
+  title: "Icon Position",
+  description: "Show the icon before (left) or after (right) the label.",
+  type: "string",
+  options: {
+    list: [
+      { title: "Left", value: "left" },
+      { title: "Right", value: "right" },
+    ],
+    layout: "radio",
+    direction: "horizontal",
+  },
+  initialValue: "right",
+})
 
 export const buttonsSchema = ({
   name,
   title,
   description,
   group,
+  fieldset,
 }: {
   name?: string
   title?: string
   description?: string
   group?: string
+  fieldset?: string
 }) =>
   defineField({
     name: name ?? "buttons",
     title: title ?? "Buttons",
     type: "array",
     group,
+    fieldset,
     description:
       description ?? "Action buttons.  These can link off to other pages.",
     of: [
@@ -73,10 +127,13 @@ export const buttonsSchema = ({
           }),
           defineField({
             name: "icon",
+            title: "Custom Icon",
             description:
               "The icon will be displayed on the button in place of the default -> icon.",
             type: "image",
           }),
+          buttonLucideIconField,
+          buttonIconPositionField,
         ],
       }),
     ],
