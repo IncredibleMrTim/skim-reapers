@@ -61,6 +61,10 @@ const pageMetadata: Record<string, PageMetadata> = {
     description:
       "Interested in joining the team.  Get in touch and lets have a chat",
   },
+  application: {
+    title: "Apply",
+    description: "Apply to work with Skim Reapers as a subcontractor.",
+  },
 }
 
 export function createPageMetadata(page: keyof typeof pageMetadata): Metadata {

@@ -97,3 +97,23 @@ export const workWithUsPageQuery = defineQuery(`*[_type == "workWithUsPage"][0]{
   content,
   buttons
 }`)
+
+/**
+ * The vacancy list comes from the Work With Us document so the page can name
+ * the role a visitor is applying for (see `withVacancyKey`).
+ */
+export const applicationPageQuery =
+  defineQuery(`*[_type == "applicationPage"][0]{
+  hero,
+  heading,
+  showHeading,
+  pageDescription,
+  photosHeading,
+  photosDescription,
+  whatHappensNextHeading,
+  whatHappensNext,
+  successMessage,
+  successButtons,
+  buttons,
+  "vacancies": *[_type == "workWithUsPage"][0].vacancies[]{ _key, heading, date, description }
+}`)
