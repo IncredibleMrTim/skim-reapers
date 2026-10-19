@@ -324,7 +324,145 @@ export type WorkWithUsPage = {
       }
   >
   hero?: Hero
+  vacancies?: Array<{
+    heading?: string
+    date?: string
+    description?: Array<
+      | {
+          children?: Array<
+            | {
+                marks?: Array<string>
+                text?: string
+                _type: "span"
+                _key: string
+              }
+            | {
+                name?: string
+                iconNode?: string
+                swatch?: Color
+                size?: "small" | "default" | "large" | "xlarge" | "xxlarge"
+                _type: "lucideIcon"
+                _key: string
+              }
+          >
+          style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote"
+          listItem?: "bullet" | "number"
+          markDefs?: Array<
+            | {
+                href?: string
+                _type: "link"
+                _key: string
+              }
+            | {
+                swatch?: Color
+                _type: "color"
+                _key: string
+              }
+          >
+          level?: number
+          _type: "block"
+          _key: string
+        }
+      | {
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt: string
+          size?: "small" | "medium" | "large"
+          customDimensions?: {
+            width?: number
+            height?: number
+            unit?: "px" | "%"
+          }
+          alignment?: "left" | "center" | "right"
+          _type: "image"
+          _key: string
+        }
+    >
+    applyButton?: Array<{
+      label: string
+      path: string
+      variant?:
+        "default" | "outline" | "secondary" | "ghost" | "destructive" | "link"
+      size?:
+        | "default"
+        | "xs"
+        | "sm"
+        | "lg"
+        | "2xl"
+        | "icon"
+        | "icon-xs"
+        | "icon-sm"
+        | "icon-lg"
+      icon?: {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        _type: "image"
+      }
+      _type: "buttons"
+      _key: string
+    }>
+    _type: "vacancy"
+    _key: string
+  }>
   content?: Array<
+    | {
+        children?: Array<
+          | {
+              marks?: Array<string>
+              text?: string
+              _type: "span"
+              _key: string
+            }
+          | {
+              name?: string
+              iconNode?: string
+              swatch?: Color
+              size?: "small" | "default" | "large" | "xlarge" | "xxlarge"
+              _type: "lucideIcon"
+              _key: string
+            }
+        >
+        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote"
+        listItem?: "bullet" | "number"
+        markDefs?: Array<
+          | {
+              href?: string
+              _type: "link"
+              _key: string
+            }
+          | {
+              swatch?: Color
+              _type: "color"
+              _key: string
+            }
+        >
+        level?: number
+        _type: "block"
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt: string
+        size?: "small" | "medium" | "large"
+        customDimensions?: {
+          width?: number
+          height?: number
+          unit?: "px" | "%"
+        }
+        alignment?: "left" | "center" | "right"
+        _type: "image"
+        _key: string
+      }
+  >
+  vacanciesHeading?: string
+  noVacanciesMessage?: Array<
     | {
         children?: Array<
           | {
@@ -4080,11 +4218,149 @@ export type ContactPageQueryResult = {
 
 // Source: src/sanity/queries.ts
 // Variable: workWithUsPageQuery
-// Query: *[_type == "workWithUsPage"][0]{  hero,  heading,  showHeading,  pageDescription,  content,  buttons}
+// Query: *[_type == "workWithUsPage"][0]{  hero,  heading,  showHeading,  vacanciesHeading,  vacancies,  noVacanciesMessage,  pageDescription,  content,  buttons}
 export type WorkWithUsPageQueryResult = {
   hero: Hero | null
   heading: string | null
   showHeading: boolean | null
+  vacanciesHeading: string | null
+  vacancies: Array<{
+    heading?: string
+    date?: string
+    description?: Array<
+      | {
+          children?: Array<
+            | {
+                name?: string
+                iconNode?: string
+                swatch?: Color
+                size?: "default" | "large" | "small" | "xlarge" | "xxlarge"
+                _type: "lucideIcon"
+                _key: string
+              }
+            | {
+                marks?: Array<string>
+                text?: string
+                _type: "span"
+                _key: string
+              }
+          >
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal"
+          listItem?: "bullet" | "number"
+          markDefs?: Array<
+            | {
+                swatch?: Color
+                _type: "color"
+                _key: string
+              }
+            | {
+                href?: string
+                _type: "link"
+                _key: string
+              }
+          >
+          level?: number
+          _type: "block"
+          _key: string
+        }
+      | {
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt: string
+          size?: "large" | "medium" | "small"
+          customDimensions?: {
+            width?: number
+            height?: number
+            unit?: "%" | "px"
+          }
+          alignment?: "center" | "left" | "right"
+          _type: "image"
+          _key: string
+        }
+    >
+    applyButton?: Array<{
+      label: string
+      path: string
+      variant?:
+        "default" | "destructive" | "ghost" | "link" | "outline" | "secondary"
+      size?:
+        | "2xl"
+        | "default"
+        | "icon-lg"
+        | "icon-sm"
+        | "icon-xs"
+        | "icon"
+        | "lg"
+        | "sm"
+        | "xs"
+      icon?: {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        _type: "image"
+      }
+      _type: "buttons"
+      _key: string
+    }>
+    _type: "vacancy"
+    _key: string
+  }> | null
+  noVacanciesMessage: Array<
+    | {
+        children?: Array<
+          | {
+              name?: string
+              iconNode?: string
+              swatch?: Color
+              size?: "default" | "large" | "small" | "xlarge" | "xxlarge"
+              _type: "lucideIcon"
+              _key: string
+            }
+          | {
+              marks?: Array<string>
+              text?: string
+              _type: "span"
+              _key: string
+            }
+        >
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal"
+        listItem?: "bullet" | "number"
+        markDefs?: Array<
+          | {
+              swatch?: Color
+              _type: "color"
+              _key: string
+            }
+          | {
+              href?: string
+              _type: "link"
+              _key: string
+            }
+        >
+        level?: number
+        _type: "block"
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt: string
+        size?: "large" | "medium" | "small"
+        customDimensions?: {
+          width?: number
+          height?: number
+          unit?: "%" | "px"
+        }
+        alignment?: "center" | "left" | "right"
+        _type: "image"
+        _key: string
+      }
+  > | null
   pageDescription: Array<
     | {
         children?: Array<
@@ -4230,7 +4506,7 @@ declare global {
     '*[_type == "reviewsPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  reviews,\n  buttons\n}': ReviewsPageQueryResult
     '*[_type == "qaPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons,\n  qaLists\n}': QaPageQueryResult
     '*[_type == "contactPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': ContactPageQueryResult
-    '*[_type == "workWithUsPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': WorkWithUsPageQueryResult
+    '*[_type == "workWithUsPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  vacanciesHeading,\n  vacancies,\n  noVacanciesMessage,\n  pageDescription,\n  content,\n  buttons\n}': WorkWithUsPageQueryResult
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too
