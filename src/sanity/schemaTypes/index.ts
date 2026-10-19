@@ -15,6 +15,7 @@ import { qaPage } from "./qa/qaPage"
 import { qaSchema, qaListSchema } from "./qa/qaSchema"
 import { contactPage } from "./contact/contactPage"
 import { workWithUsPage } from "./workWithUs/workWithUsPage"
+import { applicationPage } from "./application/applicationPage"
 
 const homeSchemas = [homePage, hero, whatWeDo, belief]
 const aboutSchemas = [aboutPage]
@@ -26,6 +27,7 @@ const reviewsSchemas = [reviewsPage]
 const qaSchemas = [qaPage, qaSchema, qaListSchema]
 const contactSchemas = [contactPage]
 const workWithUsSchemas = [workWithUsPage]
+const applicationSchemas = [applicationPage]
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -39,6 +41,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     ...qaSchemas,
     ...contactSchemas,
     ...workWithUsSchemas,
+    ...applicationSchemas,
     colorPalette,
   ],
 }

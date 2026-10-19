@@ -111,6 +111,11 @@ export type ReactIcon = {
   package?: string
 }
 
+export type LucideIcon = {
+  name?: string
+  iconNode?: string
+}
+
 export type CardImage = {
   imageName: string
   imageAlt?: string
@@ -262,6 +267,387 @@ export type ColorPalette = {
   }>
 }
 
+export type ApplicationPage = {
+  _id: string
+  _type: "applicationPage"
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  heading?: string
+  showHeading?: boolean
+  pageDescription?: Array<
+    | {
+        children?: Array<
+          | {
+              marks?: Array<string>
+              text?: string
+              _type: "span"
+              _key: string
+            }
+          | {
+              name?: string
+              iconNode?: string
+              swatch?: Color
+              size?: "small" | "default" | "large" | "xlarge" | "xxlarge"
+              _type: "lucideIcon"
+              _key: string
+            }
+        >
+        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote"
+        listItem?: "bullet" | "number"
+        markDefs?: Array<
+          | {
+              href?: string
+              _type: "link"
+              _key: string
+            }
+          | {
+              swatch?: Color
+              _type: "color"
+              _key: string
+            }
+        >
+        level?: number
+        _type: "block"
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt: string
+        size?: "small" | "medium" | "large"
+        customDimensions?: {
+          width?: number
+          height?: number
+          unit?: "px" | "%"
+        }
+        alignment?: "left" | "center" | "right"
+        _type: "image"
+        _key: string
+      }
+  >
+  hero?: Hero
+  photosHeading?: string
+  photosDescription?: Array<
+    | {
+        children?: Array<
+          | {
+              marks?: Array<string>
+              text?: string
+              _type: "span"
+              _key: string
+            }
+          | {
+              name?: string
+              iconNode?: string
+              swatch?: Color
+              size?: "small" | "default" | "large" | "xlarge" | "xxlarge"
+              _type: "lucideIcon"
+              _key: string
+            }
+        >
+        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote"
+        listItem?: "bullet" | "number"
+        markDefs?: Array<
+          | {
+              href?: string
+              _type: "link"
+              _key: string
+            }
+          | {
+              swatch?: Color
+              _type: "color"
+              _key: string
+            }
+        >
+        level?: number
+        _type: "block"
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt: string
+        size?: "small" | "medium" | "large"
+        customDimensions?: {
+          width?: number
+          height?: number
+          unit?: "px" | "%"
+        }
+        alignment?: "left" | "center" | "right"
+        _type: "image"
+        _key: string
+      }
+  >
+  whatHappensNextHeading?: string
+  whatHappensNext?: Array<
+    | {
+        children?: Array<
+          | {
+              marks?: Array<string>
+              text?: string
+              _type: "span"
+              _key: string
+            }
+          | {
+              name?: string
+              iconNode?: string
+              swatch?: Color
+              size?: "small" | "default" | "large" | "xlarge" | "xxlarge"
+              _type: "lucideIcon"
+              _key: string
+            }
+        >
+        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote"
+        listItem?: "bullet" | "number"
+        markDefs?: Array<
+          | {
+              href?: string
+              _type: "link"
+              _key: string
+            }
+          | {
+              swatch?: Color
+              _type: "color"
+              _key: string
+            }
+        >
+        level?: number
+        _type: "block"
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt: string
+        size?: "small" | "medium" | "large"
+        customDimensions?: {
+          width?: number
+          height?: number
+          unit?: "px" | "%"
+        }
+        alignment?: "left" | "center" | "right"
+        _type: "image"
+        _key: string
+      }
+  >
+  successMessage?: Array<
+    | {
+        children?: Array<
+          | {
+              marks?: Array<string>
+              text?: string
+              _type: "span"
+              _key: string
+            }
+          | {
+              name?: string
+              iconNode?: string
+              swatch?: Color
+              size?: "small" | "default" | "large" | "xlarge" | "xxlarge"
+              _type: "lucideIcon"
+              _key: string
+            }
+        >
+        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote"
+        listItem?: "bullet" | "number"
+        markDefs?: Array<
+          | {
+              href?: string
+              _type: "link"
+              _key: string
+            }
+          | {
+              swatch?: Color
+              _type: "color"
+              _key: string
+            }
+        >
+        level?: number
+        _type: "block"
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt: string
+        size?: "small" | "medium" | "large"
+        customDimensions?: {
+          width?: number
+          height?: number
+          unit?: "px" | "%"
+        }
+        alignment?: "left" | "center" | "right"
+        _type: "image"
+        _key: string
+      }
+  >
+  successButtons?: Array<{
+    label: string
+    path: string
+    variant?:
+      "default" | "outline" | "secondary" | "ghost" | "destructive" | "link"
+    size?:
+      | "default"
+      | "xs"
+      | "sm"
+      | "lg"
+      | "2xl"
+      | "icon"
+      | "icon-xs"
+      | "icon-sm"
+      | "icon-lg"
+    icon?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: "image"
+    }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
+    _type: "buttons"
+    _key: string
+  }>
+  buttons?: Array<{
+    label: string
+    path: string
+    variant?:
+      "default" | "outline" | "secondary" | "ghost" | "destructive" | "link"
+    size?:
+      | "default"
+      | "xs"
+      | "sm"
+      | "lg"
+      | "2xl"
+      | "icon"
+      | "icon-xs"
+      | "icon-sm"
+      | "icon-lg"
+    icon?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: "image"
+    }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
+    _type: "buttons"
+    _key: string
+  }>
+}
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop"
+  top: number
+  bottom: number
+  left: number
+  right: number
+}
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot"
+  x: number
+  y: number
+  height: number
+  width: number
+}
+
+export type Color = {
+  _type: "color"
+  hex?: string
+  alpha?: number
+  hsl?: HslaColor
+  hsv?: HsvaColor
+  rgb?: RgbaColor
+}
+
+export type Hero = {
+  _type: "hero"
+  showSmoke?: boolean
+  floating?: boolean
+  eyebrow?: string
+  heading?: string
+  subheading?: string
+  content?: Array<
+    | {
+        children?: Array<
+          | {
+              marks?: Array<string>
+              text?: string
+              _type: "span"
+              _key: string
+            }
+          | {
+              name?: string
+              iconNode?: string
+              swatch?: Color
+              size?: "small" | "default" | "large" | "xlarge" | "xxlarge"
+              _type: "lucideIcon"
+              _key: string
+            }
+        >
+        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote"
+        listItem?: "bullet" | "number"
+        markDefs?: Array<
+          | {
+              href?: string
+              _type: "link"
+              _key: string
+            }
+          | {
+              swatch?: Color
+              _type: "color"
+              _key: string
+            }
+        >
+        level?: number
+        _type: "block"
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt: string
+        size?: "small" | "medium" | "large"
+        customDimensions?: CustomDimensions
+        alignment?: "left" | "center" | "right"
+        _type: "image"
+        _key: string
+      }
+  >
+  showEyebrowOnMobile?: boolean
+  showHeadingOnMobile?: boolean
+  showSubheadingOnMobile?: boolean
+  showContentOnMobile?: boolean
+  showButtonsOnMobile?: boolean
+  background?: Background
+  buttons?: Array<{
+    label: string
+    path: string
+    variant:
+      "default" | "outline" | "secondary" | "ghost" | "destructive" | "link"
+    imageIcon?: ImageIcon
+    reactIcon?: ReactIcon
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
+    _type: "buttons"
+    _key: string
+  }>
+  customCss?: Code
+}
+
 export type WorkWithUsPage = {
   _id: string
   _type: "workWithUsPage"
@@ -402,6 +788,8 @@ export type WorkWithUsPage = {
         crop?: SanityImageCrop
         _type: "image"
       }
+      lucideIcon?: LucideIcon
+      iconPosition?: "left" | "right"
       _type: "buttons"
       _key: string
     }>
@@ -537,109 +925,11 @@ export type WorkWithUsPage = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }>
-}
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop"
-  top: number
-  bottom: number
-  left: number
-  right: number
-}
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot"
-  x: number
-  y: number
-  height: number
-  width: number
-}
-
-export type Color = {
-  _type: "color"
-  hex?: string
-  alpha?: number
-  hsl?: HslaColor
-  hsv?: HsvaColor
-  rgb?: RgbaColor
-}
-
-export type Hero = {
-  _type: "hero"
-  showSmoke?: boolean
-  floating?: boolean
-  eyebrow?: string
-  heading?: string
-  subheading?: string
-  content?: Array<
-    | {
-        children?: Array<
-          | {
-              marks?: Array<string>
-              text?: string
-              _type: "span"
-              _key: string
-            }
-          | {
-              name?: string
-              iconNode?: string
-              swatch?: Color
-              size?: "small" | "default" | "large" | "xlarge" | "xxlarge"
-              _type: "lucideIcon"
-              _key: string
-            }
-        >
-        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote"
-        listItem?: "bullet" | "number"
-        markDefs?: Array<
-          | {
-              href?: string
-              _type: "link"
-              _key: string
-            }
-          | {
-              swatch?: Color
-              _type: "color"
-              _key: string
-            }
-        >
-        level?: number
-        _type: "block"
-        _key: string
-      }
-    | {
-        asset?: SanityImageAssetReference
-        media?: unknown
-        hotspot?: SanityImageHotspot
-        crop?: SanityImageCrop
-        alt: string
-        size?: "small" | "medium" | "large"
-        customDimensions?: CustomDimensions
-        alignment?: "left" | "center" | "right"
-        _type: "image"
-        _key: string
-      }
-  >
-  showEyebrowOnMobile?: boolean
-  showHeadingOnMobile?: boolean
-  showSubheadingOnMobile?: boolean
-  showContentOnMobile?: boolean
-  showButtonsOnMobile?: boolean
-  background?: Background
-  buttons?: Array<{
-    label: string
-    path: string
-    variant:
-      "default" | "outline" | "secondary" | "ghost" | "destructive" | "link"
-    imageIcon?: ImageIcon
-    reactIcon?: ReactIcon
-    _type: "buttons"
-    _key: string
-  }>
-  customCss?: Code
 }
 
 export type ContactPage = {
@@ -779,6 +1069,8 @@ export type ContactPage = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }>
@@ -1039,6 +1331,8 @@ export type QaPage = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }>
@@ -1243,6 +1537,8 @@ export type ReviewsPage = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }>
@@ -1591,6 +1887,8 @@ export type OurWorkPage = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }>
@@ -1733,6 +2031,8 @@ export type DomesticPage = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }>
@@ -1875,6 +2175,8 @@ export type CommercialPage = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }>
@@ -2073,6 +2375,8 @@ export type ServicesPage = {
         crop?: SanityImageCrop
         _type: "image"
       }
+      lucideIcon?: LucideIcon
+      iconPosition?: "left" | "right"
       _type: "buttons"
       _key: string
     }>
@@ -2101,6 +2405,8 @@ export type ServicesPage = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }>
@@ -2300,6 +2606,8 @@ export type AboutPage = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }>
@@ -2586,6 +2894,7 @@ export type AllSanitySchemaTypes =
   | ImageCustomDimensions
   | ImageIcon
   | ReactIcon
+  | LucideIcon
   | CardImage
   | Icon
   | CardIcon
@@ -2593,11 +2902,12 @@ export type AllSanitySchemaTypes =
   | QuestionImageCustomDimensions
   | AnswerImageCustomDimensions
   | ColorPalette
-  | WorkWithUsPage
+  | ApplicationPage
   | SanityImageCrop
   | SanityImageHotspot
   | Color
   | Hero
+  | WorkWithUsPage
   | ContactPage
   | QaList
   | Qa
@@ -3077,6 +3387,8 @@ export type ServicesPageQueryResult = {
         crop?: SanityImageCrop
         _type: "image"
       }
+      lucideIcon?: LucideIcon
+      iconPosition?: "left" | "right"
       _type: "buttons"
       _key: string
     }>
@@ -3105,6 +3417,8 @@ export type ServicesPageQueryResult = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }> | null
@@ -3245,6 +3559,8 @@ export type CommercialPageQueryResult = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }> | null
@@ -3385,6 +3701,8 @@ export type DomesticPageQueryResult = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }> | null
@@ -3724,6 +4042,8 @@ export type OurWorkPageQueryResult = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }> | null
@@ -3926,6 +4246,8 @@ export type ReviewsPageQueryResult = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }> | null
@@ -4066,6 +4388,8 @@ export type QaPageQueryResult = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }> | null
@@ -4211,6 +4535,8 @@ export type ContactPageQueryResult = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
   }> | null
@@ -4302,6 +4628,8 @@ export type WorkWithUsPageQueryResult = {
         crop?: SanityImageCrop
         _type: "image"
       }
+      lucideIcon?: LucideIcon
+      iconPosition?: "left" | "right"
       _type: "buttons"
       _key: string
     }>
@@ -4489,8 +4817,345 @@ export type WorkWithUsPageQueryResult = {
       crop?: SanityImageCrop
       _type: "image"
     }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
     _type: "buttons"
     _key: string
+  }> | null
+} | null
+
+// Source: src/sanity/queries.ts
+// Variable: applicationPageQuery
+// Query: *[_type == "applicationPage"][0]{  hero,  heading,  showHeading,  pageDescription,  photosHeading,  photosDescription,  whatHappensNextHeading,  whatHappensNext,  successMessage,  successButtons,  buttons,  "vacancies": *[_type == "workWithUsPage"][0].vacancies[]{ _key, heading, date, description }}
+export type ApplicationPageQueryResult = {
+  hero: Hero | null
+  heading: string | null
+  showHeading: boolean | null
+  pageDescription: Array<
+    | {
+        children?: Array<
+          | {
+              name?: string
+              iconNode?: string
+              swatch?: Color
+              size?: "default" | "large" | "small" | "xlarge" | "xxlarge"
+              _type: "lucideIcon"
+              _key: string
+            }
+          | {
+              marks?: Array<string>
+              text?: string
+              _type: "span"
+              _key: string
+            }
+        >
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal"
+        listItem?: "bullet" | "number"
+        markDefs?: Array<
+          | {
+              swatch?: Color
+              _type: "color"
+              _key: string
+            }
+          | {
+              href?: string
+              _type: "link"
+              _key: string
+            }
+        >
+        level?: number
+        _type: "block"
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt: string
+        size?: "large" | "medium" | "small"
+        customDimensions?: {
+          width?: number
+          height?: number
+          unit?: "%" | "px"
+        }
+        alignment?: "center" | "left" | "right"
+        _type: "image"
+        _key: string
+      }
+  > | null
+  photosHeading: string | null
+  photosDescription: Array<
+    | {
+        children?: Array<
+          | {
+              name?: string
+              iconNode?: string
+              swatch?: Color
+              size?: "default" | "large" | "small" | "xlarge" | "xxlarge"
+              _type: "lucideIcon"
+              _key: string
+            }
+          | {
+              marks?: Array<string>
+              text?: string
+              _type: "span"
+              _key: string
+            }
+        >
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal"
+        listItem?: "bullet" | "number"
+        markDefs?: Array<
+          | {
+              swatch?: Color
+              _type: "color"
+              _key: string
+            }
+          | {
+              href?: string
+              _type: "link"
+              _key: string
+            }
+        >
+        level?: number
+        _type: "block"
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt: string
+        size?: "large" | "medium" | "small"
+        customDimensions?: {
+          width?: number
+          height?: number
+          unit?: "%" | "px"
+        }
+        alignment?: "center" | "left" | "right"
+        _type: "image"
+        _key: string
+      }
+  > | null
+  whatHappensNextHeading: string | null
+  whatHappensNext: Array<
+    | {
+        children?: Array<
+          | {
+              name?: string
+              iconNode?: string
+              swatch?: Color
+              size?: "default" | "large" | "small" | "xlarge" | "xxlarge"
+              _type: "lucideIcon"
+              _key: string
+            }
+          | {
+              marks?: Array<string>
+              text?: string
+              _type: "span"
+              _key: string
+            }
+        >
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal"
+        listItem?: "bullet" | "number"
+        markDefs?: Array<
+          | {
+              swatch?: Color
+              _type: "color"
+              _key: string
+            }
+          | {
+              href?: string
+              _type: "link"
+              _key: string
+            }
+        >
+        level?: number
+        _type: "block"
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt: string
+        size?: "large" | "medium" | "small"
+        customDimensions?: {
+          width?: number
+          height?: number
+          unit?: "%" | "px"
+        }
+        alignment?: "center" | "left" | "right"
+        _type: "image"
+        _key: string
+      }
+  > | null
+  successMessage: Array<
+    | {
+        children?: Array<
+          | {
+              name?: string
+              iconNode?: string
+              swatch?: Color
+              size?: "default" | "large" | "small" | "xlarge" | "xxlarge"
+              _type: "lucideIcon"
+              _key: string
+            }
+          | {
+              marks?: Array<string>
+              text?: string
+              _type: "span"
+              _key: string
+            }
+        >
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal"
+        listItem?: "bullet" | "number"
+        markDefs?: Array<
+          | {
+              swatch?: Color
+              _type: "color"
+              _key: string
+            }
+          | {
+              href?: string
+              _type: "link"
+              _key: string
+            }
+        >
+        level?: number
+        _type: "block"
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt: string
+        size?: "large" | "medium" | "small"
+        customDimensions?: {
+          width?: number
+          height?: number
+          unit?: "%" | "px"
+        }
+        alignment?: "center" | "left" | "right"
+        _type: "image"
+        _key: string
+      }
+  > | null
+  successButtons: Array<{
+    label: string
+    path: string
+    variant?:
+      "default" | "destructive" | "ghost" | "link" | "outline" | "secondary"
+    size?:
+      | "2xl"
+      | "default"
+      | "icon-lg"
+      | "icon-sm"
+      | "icon-xs"
+      | "icon"
+      | "lg"
+      | "sm"
+      | "xs"
+    icon?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: "image"
+    }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
+    _type: "buttons"
+    _key: string
+  }> | null
+  buttons: Array<{
+    label: string
+    path: string
+    variant?:
+      "default" | "destructive" | "ghost" | "link" | "outline" | "secondary"
+    size?:
+      | "2xl"
+      | "default"
+      | "icon-lg"
+      | "icon-sm"
+      | "icon-xs"
+      | "icon"
+      | "lg"
+      | "sm"
+      | "xs"
+    icon?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: "image"
+    }
+    lucideIcon?: LucideIcon
+    iconPosition?: "left" | "right"
+    _type: "buttons"
+    _key: string
+  }> | null
+  vacancies: Array<{
+    _key: string
+    heading: string | null
+    date: string | null
+    description: Array<
+      | {
+          children?: Array<
+            | {
+                name?: string
+                iconNode?: string
+                swatch?: Color
+                size?: "default" | "large" | "small" | "xlarge" | "xxlarge"
+                _type: "lucideIcon"
+                _key: string
+              }
+            | {
+                marks?: Array<string>
+                text?: string
+                _type: "span"
+                _key: string
+              }
+          >
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal"
+          listItem?: "bullet" | "number"
+          markDefs?: Array<
+            | {
+                swatch?: Color
+                _type: "color"
+                _key: string
+              }
+            | {
+                href?: string
+                _type: "link"
+                _key: string
+              }
+          >
+          level?: number
+          _type: "block"
+          _key: string
+        }
+      | {
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt: string
+          size?: "large" | "medium" | "small"
+          customDimensions?: {
+            width?: number
+            height?: number
+            unit?: "%" | "px"
+          }
+          alignment?: "center" | "left" | "right"
+          _type: "image"
+          _key: string
+        }
+    > | null
   }> | null
 } | null
 
@@ -4507,6 +5172,7 @@ declare global {
     '*[_type == "qaPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons,\n  qaLists\n}': QaPageQueryResult
     '*[_type == "contactPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  content,\n  buttons\n}': ContactPageQueryResult
     '*[_type == "workWithUsPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  vacanciesHeading,\n  vacancies,\n  noVacanciesMessage,\n  pageDescription,\n  content,\n  buttons\n}': WorkWithUsPageQueryResult
+    '*[_type == "applicationPage"][0]{\n  hero,\n  heading,\n  showHeading,\n  pageDescription,\n  photosHeading,\n  photosDescription,\n  whatHappensNextHeading,\n  whatHappensNext,\n  successMessage,\n  successButtons,\n  buttons,\n  "vacancies": *[_type == "workWithUsPage"][0].vacancies[]{ _key, heading, date, description }\n}': ApplicationPageQueryResult
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

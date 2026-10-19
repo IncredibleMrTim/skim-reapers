@@ -24,6 +24,11 @@ const CONTENT_ITEMS: ContentListItem[] = [
     title: "Work With Us Page",
     schemaType: "workWithUsPage",
   },
+  {
+    id: "applicationPage",
+    title: "Application Page",
+    schemaType: "applicationPage",
+  },
   { id: "colorPalette", title: "Custom Colors", schemaType: "colorPalette" },
 ]
 

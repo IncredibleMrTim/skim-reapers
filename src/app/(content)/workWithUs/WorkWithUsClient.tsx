@@ -8,6 +8,7 @@ import { useLiveSanityData } from "@/sanity/live"
 import { workWithUsPageQuery } from "@/sanity/queries"
 import type { WorkWithUsPageQueryResult } from "@/sanity/types"
 import { dateFormat } from "@/lib/utils"
+import { withVacancyKey } from "@/lib/applicationLinks"
 
 interface WorkWithUsClientProps {
   initialData: WorkWithUsPageQueryResult
@@ -33,7 +34,7 @@ const renderVacancies = (
       )}
       {v.applyButton && (
         <div className="w-full flex justify-end">
-          <CtaButtons buttons={v.applyButton} />
+          <CtaButtons buttons={withVacancyKey(v.applyButton, v._key)} />
         </div>
       )}
     </div>

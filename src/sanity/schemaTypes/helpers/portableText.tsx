@@ -164,6 +164,7 @@ type TPortableTextSchema = {
   name?: string
   title?: string
   group?: string
+  fieldset?: string
   description?: string
 }
 
@@ -172,12 +173,14 @@ export const portableTextSchema = ({
   title,
   description,
   group,
+  fieldset,
 }: TPortableTextSchema = {}) =>
   defineField({
     name: name ?? "portableText",
     title: title ?? "Portable Text Editor",
     description,
     group,
+    fieldset,
     type: "array",
     of: [
       defineArrayMember({

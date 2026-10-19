@@ -127,6 +127,14 @@ proxy's public URL:
 |---|---|---|
 | Repo | `NEXT_PUBLIC_MAIL_PROXY_URL` | No — public endpoint |
 | Repo | `MAIL_PROXY_SECRET` (→ `NEXT_PUBLIC_MAIL_PROXY_SECRET`) | Stored as a GitHub secret, but still ships in the client bundle — see note below |
+| Repo | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | No — the public Cloudflare Turnstile site key. Leave unset to switch the bot check off |
+
+The bot check (Cloudflare Turnstile, see `src/lib/turnstile/README.md`)
+needs two matching halves: the public site key above, built into the
+page, and a `TURNSTILE_SECRET_KEY` setting on the proxy's Vercel project
+(production), which makes the proxy refuse any request without a valid
+token. Until the secret is set, the proxy skips the check, so the site
+key can be added first without breaking the forms.
 
 One repo-level value is one GitHub var (the proxy's URL isn't
 secret), the other a GitHub **secret** even though it ends up in the

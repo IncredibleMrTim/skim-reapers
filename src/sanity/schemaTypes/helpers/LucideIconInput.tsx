@@ -1,16 +1,19 @@
-import { useMemo, useState, type MouseEvent } from "react"
+import { useMemo, useRef, useState, type MouseEvent } from "react"
 import { icons, type IconNode } from "lucide-react"
 import {
   Box,
   Button,
   Card,
+  Flex,
   Grid,
   Select,
   Stack,
   Text,
   TextInput,
+  useClickOutsideEvent,
 } from "@sanity/ui"
-import { set, type ObjectInputProps } from "sanity"
+import { Popover } from "@sanity/ui/popover"
+import { set, unset, type ObjectInputProps } from "sanity"
 import iconCategoriesByName from "./lucideIconCategories.json"
 import iconTagsByName from "./lucideIconTags.json"
 
@@ -109,14 +112,24 @@ function readIconNode(svg: SVGElement): IconNode {
   ])
 }
 
+interface LucideIconPickerProps {
+  selectedName?: string
+  readOnly?: boolean
+  /** Caps the icon grid's height and scrolls it; unset lets it grow. */
+  maxGridHeight?: number
+  onSelect: (name: string, iconNode: IconNode) => void
+}
+
 /**
- * Searchable Lucide icon picker for the inline `lucideIcon` portable text
- * object. Stores the icon's name and its SVG nodes (as JSON) rather than just
- * the name, so rendering the page never has to import the icon library.
+ * The searchable icon list itself: search box, category filter and the grid.
+ * Shared by the inline text icon input and the button icon popover.
  */
-export function LucideIconInput(props: ObjectInputProps) {
-  const { onChange, readOnly, renderDefault } = props
-  const selectedName = (props.value as LucideIconValue | undefined)?.name
+function LucideIconPicker({
+  selectedName,
+  readOnly,
+  maxGridHeight,
+  onSelect,
+}: LucideIconPickerProps) {
   const selectedComponent = selectedName
     ? icons[selectedName as keyof typeof icons]
     : undefined
@@ -138,10 +151,7 @@ export function LucideIconInput(props: ObjectInputProps) {
   function handleSelect(name: string, event: MouseEvent<HTMLButtonElement>) {
     const svg = event.currentTarget.querySelector("svg")
     if (!svg) return
-    onChange([
-      set(name, ["name"]),
-      set(JSON.stringify(readIconNode(svg)), ["iconNode"]),
-    ])
+    onSelect(name, readIconNode(svg))
   }
 
   return (
@@ -170,7 +180,15 @@ export function LucideIconInput(props: ObjectInputProps) {
           ? ` — showing ${MAX_RESULTS} of ${matchingNames.length}, keep typing to narrow`
           : ` — ${matchingNames.length} found`}
       </Text>
-      <Card border radius={2}>
+      <Card
+        border
+        radius={2}
+        style={
+          maxGridHeight
+            ? { maxHeight: maxGridHeight, overflowY: "auto" }
+            : undefined
+        }
+      >
         <Box padding={2}>
           <Grid gridTemplateColumns={6} gap={1}>
             {matchingNames.slice(0, MAX_RESULTS).map((name) => {
@@ -193,10 +211,112 @@ export function LucideIconInput(props: ObjectInputProps) {
           </Grid>
         </Box>
       </Card>
+    </Stack>
+  )
+}
+
+/**
+ * Searchable Lucide icon picker for the inline `lucideIcon` portable text
+ * object. Stores the icon's name and its SVG nodes (as JSON) rather than just
+ * the name, so rendering the page never has to import the icon library.
+ */
+export function LucideIconInput(props: ObjectInputProps) {
+  const { onChange, readOnly, renderDefault } = props
+  const selectedName = (props.value as LucideIconValue | undefined)?.name
+
+  return (
+    <Stack gap={3}>
+      <LucideIconPicker
+        selectedName={selectedName}
+        readOnly={readOnly}
+        onSelect={(name, iconNode) =>
+          onChange([
+            set(name, ["name"]),
+            set(JSON.stringify(iconNode), ["iconNode"]),
+          ])
+        }
+      />
 
       {/* Remaining visible fields (the color swatch) via the default form;
           name and iconNode are hidden, so only the picker above sets them. */}
       {renderDefault(props)}
     </Stack>
+  )
+}
+
+const POPOVER_WIDTH = 360
+const POPOVER_GRID_MAX_HEIGHT = 280
+
+/**
+ * Button icon field: shows the chosen icon on a button, and opens the picker
+ * in a popover so the long icon list doesn't take up room in the form.
+ * Closes after an icon is chosen, on Escape, or on a click outside.
+ */
+export function LucideIconPopoverInput(props: ObjectInputProps) {
+  const { onChange, readOnly } = props
+  const selectedName = (props.value as LucideIconValue | undefined)?.name
+  const SelectedIcon = selectedName
+    ? icons[selectedName as keyof typeof icons]
+    : undefined
+  const [isOpen, setIsOpen] = useState(false)
+  const buttonRef = useRef<HTMLButtonElement | null>(null)
+  const popoverContentRef = useRef<HTMLDivElement | null>(null)
+
+  useClickOutsideEvent(
+    () => setIsOpen(false),
+    () => [buttonRef.current, popoverContentRef.current],
+  )
+
+  return (
+    <Flex gap={2} align="center">
+      <Popover
+        open={isOpen}
+        portal
+        placement="bottom-start"
+        fallbackPlacements={["top-start"]}
+        content={
+          <Box
+            ref={popoverContentRef}
+            padding={3}
+            style={{ width: POPOVER_WIDTH }}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") setIsOpen(false)
+            }}
+          >
+            <LucideIconPicker
+              selectedName={selectedName}
+              readOnly={readOnly}
+              maxGridHeight={POPOVER_GRID_MAX_HEIGHT}
+              onSelect={(name, iconNode) => {
+                onChange([
+                  set(name, ["name"]),
+                  set(JSON.stringify(iconNode), ["iconNode"]),
+                ])
+                setIsOpen(false)
+              }}
+            />
+          </Box>
+        }
+      >
+        <Button
+          ref={buttonRef}
+          mode="ghost"
+          text={selectedName ?? "Choose icon"}
+          icon={SelectedIcon ? <SelectedIcon /> : undefined}
+          disabled={readOnly}
+          selected={isOpen}
+          onClick={() => setIsOpen((wasOpen) => !wasOpen)}
+        />
+      </Popover>
+      {selectedName && (
+        <Button
+          mode="bleed"
+          tone="critical"
+          text="Remove"
+          disabled={readOnly}
+          onClick={() => onChange(unset())}
+        />
+      )}
+    </Flex>
   )
 }
