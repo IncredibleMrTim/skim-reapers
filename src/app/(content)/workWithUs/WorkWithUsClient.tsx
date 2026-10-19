@@ -8,7 +8,6 @@ import { useLiveSanityData } from "@/sanity/live"
 import { workWithUsPageQuery } from "@/sanity/queries"
 import type { WorkWithUsPageQueryResult } from "@/sanity/types"
 import { dateFormat } from "@/lib/utils"
-import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface WorkWithUsClientProps {
   initialData: WorkWithUsPageQueryResult
