@@ -90,6 +90,9 @@ export const workWithUsPageQuery = defineQuery(`*[_type == "workWithUsPage"][0]{
   hero,
   heading,
   showHeading,
+  vacanciesHeading,
+  vacancies,
+  noVacanciesMessage,
   pageDescription,
   content,
   buttons

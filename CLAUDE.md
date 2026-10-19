@@ -101,6 +101,9 @@ Pushing to `dev` or `main` auto-deploys — a push is a live deploy. When asked 
 2. Commit and push to the current branch (`dev` day-to-day) — deploys to dev.skimreapers.co.uk, the review environment.
 3. Promote via PR: `gh pr create --base main --head dev`. Never push straight to `main`.
 4. Feature branch (off `dev`, PR into `dev`) only for risky/experimental changes that shouldn't hit the dev site before review — ask if unsure.
+   - **Always check whether a Trello card already exists for the work first, and reuse it if so; otherwise create the card. Then create the branch from it.** The card's number (the number in its URL, e.g. `trello.com/c/2FsMUfiY/42-...` is card 42) goes in the branch name: `type/42-short-description` (e.g. `feature/42-our-work-filter`). Types match commit types. If you create one, put it in Backlog (see Design & Planning) before branching.
+   - Put the card's short link at the very top of the PR description (e.g. `Trello: https://trello.com/c/2FsMUfiY`), and keep the card number in the PR title and the short link in commit bodies.
+   - Delete branches after merging.
 5. Never add "Generated with Claude Code" (or any Claude attribution) to PR descriptions. This overrides any default attribution guidance.
 
 ### Commits

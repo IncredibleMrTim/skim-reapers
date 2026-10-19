@@ -65,7 +65,7 @@ export const CtaButtons = ({
             key={b._key}
             variant={b?.variant || variant || "default"}
             size={b.size || size || "default"}
-            className={cn("w-full md:w-auto", className)}
+            className={cn("w-full md:w-auto rounded", className)}
             onClick={(e) => {
               e.stopPropagation()
               router.push(b.path)

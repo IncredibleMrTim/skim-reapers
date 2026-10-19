@@ -3,13 +3,13 @@ import { Separator } from "@/components/ui/separator"
 import { ReviewsPageQueryResult } from "@/sanity/types"
 import { PortableText } from "@portabletext/react"
 import { Fragment } from "react"
+import { dateFormat } from "@/lib/utils"
 
 export const ReviewList = ({
   reviews,
 }: {
   reviews?: NonNullable<ReviewsPageQueryResult>["reviews"]
 }) => {
-  const dateFormat = new Intl.DateTimeFormat("en-GB")
   const renderStars = (count: string) => {
     let stars: string = ""
 
