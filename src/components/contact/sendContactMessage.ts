@@ -4,6 +4,15 @@ import {
   contactFormSchema,
   type IContactFormValues,
 } from "@/lib/contactFormSchema"
+import {
+  BOT_CHECK_ERROR_MESSAGE,
+  BotCheckError,
+  isMailProxyConfigured,
+  renderEmailTemplate,
+  sendViaProxy,
+  type IProxyConfirmationEmail,
+  type TGetTurnstileToken,
+} from "@/lib/mailProxy"
 
 export interface IContactSubmissionResult {
   isSuccess: boolean
@@ -17,77 +26,6 @@ const CONFIRMATION_TEMPLATE_PATH = "/emailTemplate.html"
 const NOTIFICATION_TEMPLATE_PATH = "/notificationEmailTemplate.html"
 const NOTIFICATION_TO_EMAIL = "info@skimreapers.co.uk"
 
-const mailProxyUrl = process.env.NEXT_PUBLIC_MAIL_PROXY_URL
-const mailProxySecret = process.env.NEXT_PUBLIC_MAIL_PROXY_SECRET
-
-/**
- * Escapes a value for safe HTML insertion, then converts line breaks to
- * <br /> — CSS white-space: pre-line isn't reliably honoured by Outlook's
- * Word-based rendering engine, but every email client respects a literal
- * <br /> tag.
- */
-function escapeHtmlPreservingLineBreaks(value: string): string {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("\n", "<br />")
-}
-
-/**
- * Fetches a template from /public and fills in its {{token}} placeholders —
- * fetched at send time so the template files (editable and previewable
- * directly in a browser) stay the single source of truth. {{base_url}}
- * resolves to the current origin so the same file works in dev, the dev
- * site, and production.
- */
-async function renderEmailTemplate(
-  templatePath: string,
-  tokens: Record<string, string>,
-): Promise<string> {
-  const response = await fetch(templatePath)
-  if (!response.ok) {
-    throw new Error(
-      `renderEmailTemplate: failed to fetch ${templatePath} (${response.status})`,
-    )
-  }
-  const templateHtml = await response.text()
-  return Object.entries({ base_url: window.location.origin, ...tokens }).reduce(
-    (html, [token, value]) =>
-      html.replaceAll(`{{${token}}}`, escapeHtmlPreservingLineBreaks(value)),
-    templateHtml,
-  )
-}
-
-/**
- * Sends one email through the Resend-backed proxy (a small Vercel function
- * in the separate skim-reapers-mail-proxy project) — this static export has
- * no server runtime to hold a Resend API key, so the key lives only in that
- * proxy's environment, never in this bundle.
- */
-async function sendViaProxy(email: {
-  to: string
-  subject: string
-  html: string
-  replyTo?: string
-}): Promise<void> {
-  if (!mailProxyUrl) {
-    throw new Error("sendViaProxy: missing NEXT_PUBLIC_MAIL_PROXY_URL env var")
-  }
-  const response = await fetch(mailProxyUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...(mailProxySecret ? { "X-Proxy-Secret": mailProxySecret } : {}),
-    },
-    body: JSON.stringify(email),
-  })
-  if (!response.ok) {
-    throw new Error(`sendViaProxy: proxy responded ${response.status}`)
-  }
-}
-
 /**
  * Sends the quote-request notification to Skim Reapers and a confirmation
  * email back to the enquirer.
@@ -95,6 +33,7 @@ async function sendViaProxy(email: {
 export async function sendContactMessage(
   formValues: IContactFormValues,
   honeypot?: string,
+  getTurnstileToken?: TGetTurnstileToken,
 ): Promise<IContactSubmissionResult> {
   if (honeypot) {
     return { isSuccess: true }
@@ -109,42 +48,59 @@ export async function sendContactMessage(
     }
   }
 
-  if (!mailProxyUrl) {
-    console.error("sendContactMessage: missing NEXT_PUBLIC_MAIL_PROXY_URL env var")
+  if (!isMailProxyConfigured) {
+    console.error(
+      "sendContactMessage: missing NEXT_PUBLIC_MAIL_PROXY_URL env var",
+    )
     return { isSuccess: false, errorMessage: GENERIC_ERROR_MESSAGE }
   }
 
   const { name, email, business, phone, message } = parsedFormValues.data
+
+  // The reply is optional: if its template can't be built the enquiry still
+  // goes through without it.
+  let confirmation: IProxyConfirmationEmail | undefined
+  try {
+    confirmation = {
+      to: email,
+      subject: "We've received your message — Skim Reapers",
+      html: await renderEmailTemplate(CONFIRMATION_TEMPLATE_PATH, {
+        name,
+        message,
+      }),
+      replyTo: NOTIFICATION_TO_EMAIL,
+    }
+  } catch (error) {
+    console.error("sendContactMessage: confirmation email skipped:", error)
+  }
 
   try {
     const notificationHtml = await renderEmailTemplate(
       NOTIFICATION_TEMPLATE_PATH,
       { name, email, business, phone, message },
     )
-    await sendViaProxy({
-      to: NOTIFICATION_TO_EMAIL,
-      subject: `New quote request from ${name}`,
-      html: notificationHtml,
-      replyTo: email,
-    })
+    const result = await sendViaProxy(
+      {
+        to: NOTIFICATION_TO_EMAIL,
+        subject: `New quote request from ${name}`,
+        html: notificationHtml,
+        replyTo: email,
+        confirmation,
+      },
+      getTurnstileToken,
+    )
+    if (result.confirmationSent === false) {
+      console.error("sendContactMessage: confirmation email failed")
+    }
   } catch (error) {
     console.error("sendContactMessage:", error)
-    return { isSuccess: false, errorMessage: GENERIC_ERROR_MESSAGE }
-  }
-
-  try {
-    const confirmationHtml = await renderEmailTemplate(
-      CONFIRMATION_TEMPLATE_PATH,
-      { name, message },
-    )
-    await sendViaProxy({
-      to: email,
-      subject: "We've received your message — Skim Reapers",
-      html: confirmationHtml,
-      replyTo: NOTIFICATION_TO_EMAIL,
-    })
-  } catch (error) {
-    console.error("sendContactMessage: confirmation email failed:", error)
+    return {
+      isSuccess: false,
+      errorMessage:
+        error instanceof BotCheckError
+          ? BOT_CHECK_ERROR_MESSAGE
+          : GENERIC_ERROR_MESSAGE,
+    }
   }
 
   return { isSuccess: true }

@@ -2,8 +2,12 @@
 
 import { useMemo, useState } from "react"
 import { sendContactMessage } from "@/components/contact/sendContactMessage"
+import { useTurnstile } from "@/lib/turnstile"
 
-import { contactFormSchema, type IContactFormValues } from "@/lib/contactFormSchema"
+import {
+  contactFormSchema,
+  type IContactFormValues,
+} from "@/lib/contactFormSchema"
 import { Button } from "../ui/button"
 import { Separator } from "../ui/separator"
 
@@ -70,6 +74,7 @@ export default function Contact() {
   const [formValues, setFormValues] =
     useState<IContactFormValues>(INITIAL_FORM_VALUES)
   const [honeypot, setHoneypot] = useState("")
+  const { attachWidget, getToken, isInteractionRequired } = useTurnstile()
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSending, setIsSending] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -117,7 +122,7 @@ export default function Contact() {
     setIsSending(true)
     setErrorMessage(null)
 
-    const result = await sendContactMessage(formValues, honeypot)
+    const result = await sendContactMessage(formValues, honeypot, getToken)
 
     setIsSending(false)
     if (result.isSuccess) {
@@ -248,15 +253,16 @@ export default function Contact() {
                   className={`resize-none ${getFieldInputClassName("message")}`}
                 />
               </div>
+              <div ref={attachWidget} />
               {errorMessage && (
-                <p className="text-sm text-brand-brick-dark">{errorMessage}</p>
+                <p className="text-sm text-brand-accent">{errorMessage}</p>
               )}
               <div className="w-full flex justify-end">
                 <Button
                   type="submit"
                   variant="default"
                   size="2xl"
-                  disabled={isSending || !isFormValid}
+                  disabled={isSending || !isFormValid || isInteractionRequired}
                   className="text-white w-full md:w-auto"
                 >
                   {isSending ? "Sending…" : "Send my free quote request →"}
